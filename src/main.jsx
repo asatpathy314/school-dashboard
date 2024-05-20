@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './styles/index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import StudentTeacherDir from './roots/StudenTeacherDir.jsx'
+import StudentDir from './roots/StudenDir.jsx'
+import TeacherDir from './roots/Teacher.jsx'
 import Home from './roots/Home.jsx'
 import Class from './roots/Class.jsx'
 import Dashboard from './roots/Dashboard.jsx'
@@ -30,8 +31,12 @@ const router = createBrowserRouter([
     element: <Dashboard/>
   },
   {
-    path: "/studentTeacherDir",
-    element: <StudentTeacherDir/>
+    path: "/studentDir",
+    element: <StudentDir/>
+  },
+  {
+    path: "/teacherDir",
+    element: <TeacherDir/>
   },
   {
     path: "/calendar",
