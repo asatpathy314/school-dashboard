@@ -1,0 +1,32 @@
+.bar {
+    width: 100%;
+    background-color: blueviolet;
+    padding: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: blueviolet;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    padding: 10px;
+    padding-inline: 30px;
+    background-color: blueviolet;
+    color: whitesmoke;
+    text-decoration: none;
+  }
+
+  li a:hover {
+    background-color: rgb(61, 14, 105);
+    color: white;
+    
+  }
