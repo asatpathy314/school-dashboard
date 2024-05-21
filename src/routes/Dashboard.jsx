@@ -1,5 +1,9 @@
 import React from 'react'
 import { Box } from '@mui/system'
+import DashboardTeachers from '../components/DashboardTeachers'
+import DashboardClasses from '../components/DashboardClasses'
+import DashboardStudents from '../components/DashboardStudents'
+import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents'
 
 const Dashboard = () => {
   return (
@@ -15,10 +19,18 @@ const Dashboard = () => {
           "teachers classes classes students"
           "teachers upcoming-events upcoming-events students"` }}
       >
-        <Box sx={{ gridArea: 'teachers' }}>This is where the Teacher's section will be</Box>
-        <Box sx={{ gridArea: 'classes' }}>This is where the classes section will be</Box>
-        <Box sx={{ gridArea: 'students' }}>This is where the Student's section will be</Box>
-        <Box sx={{ gridArea: 'upcoming-events' }}>This is where the Upcoming Events section will be</Box>
+        <Box sx={{ gridArea: 'teachers' }}>
+          <DashboardTeachers />
+        </Box>
+        <Box sx={{ gridArea: 'classes' }}>
+          <DashboardClasses />
+        </Box>
+        <Box sx={{ gridArea: 'students' }}>
+          <DashboardStudents />
+        </Box>
+        <Box sx={{ gridArea: 'upcoming-events' }}>
+          <DashboardUpcomingEvents />
+        </Box>
       </Box>
     </>
   )
