@@ -1,6 +1,5 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 
 // The format of autocomplete list must have a { label: "value" } structure.
 
