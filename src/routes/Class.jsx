@@ -1,7 +1,9 @@
-const Class = (id) => {
+const Class = () => {
   return (
-    <div>Class</div>
-  )
+    <div>
+      Class
+    </div>
+  );
 }
 
-export default Class
+export default Class;
