@@ -9,7 +9,7 @@ import Class from './routes/Class.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Calendar from './routes/Calendar.jsx'
 import Dev from './routes/Dev.jsx'
-import Navbar from './components/navbar.jsx'
+import Navbar from './components/Navbar.jsx'
 
 const router = createBrowserRouter([
   {
