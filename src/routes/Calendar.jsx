@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar } from 'react-native-calendars';
-import { db } from './firebase'; 
+import { db } from './firebase.jsx'; 
 import { collection, getDocs } from 'firebase/firestore';
 
-export const CalendarOfEvents = () => {
+export const Calendar = () => {
   const [events, setEvents] = useState({});
   const [selected, setSelected] = useState('');
 
@@ -37,15 +36,10 @@ export const CalendarOfEvents = () => {
   }, []);
 
   return (
-    <Calendar
-      onDayPress={day => {
-        setSelected(day.dateString);
-      }}
-      markedDates={{
-        ...events,
-        [selected]: { selected: true, marked: true, selectedDotColor: 'orange' }
-      }}
-    />
+    <div>
+      Calendar
+    </div>
+    
   );
 };
 
