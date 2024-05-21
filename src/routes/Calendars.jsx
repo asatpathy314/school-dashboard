@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { db } from './../../firebase.jsx';
 import Scheduler from 'react-mui-scheduler';
+import { db } from '../../firebase';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+import './../styles/Calendars.css';
 
 const Calendars = () => {
-  const [events, setEvents] = useState([]);
   const [state] = useState({
     options: {
-      transitionMode: "zoom",
-      startWeekOn: "Mon",
-      defaultMode: "month",
+      transitionMode: 'zoom',
+      startWeekOn: 'Sun',
+      defaultMode: 'month',
       minWidth: 540,
       maxWidth: 540,
       minHeight: 540,
-      maxHeight: 540
-    }
+      maxHeight: 540,
+    },
   });
+  const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
@@ -32,8 +33,8 @@ const Calendars = () => {
             description: data.description,
             startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             endHour: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            date: startDate.toISOString().split('T')[0], 
-            color: "#099ce5" 
+            date: startDate.toISOString().split('T')[0],
+            color: '#8a2be2',
           };
         });
         setEvents(eventsData);
@@ -54,14 +55,9 @@ const Calendars = () => {
         eventDate.getFullYear() === day.getFullYear()
       );
     });
-
-    if (selectedDateEvents.length > 0) {
-      setSelectedEvent(selectedDateEvents[0]);
-    } else {
-      setSelectedEvent(null);
-    }
+    setSelectedEvent(selectedDateEvents.length > 0 ? selectedDateEvents[0] : null);
   };
-
+  
   const handleDialogClose = () => {
     setSelectedEvent(null);
   };
@@ -74,6 +70,26 @@ const Calendars = () => {
         legacyStyle={false}
         options={state?.options}
         onCellClick={handleCellClick}
+        renderDay={(day, row, column, selectedDate, isToday, locale) => {
+          const dayEvents = events.filter(event => event.date === day.toISOString().split('T')[0]);
+          return (
+            <div className="date-cell" onClick={() => setSelectedEvent(dayEvents[0])}>
+              {day.getDate()}
+              <div className="tooltip">
+                {dayEvents.map(event => (
+                  <div key={event.id} style={{ color: event.color }}>
+                    {event.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }}
+        renderHeader={(day, locale) => (
+          <div style={{ backgroundColor: '#8a2be2', color: '#8a2be2', padding: '50px', textAlign: 'center' }}>
+            {day.format('ddd')} 
+          </div>
+        )}
       />
       <Dialog open={selectedEvent !== null} onClose={handleDialogClose}>
         <DialogTitle>{selectedEvent && selectedEvent.label}</DialogTitle>
@@ -81,7 +97,6 @@ const Calendars = () => {
           <Typography>{selectedEvent && selectedEvent.description}</Typography>
           <Typography>{selectedEvent && `Start: ${selectedEvent.startHour}`}</Typography>
           <Typography>{selectedEvent && `End: ${selectedEvent.endHour}`}</Typography>
-          {/* Add more event details as needed */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Close</Button>
@@ -90,5 +105,4 @@ const Calendars = () => {
     </div>
   );
 };
-
 export default Calendars;
