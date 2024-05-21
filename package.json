@@ -14,10 +14,6 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
-<<<<<<< HEAD
-=======
-    "@mui/system": "^5.15.15",
->>>>>>> a9a040713def82937e939a7209d3b6d09b9e9ef0
     "firebase": "^10.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

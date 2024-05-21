@@ -14,11 +14,6 @@ const Calendars = () => {
       maxWidth: 540,
       minHeight: 540,
       maxHeight: 540
-    },
-    toolbarProps: {
-      showSearchBar: true,
-      showSwitchModeButtons: true,
-      showDatePicker: true
     }
   });
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -78,8 +73,6 @@ const Calendars = () => {
         events={events}
         legacyStyle={false}
         options={state?.options}
-        alertProps={state?.alertProps}
-        toolbarProps={state?.toolbarProps}
         onCellClick={handleCellClick}
       />
       <Dialog open={selectedEvent !== null} onClose={handleDialogClose}>
