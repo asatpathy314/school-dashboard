@@ -8,7 +8,8 @@ import Home from './routes/Home.jsx'
 import Class from './routes/Class.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Calendar from './routes/Calendar.jsx'
-import Navbar from './components/navbar.jsx'
+import Dev from './routes/Dev.jsx'
+import Navbar from './components/Navbar.jsx'
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
   {
     path: "/calendar",
     element: <Calendar/>
+  },
+  // This should be removed in prod.
+  {
+    path: "/testing",
+    element: <Dev />
   }
 ])
 
