@@ -2,12 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './styles/index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import StudentTeacherDir from './roots/StudenTeacherDir.jsx'
-import Home from './roots/Home.jsx'
-import Class from './roots/Class.jsx'
-import Dashboard from './roots/Dashboard.jsx'
-import Calendar from './roots/Calendar.jsx'
-import Navbar from './components/navbar.jsx'
+import StudentDir from './routes/StudenDir.jsx'
+import TeacherDir from './routes/Teacher.jsx'
+import Home from './routes/Home.jsx'
+import Class from './routes/Class.jsx'
+import Dashboard from './routes/Dashboard.jsx'
+import Calendar from './routes/Calendar.jsx'
+import Dev from './routes/Dev.jsx'
+import Navbar from './components/Navbar.jsx'
 
 const router = createBrowserRouter([
   {
@@ -30,12 +32,21 @@ const router = createBrowserRouter([
     element: <Dashboard/>
   },
   {
-    path: "/studentTeacherDir",
-    element: <StudentTeacherDir/>
+    path: "/studentDir",
+    element: <StudentDir/>
+  },
+  {
+    path: "/teacherDir",
+    element: <TeacherDir/>
   },
   {
     path: "/calendar",
     element: <Calendar/>
+  },
+  // This should be removed in prod.
+  {
+    path: "/testing",
+    element: <Dev />
   }
 ])
 
