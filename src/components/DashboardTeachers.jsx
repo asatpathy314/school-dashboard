@@ -6,6 +6,7 @@ const DashboardTeachers = () => {
     <>
         <div className='dashboard-teachers'>
             <h3>Teachers</h3>
+            <input placeHolder="Search by name..."></input>
         </div>
     </>
   )
