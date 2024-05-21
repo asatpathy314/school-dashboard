@@ -1,6 +1,8 @@
 const TeacherDir = () => {
   return (
-    <div>Teacher Directory</div>
+    <div>
+      <h1>Teacher Directory</h1>
+    </div>
   )
 }
 

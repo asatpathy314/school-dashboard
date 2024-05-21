@@ -4,7 +4,7 @@ import './styles/index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import StudentDir from './routes/StudenDir.jsx'
 import TeacherDir from './routes/TeacherDir.jsx'
-import Home from './routes/Home.jsx'
+import Classes from './routes/Classes.jsx'
 import Class from './routes/Class.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Calendar from './routes/Calendar.jsx'
@@ -14,7 +14,7 @@ import Navbar from './components/Navbar.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>
+    element: <Dashboard/>
   },
   {
     path: "/class",
@@ -25,11 +25,10 @@ const router = createBrowserRouter([
         elem: <Class id="wejifhwejh"></Class>
       }
     ],
-    element: <Home/>
   },
   {
-    path: "/dashboard",
-    element: <Dashboard/>
+    path: "/classes",
+    element: <Classes/>
   },
   {
     path: "/studentDir",
