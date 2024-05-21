@@ -4,7 +4,8 @@ import Dir from '../components/Dir';
 const TeacherDir = () => {
   return (
     <div>
-      <Dir type="Teacher"></Dir>
+      {/* Replace div with component */}
+      <Dir type="Teacher" comp={<div></div>}></Dir>
     </div>
   )
 }
