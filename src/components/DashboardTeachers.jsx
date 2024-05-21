@@ -1,9 +1,12 @@
 import React from 'react'
+import '../styles/dashboard/DashboardTeachers.css'
 
 const DashboardTeachers = () => {
   return (
     <>
-        <p>Hello</p>
+        <div className='dashboard-teachers'>
+            <h3>Teachers</h3>
+        </div>
     </>
   )
 }
