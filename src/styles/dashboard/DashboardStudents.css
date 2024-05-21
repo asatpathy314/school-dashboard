@@ -1,4 +1,4 @@
-.dashboard-teachers {
+.dashboard-students {
     background-color: #fffffe;
     padding: 10px;
     color: #2B2C34;
@@ -8,6 +8,6 @@
     min-height: 557px;
     margin-top: 10px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
     margin-right: 20px;
 }

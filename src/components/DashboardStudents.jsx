@@ -1,9 +1,13 @@
 import React from 'react'
+import '../styles/dashboard/DashboardStudents.css'
 
 const DashboardStudents = () => {
   return (
     <>
-        <p>Students</p>
+        <div className='dashboard-students'>
+            <h3>Students</h3>
+        </div>
+
     </>
   )
 }

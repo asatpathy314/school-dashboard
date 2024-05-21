@@ -4,11 +4,12 @@ import DashboardTeachers from '../components/DashboardTeachers'
 import DashboardClasses from '../components/DashboardClasses'
 import DashboardStudents from '../components/DashboardStudents'
 import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents'
+import '../styles/dashboard/Dashboard.css'
 
 const Dashboard = () => {
   return (
     <>
-      <h1>Admin Dashboard</h1>
+      <h1 className='header'>Admin Dashboard</h1>
       <Box sx={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(4, 1fr)',
