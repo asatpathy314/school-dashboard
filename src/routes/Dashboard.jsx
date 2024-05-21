@@ -15,7 +15,7 @@ const Dashboard = () => {
           display: 'grid', 
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 1,
-          minHeight: 500,
+          maxHeight: '100%',
           gridTemplateRows: 'auto',
           gridTemplateAreas: `"teachers classes classes students"
             "teachers classes classes students"
