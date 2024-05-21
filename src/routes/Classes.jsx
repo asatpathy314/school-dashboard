@@ -1,7 +1,10 @@
+import * as React from 'react';
+import Dir from '../components/Dir';
+
 const Classes = () => {
   return (
     <div>
-      <h1>Classes</h1>
+      <Dir type="Class"></Dir>
     </div>
   )
 }

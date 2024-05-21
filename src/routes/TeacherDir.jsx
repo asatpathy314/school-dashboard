@@ -1,7 +1,10 @@
+import * as React from 'react';
+import Dir from '../components/Dir';
+
 const TeacherDir = () => {
   return (
     <div>
-      <h1>Teacher Directory</h1>
+      <Dir type="Teacher"></Dir>
     </div>
   )
 }
