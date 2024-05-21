@@ -10,6 +10,9 @@ import { Autocomplete } from "@mui/material";
 
 const FormModal = ({ modalType }) => {
   const [open, setOpen] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const [selectedGrade, setSelectedGrade] = useState(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,6 +26,9 @@ const FormModal = ({ modalType }) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
+    formJson.classTeacherLabel = selectedTeacher;
+    formJson.students = selectedStudents;
+    formJson.grade = selectedGrade;
     console.log(formJson);
     handleClose();
   };
@@ -42,14 +48,14 @@ const FormModal = ({ modalType }) => {
               onSubmit: handleSubmit,
             }}
           >
-            <DialogTitle>Add Classes</DialogTitle>
+            <DialogTitle>Add Class</DialogTitle>
             <DialogContent>
               <TextField
                 autoFocus
                 required
                 margin="dense"
                 id="schoolClassLabel"
-                name="schoolClassLabel" // Added name attribute
+                name="schoolClassLabel"
                 label="Class label"
                 type="text"
                 variant="standard"
@@ -59,14 +65,51 @@ const FormModal = ({ modalType }) => {
               </DialogContentText>
               <Autocomplete
                 options={exampleAutocomplete}
+                getOptionLabel={(option) => option.label}
+                value={selectedTeacher}
+                onChange={(event, newValue) => setSelectedTeacher(newValue)}
                 renderInput={(params) => 
                   <TextField 
                     {...params} 
                     required
                     margin="dense"
                     id="classTeacherLabel"
-                    name="classTeacherLabel" // Added name attribute
+                    name="classTeacherLabel"
                     label="Teacher"
+                    type="text"
+                    variant="standard"
+                  />}
+              />
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete}
+                getOptionLabel={(option) => option.label}
+                value={selectedStudents}
+                onChange={(event, newValue) => setSelectedStudents(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="students"
+                    name="students"
+                    label="Students"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+              <Autocomplete
+                options={grades}
+                getOptionLabel={(option) => option.label}
+                value={selectedGrade}
+                onChange={(event, newValue) => setSelectedGrade(newValue)}
+                renderInput={(params) => 
+                  <TextField 
+                    {...params} 
+                    margin="dense"
+                    id="grade"
+                    name="grade"
+                    label="Grade"
                     type="text"
                     variant="standard"
                   />}
@@ -79,6 +122,8 @@ const FormModal = ({ modalType }) => {
           </Dialog>
         </>
       );
+    default:
+      return null;
   }
 };
 
@@ -126,6 +171,15 @@ export default FormModal;
   );
   */
  // Testing Autocomplete.
+const grades = [
+  { label: "Kindergarten" },
+  { label: "1st Grade" },
+  { label: "2nd Grade" },
+  { label: "3rd Grade" },
+  { label: "4th Grade" },
+  { label: "5th Grade" },
+]
+
  const exampleAutocomplete = [
   { label: "John Smith" },
   { label: "Jane Doe" },
