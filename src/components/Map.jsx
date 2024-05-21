@@ -2,13 +2,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 
 const Map = (props) => {
-    const [rows, setRows] = useState([]);
     const [columns, setColumns] = useState([]);
     const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
-
-    useEffect(() => {
-        setRows(data);
-    }, [data]);
 
     useEffect(() => {
         const newColumns = [];
@@ -45,17 +40,19 @@ const Map = (props) => {
     }, [ids, personNames, classNames, studentGrades, averageGrades]);
 
     return (
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ maxHeight: 'inherit', width: '100%', overflowY: 'auto' }}>
             <DataGrid
-                rows={rows}
+                rows={data}
                 columns={columns}
+                autoHeight={true}
                 initialState={{
                     ...data.initialState,
                     pagination: {
                         paginationModel: { page: 0, pageSize: 10 },
                     },
                 }}
-                pageSizeOptions={[10, 25]}
+                // If I add page size options, it will morph the CSS and make the div bigger than it should be
+                pageSizeOptions={[10]}
                 disableRowSelectionOnClick = {true}
             />
         </div>
