@@ -5,9 +5,10 @@
     border-radius: 20px;
     text-align: center;
     min-width: 300px;
-    min-height: 557px;
+    min-height: 100%;
+    max-height: 'flex';
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     margin-left: 20px;
     margin-right: 20px;
 }

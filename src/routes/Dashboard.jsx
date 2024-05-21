@@ -10,29 +10,33 @@ const Dashboard = () => {
   return (
     <>
       <h1 className='header'>Admin Dashboard</h1>
-      <Box sx={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 1,
-        gridTemplateRows: 'auto',
-        gridTemplateAreas: `"teachers classes classes students"
-          "teachers classes classes students"
-          "teachers classes classes students"
-          "teachers upcoming-events upcoming-events students"` }}
-      >
-        <Box sx={{ gridArea: 'teachers' }}>
-          <DashboardTeachers />
+      <div className='dashboard'>
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 1,
+          minHeight: 500,
+          gridTemplateRows: 'auto',
+          gridTemplateAreas: `"teachers classes classes students"
+            "teachers classes classes students"
+            "teachers classes classes students"
+            "teachers upcoming-events upcoming-events students"` }}
+        >
+          <Box sx={{ gridArea: 'teachers' }}>
+            <DashboardTeachers />
+          </Box>
+          <Box sx={{ gridArea: 'classes' }}>
+            <DashboardClasses />
+          </Box>
+          <Box sx={{ gridArea: 'students' }}>
+            <DashboardStudents />
+          </Box>
+          <Box sx={{ gridArea: 'upcoming-events' }}>
+            <DashboardUpcomingEvents />
+          </Box>
         </Box>
-        <Box sx={{ gridArea: 'classes' }}>
-          <DashboardClasses />
-        </Box>
-        <Box sx={{ gridArea: 'students' }}>
-          <DashboardStudents />
-        </Box>
-        <Box sx={{ gridArea: 'upcoming-events' }}>
-          <DashboardUpcomingEvents />
-        </Box>
-      </Box>
+      </div>
+      
     </>
   )
 }
