@@ -7,6 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
+import { db } from "../../firebase.js";
+import { doc, setDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -36,8 +38,6 @@ const FormModal = ({
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedGrade, setSelectedGrade] = useState(null);
-  const [selectedName, setSelectedName] = useState(null);
-  const [selectedID, setSelectedID] = useState(null);
 
   switch (modalType) {
     case "addClass": {
@@ -46,7 +46,6 @@ const FormModal = ({
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.students = selectedStudents;
-        console.log(formJson);
         handleClose();
       };
       return (
@@ -185,12 +184,21 @@ const FormModal = ({
       );
     }
     case "addStudent": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        let classList = [];
+        console.log(selectedClasses)
+        for (let i = 0; i < selectedClasses.length; i++) { 
+          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[0].label));
+          const querySnapshot = await getDocs(q);
+          const classDocument = querySnapshot.docs[0];
+          console.log(classDocument.id + " => " + classDocument.data());
+          classList.push({class: doc(db, '/classes/'+classDocument.id), grade: 100.0});
+        }
+        formJson.classes = classList;
+        console.log(formJson);
         handleClose();
       };
 
@@ -211,9 +219,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedName(event.target.value)}
                 id="studentName"
-                name="studentName"
+                name="name"
                 label="Student Name"
                 type="text"
                 variant="standard"
@@ -223,9 +230,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedID(event.target.value)}
                 id="studentID"
-                name="studentID"
+                name="id"
                 label="Student ID"
                 type="text"
                 variant="standard"
@@ -349,7 +355,6 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedName(event.target.value)}
                 id="teacherName"
                 name="teacherName"
                 label="Teacher Name"
@@ -361,7 +366,6 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedID(event.target.value)}
                 id="teacherID"
                 name="teacherID"
                 label="Teacher ID"
@@ -434,7 +438,8 @@ const FormModal = ({
                   />
                 )}
               />
-            </DialogContent>
+            </DialogContent>import * as React from 'react';
+i
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit">Remove</Button>
@@ -491,7 +496,6 @@ const FormModal = ({
                 required
                 margin="dense"
                 value={studentGradeEdit}
-                onChange={(event, newValue) => setSelectedName(newValue)}
                 id="gradePercentage"
                 name="gradePercentage"
                 label="Grade"
@@ -557,6 +561,7 @@ const grades = [
 ];
 
 const exampleAutocomplete = [
+  { label: "Mr. Moore's Math Class"},
   { label: "John Smith" },
   { label: "Jane Doe" },
   { label: "Alice Johnson" },
