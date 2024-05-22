@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 
+
 const DashboardUpcomingEvents = () => {
   const [events, setEvents] = useState([]);
 
@@ -14,7 +15,6 @@ const DashboardUpcomingEvents = () => {
         const eventsData = eventsSnapshot.docs.map(doc => {
           const data = doc.data();
           const startDate = data['start-date'].toDate();
-          console.log(data);
           return {
             name: data.name,
             description: data.description,
