@@ -18,26 +18,27 @@ const Calendars = () => {
   });
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
+  
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const snapshot = await db.collection('events').get();
-        const eventsData = snapshot.docs.map(doc => {
+        const eventsCollection = collection(db, 'events');
+        const eventsSnapshot = await getDocs(eventsCollection);
+        const eventsData = eventsSnapshot.docs.map(doc => {
           const data = doc.data();
           const startDate = data['start-date'].toDate();
           const endDate = data['end-date'].toDate();
+          console.log(data);
           return {
-            id: doc.id,
-            label: data.name,
+            name: data.name,
             description: data.description,
+            startDate: startDate,
             startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            endHour: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             date: startDate.toISOString().split('T')[0],
-            color: '#8a2be2',
           };
         });
-        setEvents(eventsData);
+        console.log(eventsData);
+        setEvents(sortedEvents);
       } catch (error) {
         console.error('Error fetching events: ', error);
       }

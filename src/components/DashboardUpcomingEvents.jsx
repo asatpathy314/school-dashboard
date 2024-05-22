@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import '../styles/dashboard/DashboardUpcomingEvents.css';
 
 const DashboardUpcomingEvents = () => {
   const [events, setEvents] = useState([]);
@@ -15,6 +14,7 @@ const DashboardUpcomingEvents = () => {
         const eventsData = eventsSnapshot.docs.map(doc => {
           const data = doc.data();
           const startDate = data['start-date'].toDate();
+          console.log(data);
           return {
             name: data.name,
             description: data.description,
@@ -23,6 +23,7 @@ const DashboardUpcomingEvents = () => {
             endDate: data['end-date'].toDate(),
           };
         });
+        console.log(eventsData);
         const sortedEvents = eventsData.sort((a, b) => a.startDate - b.startDate);
         setEvents(sortedEvents);
       } catch (error) {
