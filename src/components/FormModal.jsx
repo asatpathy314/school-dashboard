@@ -8,7 +8,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
 import { db } from "../../firebase.js";
-import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
+import { doc, setDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
+import AddClass from './modals/AddClass.jsx'
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -41,97 +42,8 @@ const FormModal = ({
 
   switch (modalType) {
     case "addClass": {
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.students = selectedStudents;
-        handleClose();
-      };
       return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-            }}
-          >
-            <DialogTitle>Add Class</DialogTitle>
-            <DialogContent>
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="schoolClassLabel"
-                name="schoolClassLabel"
-                label="Class label"
-                type="text"
-                variant="standard"
-              />
-              <DialogContentText>
-                * Select “Homeroom” for Class label if this class is the
-                students’ main class or if the teacher will teach all subjects
-              </DialogContentText>
-              <Autocomplete
-                options={exampleAutocomplete}
-                //filterOptions={customFilterOptions} // Apply the custom filter options
-                getOptionLabel={(option) => option.label}
-                value={selectedTeacher}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="classTeacherLabel"
-                    name="classTeacherLabel"
-                    label="Teacher"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete}
-                getOptionLabel={(option) => option.label}
-                value={selectedStudents}
-                onChange={(event, newValue) => setSelectedStudents(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="students"
-                    name="students"
-                    label="Students"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                options={grades}
-                getOptionLabel={(option) => option.label}
-                value={selectedGrade}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="grade"
-                    name="grade"
-                    label="Grade"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Create</Button>
-            </DialogActions>
-          </Dialog>
-        </>
+        <AddClass open={open} handleClose={handleClose}/>
       );
     }
     case "removeClass": {
@@ -417,12 +329,6 @@ const FormModal = ({
           const querySnapshot = await getDocs(q);
           if (!querySnapshot.empty) { // Check if the querySnapshot is not empty
             const teacherDocument = querySnapshot.docs[0];
-            let classArray = []
-            for (let j = 0; j < teacherDocument.data().classes.length; j++) {
-              console.log(teacherDocument.data().classes[j])
-              const classDoc = await getDoc(db, teacherDocument.data().classes[j])
-              console.log(classDoc.data())
-            }
             //await deleteDoc(doc(db, '/teachers/'+teacherDocument.id))
             console.log("Teacher document located at " + teacherDocument.id + " has been deleted.")
           } else {
