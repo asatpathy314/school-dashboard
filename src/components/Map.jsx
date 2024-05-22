@@ -11,6 +11,7 @@ const Map = (props) => {
 
     useEffect(() => {
         const newColumns = [];
+        console.log(data);
 
         // Conditionally add columns based on the props received
         if (ids) {

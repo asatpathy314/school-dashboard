@@ -7,6 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
+import { db } from "../../firebase.js";
+import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -36,8 +38,6 @@ const FormModal = ({
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedGrade, setSelectedGrade] = useState(null);
-  const [selectedName, setSelectedName] = useState(null);
-  const [selectedID, setSelectedID] = useState(null);
 
   switch (modalType) {
     case "addClass": {
@@ -46,7 +46,6 @@ const FormModal = ({
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.students = selectedStudents;
-        console.log(formJson);
         handleClose();
       };
       return (
@@ -185,12 +184,21 @@ const FormModal = ({
       );
     }
     case "addStudent": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        let classList = [];
+        console.log(selectedClasses)
+        for (let i = 0; i < selectedClasses.length; i++) { 
+          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
+          const querySnapshot = await getDocs(q);
+          const classDocument = querySnapshot.docs[0];
+          console.log(classDocument.id + " => " + classDocument.data());
+          classList.push({class: doc(db, '/classes/'+classDocument.id), grade: 100.0});
+        }
+        formJson.classes = classList;
+        console.log(formJson); // TODO: Finish
         handleClose();
       };
 
@@ -211,9 +219,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedName(event.target.value)}
                 id="studentName"
-                name="studentName"
+                name="name"
                 label="Student Name"
                 type="text"
                 variant="standard"
@@ -223,9 +230,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedID(event.target.value)}
                 id="studentID"
-                name="studentID"
+                name="id"
                 label="Student ID"
                 type="text"
                 variant="standard"
@@ -323,12 +329,22 @@ const FormModal = ({
       );
     }
     case "addTeacher": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
-        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        let classList = [];
+        console.log(selectedClasses)
+        for (let i = 0; i < selectedClasses.length; i++) { 
+          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
+          const querySnapshot = await getDocs(q);
+          const classDocument = querySnapshot.docs[0];
+          console.log(classDocument.id + " => " + classDocument.data());
+          classList.push({class: doc(db, '/classes/'+classDocument.id)});
+        }
+        formJson.classes = classList;
+        console.log(formJson); // TODO: Finish
         handleClose();
       };
 
@@ -343,15 +359,14 @@ const FormModal = ({
               style: { minWidth: "400px" },
             }}
           >
-            <DialogTitle>Add Student</DialogTitle>
+            <DialogTitle>Add Teacher</DialogTitle>
             <DialogContent>
               <TextField
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedName(event.target.value)}
                 id="teacherName"
-                name="teacherName"
+                name="name"
                 label="Teacher Name"
                 type="text"
                 variant="standard"
@@ -361,9 +376,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedID(event.target.value)}
                 id="teacherID"
-                name="teacherID"
+                name="id"
                 label="Teacher ID"
                 type="text"
                 variant="standard"
@@ -395,12 +409,26 @@ const FormModal = ({
       );
     }
     case "removeTeacher": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.teachers = selectedTeachers;
-        console.log(formJson);
+        console.log(selectedTeachers);
+        for (let i = 0; i < selectedTeachers.length; i++) { // Changed from selectedClasses to selectedTeachers
+          const q = query(collection(db, "teachers"), where("name", "==", selectedTeachers[i].label));
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) { // Check if the querySnapshot is not empty
+            const teacherDocument = querySnapshot.docs[0];
+            let classArray = []
+            for (let j = 0; j < teacherDocument.data().classes.length; j++) {
+              console.log(teacherDocument.data().classes[j])
+              const classDoc = await getDoc(db, teacherDocument.data().classes[j])
+              console.log(classDoc.data())
+            }
+            //await deleteDoc(doc(db, '/teachers/'+teacherDocument.id))
+            console.log("Teacher document located at " + teacherDocument.id + " has been deleted.")
+          } else {
+            console.log("No document found for teacher: " + selectedTeachers[i].label);
+          }
+        }
         handleClose();
       };
 
@@ -491,7 +519,6 @@ const FormModal = ({
                 required
                 margin="dense"
                 value={studentGradeEdit}
-                onChange={(event, newValue) => setSelectedName(newValue)}
                 id="gradePercentage"
                 name="gradePercentage"
                 label="Grade"
@@ -557,6 +584,7 @@ const grades = [
 ];
 
 const exampleAutocomplete = [
+  { label: "Mr. Moore's Math Class"},
   { label: "John Smith" },
   { label: "Jane Doe" },
   { label: "Alice Johnson" },
