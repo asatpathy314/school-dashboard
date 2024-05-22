@@ -201,7 +201,6 @@ const FormModal = ({
         console.log(formJson);
         handleClose();
       };
-
       return (
         <>
           <Dialog
