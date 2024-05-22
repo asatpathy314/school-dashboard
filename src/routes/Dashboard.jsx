@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Box } from '@mui/system'
 import DashboardComponent from '../components/DashboardComponent'
+import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents'
 import '../styles/dashboard/Dashboard.css'
 
 const Dashboard = () => {
@@ -55,7 +56,7 @@ const Dashboard = () => {
             <DashboardComponent data={data} which={'student'} />
           </Box>
           <Box sx={{ gridArea: 'upcoming-events' }}>
-            <DashboardComponent data={data} which={'upcoming-events'} />
+            <DashboardUpcomingEvents/>
           </Box>
         </Box>
       </div>
