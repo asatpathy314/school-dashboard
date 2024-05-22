@@ -7,7 +7,7 @@ import FormModal from './FormModal';
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
+    const { data, ids, personNames, classNames, studentGrades, averageGrades, email } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -22,7 +22,6 @@ const Map = (props) => {
 
     useEffect(() => {
         const newColumns = [];
-        console.log(data);
 
         // Conditionally add columns based on the props received
         if (ids) {
@@ -30,7 +29,7 @@ const Map = (props) => {
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
-                width: 250,
+                width: 100,
             });
         }
 
@@ -39,6 +38,7 @@ const Map = (props) => {
                 field: 'fullName',
                 headerName: 'Name',
                 flex: 1,
+                width: 200,
             });
         }
 
@@ -49,7 +49,10 @@ const Map = (props) => {
             newColumns.push({ field: 'grade', headerName: 'Grade', width: 150 });
         }
         if (averageGrades) {
-            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 90 });
+            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
+        }
+        if (email) {
+            newColumns.push({ field: 'email', headerName: 'Email', width: 300 });
         }
         newColumns.push({
             field: 'edit',
@@ -59,7 +62,7 @@ const Map = (props) => {
         });
 
         setColumns(newColumns);
-    }, [ids, personNames, classNames, studentGrades, averageGrades]);
+    }, [ids, personNames, classNames, studentGrades, averageGrades, email]);
 
     useEffect(() => { 
         if (hasSearched) {
@@ -103,11 +106,11 @@ const Map = (props) => {
                 initialState={{
                     ...data.initialState,
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 10 },
+                        paginationModel: { page: 0, pageSize: 5 },
                     },
                 }}
                 // If I add page size options, it will morph the CSS and make the div bigger than it should be
-                pageSizeOptions={[10]}
+                pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick = {true}
             />
             <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
