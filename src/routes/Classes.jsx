@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dir from '../components/Dir';
-import Map from '../components/Map'
+import Map from '../components/Map';
 
 const Classes = () => {
   return (

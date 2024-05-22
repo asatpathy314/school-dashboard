@@ -4,6 +4,7 @@ const Map = (props) => {
     //switch statement
     const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
     const columns = [];
+    console.log(data);
 
     // Conditionally add columns based on the props received
     if (ids) {
@@ -43,7 +44,7 @@ const Map = (props) => {
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
-                rows={rows}
+                rows={data}
                 columns={columns}
                 initialState={{
                     pagination: {

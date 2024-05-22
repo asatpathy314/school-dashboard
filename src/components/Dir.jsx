@@ -15,7 +15,7 @@ const Dir = (data) => {
 
             <div className='button-container'>
                 <Button style={{float: "left"}} variant="contained">Add {data['type']}</Button>
-                <Button style={{float: "right"}} classname="but" variant="contained">Remove {data['type']}</Button>
+                <Button style={{float: "right"}} className="but" variant="contained">Remove {data['type']}</Button>
             </div>
         
         </div>
