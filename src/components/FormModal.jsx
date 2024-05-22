@@ -11,6 +11,8 @@ import { Autocomplete, createFilterOptions } from "@mui/material";
 import { db } from "../../firebase.js";
 import { doc, setDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 import AddClass from './modals/AddClass.jsx'
+import AddStudent from "./modals/AddStudent.jsx";
+import AddTeacher from "./modals/AddTeacher.jsx";
 import RemoveClass from './modals/RemoveClass.jsx'
 import RemoveStudent from './modals/RemoveStudent.jsx'
 import RemoveTeacher from './modals/RemoveTeacher.jsx'
@@ -108,81 +110,8 @@ const FormModal = ({
         console.log(formJson); // TODO: Finish
         handleClose();
       };
-
       return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Add Student</DialogTitle>
-            <DialogContent>
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="studentName"
-                name="name"
-                label="Student Name"
-                type="text"
-                variant="standard"
-              />
-              <br />
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="studentID"
-                name="id"
-                label="Student ID"
-                type="text"
-                variant="standard"
-              />
-              <Autocomplete
-                options={grades}
-                getOptionLabel={(option) => option.label}
-                onChange={(event, newValue) => setSelectedGrade(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="grade"
-                    name="grade"
-                    label="Grade"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete}
-                onChange={(event, newValue) => setSelectedClasses(newValue)}
-                getOptionLabel={(option) => option.label}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="classes"
-                    name="classes"
-                    label="Classes"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Add</Button>
-            </DialogActions>
-          </Dialog>
-        </>
+        <AddStudent open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
       );
     }
     case "removeStudent": {
@@ -191,83 +120,8 @@ const FormModal = ({
       );
     }
     case "addTeacher": {
-      const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        let classList = [];
-        console.log(selectedClasses)
-        for (let i = 0; i < selectedClasses.length; i++) { 
-          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
-          const querySnapshot = await getDocs(q);
-          const classDocument = querySnapshot.docs[0];
-          console.log(classDocument.id + " => " + classDocument.data());
-          classList.push({class: doc(db, '/classes/'+classDocument.id)});
-        }
-        formJson.classes = classList;
-        console.log(formJson); // TODO: Finish
-        handleClose();
-      };
-
       return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Add Teacher</DialogTitle>
-            <DialogContent>
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="teacherName"
-                name="name"
-                label="Teacher Name"
-                type="text"
-                variant="standard"
-              />
-              <br />
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="teacherID"
-                name="id"
-                label="Teacher ID"
-                type="text"
-                variant="standard"
-              />
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete}
-                onChange={(event, newValue) => setSelectedClasses(newValue)}
-                getOptionLabel={(option) => option.label}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="classes"
-                    name="classes"
-                    label="Classes"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Add</Button>
-            </DialogActions>
-          </Dialog>
-        </>
+        <AddTeacher open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
       );
     }
     case "removeTeacher": {

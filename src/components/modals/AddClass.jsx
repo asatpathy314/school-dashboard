@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Name from "./input/Name"
+import TextInput from "./input/TextInput.jsx"
 import SingleSelectAutocomplete from "./input/SingleSelectAutocomplete.jsx";
 import MultiSelectAutocomplete from "./input/MultiSelectAutocomplete.jsx";
 import Button from "@mui/material/Button";
@@ -13,7 +13,10 @@ import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } fro
 
 const AddClass = ( { open, handleClose, teachersAutocomplete, studentsAutocomplete }) => {
     const [selectedStudents, setSelectedStudents] = useState([]);
+    const [selectedTeachers, setSelectedTeachers] = useState([]);
+
     const handleSubmit = (event) => {
+        // TODO change Json so that we create a className with the teacher's initials in a predefined format.
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
@@ -33,12 +36,16 @@ const AddClass = ( { open, handleClose, teachersAutocomplete, studentsAutocomple
           >
             <DialogTitle>Add Class</DialogTitle>
             <DialogContent>
-              <Name label="Class Name"/>
+              <TextInput label="Class Name" field="name"/>
               <DialogContentText>
                 * Select “Homeroom” for Class label if this class is the
                 students’ main class or if the teacher will teach all subjects
               </DialogContentText>
-              <SingleSelectAutocomplete options={teachersAutocomplete} name="name" label="Teacher Name" />
+              <SingleSelectAutocomplete 
+              options={teachersAutocomplete} 
+              name="teacher"
+              label="Teacher"
+                />
               <MultiSelectAutocomplete 
               options={studentsAutocomplete} 
               name="students"

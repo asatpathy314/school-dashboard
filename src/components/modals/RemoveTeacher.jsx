@@ -11,14 +11,22 @@ import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } fro
 
 const RemoveTeacher = ( { open, handleClose, teachersAutocomplete}) => {
     const [selectedTeachers, setSelectedTeachers] = useState([]);
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedTeachers;
-        console.log(formJson)
+        console.log(selectedTeachers);
+        for (let i = 0; i < selectedTeachers.length; i++) { // Changed from selectedClasses to selectedTeachers
+          const q = query(collection(db, "teachers"), where("name", "==", selectedTeachers[i].label));
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) { // Check if the querySnapshot is not empty
+            const teacherDocument = querySnapshot.docs[0];
+            //await deleteDoc(doc(db, '/teachers/'+teacherDocument.id))
+            console.log("Teacher document located at " + teacherDocument.id + " has been deleted.")
+          } else {
+            console.log("No document found for teacher: " + selectedTeachers[i].label);
+          }
+        }
         handleClose();
-    };
+      };
     return (
         <>
           <Dialog
