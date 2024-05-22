@@ -40,7 +40,7 @@ const Map = (props) => {
     }, [ids, personNames, classNames, studentGrades, averageGrades]);
 
     return (
-        <div style={{ maxHeight: 'inherit', width: '100%', overflowY: 'auto' }}>
+        <div style={{ width: '100%', overflowY: 'auto' }}>
             <DataGrid
                 rows={data}
                 columns={columns}
