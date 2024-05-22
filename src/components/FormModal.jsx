@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { retrieveListByLabel, retrieveObjects } from "../lib/modal/firebase_retrieval.js";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -7,6 +8,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
+import { db } from "../../firebase.js";
+import { doc, setDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
+import AddClass from './modals/AddClass.jsx'
+import RemoveClass from './modals/RemoveClass.jsx'
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -30,109 +35,52 @@ const FormModal = ({
   studentDBIDEdit,
   studentGradeEdit,
 }) => {
+  const [teachersAutocomplete, setTeachersAutocomplete] = useState([])
+  const [studentsAutocomplete, setStudentsAutocomplete] = useState([])
+  const [classesAutocomplete, setClassesAutocomplete] = useState([])
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedTeachers, setSelectedTeachers] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedGrade, setSelectedGrade] = useState(null);
-  const [selectedName, setSelectedName] = useState(null);
-  const [selectedID, setSelectedID] = useState(null);
+
+  useEffect(() => {
+    console.log("haha")
+    retrieveObjects("teachers")
+        .then((res) => {
+            const teachers = res;
+            setTeachersAutocomplete(retrieveListByLabel("name", teachers))
+        })
+        .catch((error) => {
+            console.error("Failed to retrieve teachers:", error);
+        });
+    retrieveObjects("classes")
+        .then((res) => {
+            const classes = res;
+            setClassesAutocomplete(retrieveListByLabel("name", classes))
+        })
+        .catch((error) => {
+            console.error("Failed to retrieve teachers:", error);
+        });
+    retrieveObjects("students")
+        .then((res) => {
+            const students= res;
+            setStudentsAutocomplete(retrieveListByLabel("name", students))
+        })
+        .catch((error) => {
+            console.error("Failed to retrieve teachers:", error);
+        });
+      }, []);
 
   switch (modalType) {
     case "addClass": {
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.students = selectedStudents;
-        console.log(formJson);
-        handleClose();
-      };
       return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-            }}
-          >
-            <DialogTitle>Add Class</DialogTitle>
-            <DialogContent>
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="schoolClassLabel"
-                name="schoolClassLabel"
-                label="Class label"
-                type="text"
-                variant="standard"
-              />
-              <DialogContentText>
-                * Select “Homeroom” for Class label if this class is the
-                students’ main class or if the teacher will teach all subjects
-              </DialogContentText>
-              <Autocomplete
-                options={exampleAutocomplete}
-                //filterOptions={customFilterOptions} // Apply the custom filter options
-                getOptionLabel={(option) => option.label}
-                value={selectedTeacher}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="classTeacherLabel"
-                    name="classTeacherLabel"
-                    label="Teacher"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete}
-                getOptionLabel={(option) => option.label}
-                value={selectedStudents}
-                onChange={(event, newValue) => setSelectedStudents(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="students"
-                    name="students"
-                    label="Students"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                options={grades}
-                getOptionLabel={(option) => option.label}
-                value={selectedGrade}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="grade"
-                    name="grade"
-                    label="Grade"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Create</Button>
-            </DialogActions>
-          </Dialog>
-        </>
+        <AddClass 
+        open={open} 
+        handleClose={handleClose}
+        teachersAutocomplete={teachersAutocomplete}
+        studentsAutocomplete={studentsAutocomplete}/>
       );
     }
     case "removeClass": {
@@ -144,6 +92,7 @@ const FormModal = ({
         console.log(formJson);
         handleClose();
       };
+      /*
       return (
         <>
           <Dialog
@@ -183,14 +132,27 @@ const FormModal = ({
           </Dialog>
         </>
       );
+      */
+     return (
+      <RemoveClass open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
+     )
     }
     case "addStudent": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        let classList = [];
+        console.log(selectedClasses)
+        for (let i = 0; i < selectedClasses.length; i++) { 
+          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
+          const querySnapshot = await getDocs(q);
+          const classDocument = querySnapshot.docs[0];
+          console.log(classDocument.id + " => " + classDocument.data());
+          classList.push({class: doc(db, '/classes/'+classDocument.id), grade: 100.0});
+        }
+        formJson.classes = classList;
+        console.log(formJson); // TODO: Finish
         handleClose();
       };
 
@@ -211,9 +173,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedName(event.target.value)}
                 id="studentName"
-                name="studentName"
+                name="name"
                 label="Student Name"
                 type="text"
                 variant="standard"
@@ -223,9 +184,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedID(event.target.value)}
                 id="studentID"
-                name="studentID"
+                name="id"
                 label="Student ID"
                 type="text"
                 variant="standard"
@@ -323,12 +283,22 @@ const FormModal = ({
       );
     }
     case "addTeacher": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
-        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        let classList = [];
+        console.log(selectedClasses)
+        for (let i = 0; i < selectedClasses.length; i++) { 
+          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
+          const querySnapshot = await getDocs(q);
+          const classDocument = querySnapshot.docs[0];
+          console.log(classDocument.id + " => " + classDocument.data());
+          classList.push({class: doc(db, '/classes/'+classDocument.id)});
+        }
+        formJson.classes = classList;
+        console.log(formJson); // TODO: Finish
         handleClose();
       };
 
@@ -343,15 +313,14 @@ const FormModal = ({
               style: { minWidth: "400px" },
             }}
           >
-            <DialogTitle>Add Student</DialogTitle>
+            <DialogTitle>Add Teacher</DialogTitle>
             <DialogContent>
               <TextField
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedName(event.target.value)}
                 id="teacherName"
-                name="teacherName"
+                name="name"
                 label="Teacher Name"
                 type="text"
                 variant="standard"
@@ -361,9 +330,8 @@ const FormModal = ({
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event) => setSelectedID(event.target.value)}
                 id="teacherID"
-                name="teacherID"
+                name="id"
                 label="Teacher ID"
                 type="text"
                 variant="standard"
@@ -395,12 +363,20 @@ const FormModal = ({
       );
     }
     case "removeTeacher": {
-      const handleSubmit = (event) => {
+      const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.teachers = selectedTeachers;
-        console.log(formJson);
+        console.log(selectedTeachers);
+        for (let i = 0; i < selectedTeachers.length; i++) { // Changed from selectedClasses to selectedTeachers
+          const q = query(collection(db, "teachers"), where("name", "==", selectedTeachers[i].label));
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) { // Check if the querySnapshot is not empty
+            const teacherDocument = querySnapshot.docs[0];
+            //await deleteDoc(doc(db, '/teachers/'+teacherDocument.id))
+            console.log("Teacher document located at " + teacherDocument.id + " has been deleted.")
+          } else {
+            console.log("No document found for teacher: " + selectedTeachers[i].label);
+          }
+        }
         handleClose();
       };
 
@@ -491,7 +467,6 @@ const FormModal = ({
                 required
                 margin="dense"
                 value={studentGradeEdit}
-                onChange={(event, newValue) => setSelectedName(newValue)}
                 id="gradePercentage"
                 name="gradePercentage"
                 label="Grade"
@@ -557,6 +532,7 @@ const grades = [
 ];
 
 const exampleAutocomplete = [
+  { label: "Mr. Moore's Math Class"},
   { label: "John Smith" },
   { label: "Jane Doe" },
   { label: "Alice Johnson" },
