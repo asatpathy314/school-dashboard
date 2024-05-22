@@ -7,7 +7,7 @@ import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy, av
 const Classes = () => {
   const [classesArray, setClassesArray] = useState([]);
 
-  async function getTeachers() {
+  async function getClasses() {
     const collRef = collection(db, "classes");
     const classSnapshot = await getDocs(query(collRef));
     console.log(classSnapshot);
@@ -15,7 +15,7 @@ const Classes = () => {
 
     await Promise.all(classSnapshot.docs.map(async (doc) =>  {
       try {
-        console.log("hi")
+        // console.log("hi")
         const id = doc.id;
         const students = doc.data()['students'];
         let grade = 0;
@@ -25,7 +25,7 @@ const Classes = () => {
           const classes = stuDoc.data()['classes'];
           classes.forEach((c) => {
             if (c['class'].id === id) {
-              grade = grade + c['grade'];
+            grade = grade + c['grade'];
             }
           })
         }
@@ -36,10 +36,10 @@ const Classes = () => {
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
 
-        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg + '%', 'fullName': teacherDoc.data()['fullName']});
-        console.log('hiiiiiii', temp)
-      } catch {
-        console.log("a");
+        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
+        // console.log('hiiiiiii', temp)
+      } catch (error) {
+        console.log("Error fetching class data: ", error);
       }
     }));
 
@@ -47,13 +47,20 @@ const Classes = () => {
 }
 
   useEffect(() => {
-    getTeachers();
+    getClasses();
   }, [])
 
   return (
     <div>
       {/* Replace div with component */}
-      <Dir type="Class" comp={<Map ids={true} classNames={true} averageGrades={true} personNames={true} data={classesArray} dataType={'Class'}/>}></Dir>
+      <Dir type="Class" comp={<Map 
+        ids={true} 
+        classNames={true} 
+        averageGrades={true} 
+        personNames={true} 
+        data={classesArray} 
+        dataType={'Class'}/>}>
+      </Dir>
     </div>
   )
 }

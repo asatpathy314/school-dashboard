@@ -31,7 +31,7 @@ const Map = (props) => {
                 type: 'number',
                 flex: 0.7,
             });
-        }
+        } 
 
         if (personNames) {
             newColumns.push({
@@ -45,7 +45,7 @@ const Map = (props) => {
             newColumns.push({ 
                 field: 'className', 
                 headerName: 'Class Name', 
-                flex: 1 });
+                width: 500 });
         }
         if (studentGrades) {
             newColumns.push({ field: 'grade', 
