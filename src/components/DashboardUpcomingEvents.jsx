@@ -40,7 +40,7 @@ const DashboardUpcomingEvents = () => {
         <Card key={event.id} sx={{ display: 'flex', marginBottom: 2 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 1 }}>
             <Typography variant="body1">{event.startDate.toDateString()}</Typography>
-            <Typography variant="body2">{event.startHour}</Typography>
+            <Typography variant="body2" color="text.secondary" >{event.startHour}</Typography>
           </Box>
           <CardContent>
             <Typography variant="h6">{event.name}</Typography>
