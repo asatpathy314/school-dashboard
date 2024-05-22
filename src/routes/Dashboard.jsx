@@ -32,13 +32,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1 className='header'>Admin Dashboard</h1>
+      <h2 className='header'>Admin Dashboard</h2>
       <div className='dashboard'>
         <Box sx={{ 
+          mt: -1,
           display: 'grid', 
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 1,
-          maxHeight: '100vh',
           gridTemplateRows: 'auto',
           gridTemplateAreas: `"teachers classes classes students"
             "teachers classes classes students"
