@@ -6,40 +6,51 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, createFilterOptions } from "@mui/material";
 
-const FormModal = ({ modalType }) => {
-  const [open, setOpen] = useState(false);
+/* Can be used to limit the number of options displayed in the autocomplete dropdown.
+const filterOptions = createFilterOptions({
+  stringify: (option) => option.label,
+});
+
+const customFilterOptions = (options, state) => {
+  if (state.inputValue.length < 1) {
+    return [];
+  }
+  return filterOptions(options, state);
+};
+*/
+
+const FormModal = ({
+  modalType,
+  open,
+  handleClickOpen,
+  handleClose,
+  studentNameEdit,
+  studentDBIDEdit,
+  studentGradeEdit,
+}) => {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedTeachers, setSelectedTeachers] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedGrade, setSelectedGrade] = useState(null);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries(formData.entries());
-    formJson.classTeacherLabel = selectedTeacher;
-    formJson.students = selectedStudents;
-    formJson.grade = selectedGrade;
-    console.log(formJson);
-    handleClose();
-  };
+  const [selectedName, setSelectedName] = useState(null);
+  const [selectedID, setSelectedID] = useState(null);
 
   switch (modalType) {
-    case "addClass":
+    case "addClass": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.students = selectedStudents;
+        console.log(formJson);
+        handleClose();
+      };
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -61,24 +72,25 @@ const FormModal = ({ modalType }) => {
                 variant="standard"
               />
               <DialogContentText>
-                * Select “Homeroom” for Class label if this class is the students’ main class or if the teacher will teach all subjects
+                * Select “Homeroom” for Class label if this class is the
+                students’ main class or if the teacher will teach all subjects
               </DialogContentText>
               <Autocomplete
                 options={exampleAutocomplete}
+                //filterOptions={customFilterOptions} // Apply the custom filter options
                 getOptionLabel={(option) => option.label}
                 value={selectedTeacher}
-                onChange={(event, newValue) => setSelectedTeacher(newValue)}
-                renderInput={(params) => 
-                  <TextField 
-                    {...params} 
-                    required
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
                     margin="dense"
                     id="classTeacherLabel"
                     name="classTeacherLabel"
                     label="Teacher"
                     type="text"
                     variant="standard"
-                  />}
+                  />
+                )}
               />
               <Autocomplete
                 multiple
@@ -102,75 +114,439 @@ const FormModal = ({ modalType }) => {
                 options={grades}
                 getOptionLabel={(option) => option.label}
                 value={selectedGrade}
-                onChange={(event, newValue) => setSelectedGrade(newValue)}
-                renderInput={(params) => 
-                  <TextField 
-                    {...params} 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
                     margin="dense"
                     id="grade"
                     name="grade"
                     label="Grade"
                     type="text"
                     variant="standard"
-                  />}
+                  />
+                )}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Subscribe</Button>
+              <Button type="submit">Create</Button>
             </DialogActions>
           </Dialog>
         </>
       );
-    default:
-      return null;
+    }
+    case "removeClass": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.classes = selectedClasses;
+        console.log(formJson);
+        handleClose();
+      };
+      return (
+        <>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Remove Class(es)</DialogTitle>
+            <DialogContent>
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete} // TODO: Replace with classes data.
+                getOptionLabel={(option) => option.label}
+                value={selectedClasses}
+                onChange={(event, newValue) => setSelectedClasses(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="classes"
+                    name="classes"
+                    label="Classes"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Remove</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
+    case "addStudent": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.classes = selectedClasses;
+        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        handleClose();
+      };
+
+      return (
+        <>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Add Student</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                onChange={(event) => setSelectedName(event.target.value)}
+                id="studentName"
+                name="studentName"
+                label="Student Name"
+                type="text"
+                variant="standard"
+              />
+              <br />
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                onChange={(event) => setSelectedID(event.target.value)}
+                id="studentID"
+                name="studentID"
+                label="Student ID"
+                type="text"
+                variant="standard"
+              />
+              <Autocomplete
+                options={grades}
+                getOptionLabel={(option) => option.label}
+                onChange={(event, newValue) => setSelectedGrade(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="grade"
+                    name="grade"
+                    label="Grade"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete}
+                onChange={(event, newValue) => setSelectedClasses(newValue)}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="classes"
+                    name="classes"
+                    label="Classes"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Add</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
+    case "removeStudent": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.students = selectedStudents;
+        console.log(formJson);
+        handleClose();
+      };
+
+      return (
+        <>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Remove Students</DialogTitle>
+            <DialogContent>
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete}
+                getOptionLabel={(option) => option.label}
+                value={selectedStudents}
+                onChange={(event, newValue) => setSelectedStudents(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="students"
+                    name="students"
+                    label="Students to Remove"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Remove</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
+    case "addTeacher": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.classes = selectedClasses;
+        console.log(formJson); // This will log the form data including studentName, studentID, and grade
+        handleClose();
+      };
+
+      return (
+        <>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Add Student</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                onChange={(event) => setSelectedName(event.target.value)}
+                id="teacherName"
+                name="teacherName"
+                label="Teacher Name"
+                type="text"
+                variant="standard"
+              />
+              <br />
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                onChange={(event) => setSelectedID(event.target.value)}
+                id="teacherID"
+                name="teacherID"
+                label="Teacher ID"
+                type="text"
+                variant="standard"
+              />
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete}
+                onChange={(event, newValue) => setSelectedClasses(newValue)}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="classes"
+                    name="classes"
+                    label="Classes"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Add</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
+    case "removeTeacher": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.teachers = selectedTeachers;
+        console.log(formJson);
+        handleClose();
+      };
+
+      return (
+        <>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Remove Teachers</DialogTitle>
+            <DialogContent>
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete}
+                getOptionLabel={(option) => option.label}
+                onChange={(event, newValue) => setSelectedTeachers(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="teachers"
+                    name="teachers"
+                    label="Teachers to Remove"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Remove</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
+    case "editGrade": {
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        console.log(formJson);
+        handleClose();
+      };
+
+      return (
+        <>
+          <Button variant="outlined" onClick={handleClickOpen}>
+            TestingButton
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Edit Grade</DialogTitle>
+            <DialogContent>
+              <Autocomplete
+                options={exampleAutocomplete}
+                //filterOptions={customFilterOptions} // Apply the custom filter options
+                getOptionLabel={(option) => option.label}
+                value={selectedStudent}
+                onChange={(event, newValue) => setSelectedStudent(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="classTeacherLabel"
+                    name="classTeacherLabel"
+                    label="Teacher"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
+              <TextField
+                autoFocus
+                required
+                margin="dense"
+                value={studentGradeEdit}
+                onChange={(event, newValue) => setSelectedName(newValue)}
+                id="gradePercentage"
+                name="gradePercentage"
+                label="Grade"
+                type="text"
+                variant="standard"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Edit</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
+    default: {
+      // Format for any other modal type. Change in prod to an error message.
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        formJson.classes = selectedClasses;
+        console.log(formJson);
+        handleClose();
+      };
+      return (
+        <>
+          <Button variant="outlined" onClick={handleClickOpen}>
+            TestingButton
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: handleSubmit,
+              style: { minWidth: "400px" },
+            }}
+          >
+            <DialogTitle>Remove Classes</DialogTitle>
+            <DialogContent></DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit">Placeholder</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    }
   }
 };
 
 export default FormModal;
 
-
-/*
- return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        TestingButton
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: handleSubmit,
-        }}
-      >
-        <DialogTitle>Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="label"
-            label="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
-  */
- // Testing Autocomplete.
+// Testing Autocomplete. Remove in prod.
 const grades = [
   { label: "Kindergarten" },
   { label: "1st Grade" },
@@ -178,9 +554,9 @@ const grades = [
   { label: "3rd Grade" },
   { label: "4th Grade" },
   { label: "5th Grade" },
-]
+];
 
- const exampleAutocomplete = [
+const exampleAutocomplete = [
   { label: "John Smith" },
   { label: "Jane Doe" },
   { label: "Alice Johnson" },
@@ -219,5 +595,5 @@ const grades = [
   { label: "Sebastian Barnes" },
   { label: "Taylor Ross" },
   { label: "Ulysses Henderson" },
-  { label: "Violet Coleman" }
+  { label: "Violet Coleman" },
 ];
