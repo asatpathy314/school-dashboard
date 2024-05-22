@@ -9,14 +9,9 @@
     margin-bottom: 10px;
 }
 
-.list {
-    background-color: #fffffe;
-    padding: 20px;
-    color: #2B2C34;
-    border-radius: 20px;
-    border: 2px solid black;
-    text-align: center;
+.overall {
     min-height: 55vh;
+    padding-bottom: 60px !important;
     margin-top: 0px;
     margin-bottom: 20px;
     margin-left: 5vh;
@@ -24,21 +19,24 @@
     position: relative;
 }
 
+.list {
+    background-color: #fffffe;
+    padding: 20px;
+    color: #2B2C34;
+    border-radius: 20px;
+    border: 2px solid black;
+    text-align: center;
+}
+
 .comp {
-    padding: 30px !important;
-    margin-bottom: 15px;
+    padding: 0px !important;
+    margin-bottom: 0;
 }
 
 .button-container {
     position: absolute;
     bottom: 15px;
-    right: 10px;
+    right: 0px;
     display: flex;
     gap: 10px;
-    /* padding: 10px;
-    text-align: center;
-    justify-items: 'center';
-    margin-right: 37%;
-    margin-left: 37%;
-    */
 }

@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
+    const { data, ids, personNames, classNames, studentGrades, averageGrades, email } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
 
@@ -40,9 +40,12 @@ const Map = (props) => {
         if (averageGrades) {
             newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
         }
+        if (email) {
+            newColumns.push({ field: 'email', headerName: 'Email', width: 300 });
+        }
 
         setColumns(newColumns);
-    }, [ids, personNames, classNames, studentGrades, averageGrades]);
+    }, [ids, personNames, classNames, studentGrades, averageGrades, email]);
 
     useEffect(() => { 
         if (hasSearched) {

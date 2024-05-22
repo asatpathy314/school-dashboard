@@ -23,7 +23,7 @@ const TeacherDir = () => {
           // }));
   
           // temp.push({ 'fullName': docData['name'], 'id': docData['id'], 'classNames': classNames });
-          temp.push({'fullName': docData['name'], 'id': docData['id']})
+          temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email']})
       }));
   
       console.log(temp);
@@ -36,7 +36,7 @@ const TeacherDir = () => {
 
   return (
     <div>
-      <Dir type="Teacher" comp={<Map ids={true} personNames={true} data={teachersArray}/>}></Dir>
+      <Dir type="Teacher" comp={<Map ids={true} personNames={true} data={teachersArray} email={true}/>}></Dir>
     </div>
   )
 }
