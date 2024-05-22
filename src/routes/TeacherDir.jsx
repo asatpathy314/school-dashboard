@@ -16,13 +16,6 @@ const TeacherDir = () => {
           const docData = doc.data();
           const id = doc.id;
           const classes = docData['classes'];
-          
-          // const classNames = await Promise.all(classes.map(async (classRef) => {
-          //     const classDoc = await getDoc(classRef);
-          //     return classDoc.data()['name'];
-          // }));
-  
-          // temp.push({ 'fullName': docData['name'], 'id': docData['id'], 'classNames': classNames });
           temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email']})
       }));
   
