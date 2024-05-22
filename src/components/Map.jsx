@@ -1,56 +1,58 @@
 import { DataGrid } from '@mui/x-data-grid';
+import { useState, useEffect } from 'react';
 
 const Map = (props) => {
-    //switch statement
+    const [columns, setColumns] = useState([]);
     const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
-    const columns = [];
 
-    // Conditionally add columns based on the props received
-    if (ids) {
-        columns.push({
-            field: 'id',
-            headerName: 'ID',
-            type: 'number',
-            width: 70,
-        });
-    }
+    useEffect(() => {
+        const newColumns = [];
 
-    if (personNames) {
-        columns.push({
-            field: 'fullName',
-            headerName: 'Name',
-            flex: 1,
-        });
-    }
+        // Conditionally add columns based on the props received
+        if (ids) {
+            newColumns.push({
+                field: 'id',
+                headerName: 'ID',
+                type: 'number',
+                width: 70,
+            });
+        }
 
-    if (classNames) {
-        columns.push({ field: 'className', headerName: 'Class Name', width: 130});
-    }
-    if (studentGrades) {
-        columns.push({ field: 'grade', headerName: 'Grade', width: 90 });
-    }
-    if (averageGrades) {
-        columns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 90 });
-    }
+        if (personNames) {
+            newColumns.push({
+                field: 'fullName',
+                headerName: 'Name',
+                flex: 1,
+            });
+        }
 
-    //fake data
-    const rows = [
-        { fullName: 'Snow', id: 35, gender:"female"},
-        { fullName: 'Lannister', id: 42 },
-        { fullName: 'Lannister', id: 45 },
-    ];
+        if (classNames) {
+            newColumns.push({ field: 'className', headerName: 'Class Name', width: 130});
+        }
+        if (studentGrades) {
+            newColumns.push({ field: 'grade', headerName: 'Grade', width: 90 });
+        }
+        if (averageGrades) {
+            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 90 });
+        }
+
+        setColumns(newColumns);
+    }, [ids, personNames, classNames, studentGrades, averageGrades]);
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
             <DataGrid
-                rows={rows}
+                rows={data}
                 columns={columns}
+                autoHeight={true}
                 initialState={{
+                    ...data.initialState,
                     pagination: {
                         paginationModel: { page: 0, pageSize: 10 },
                     },
                 }}
-                pageSizeOptions={[10, 25]}
+                // If I add page size options, it will morph the CSS and make the div bigger than it should be
+                pageSizeOptions={[10]}
                 disableRowSelectionOnClick = {true}
             />
         </div>

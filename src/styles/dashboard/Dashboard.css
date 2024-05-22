@@ -1,3 +1,78 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
 .header {
     text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.dashboard-teachers {
+    background-color: #fffffe;
+    padding: 10px;
+    color: #2B2C34;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 350px;
+    overflow-y: 'auto';
+    max-height: '100vh';
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 2px solid black;
+}
+
+.dashboard-classes {
+    background-color: #fffffe;
+    padding: 10px;
+    color: #2B2C34;
+    border-radius: 20px;
+    text-align: center;
+    min-width: 400px;
+    min-height: 90%;
+    max-height: 100%;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    margin-right: 20px;
+    border: 2px solid black;
+}
+
+.dashboard-students {
+    background-color: #fffffe;
+    padding: 10px;
+    color: #2B2C34;
+    border-radius: 20px;
+    text-align: center;
+    min-width: 300px;
+    min-height: 80%;
+    max-height: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 2px solid black;
+}
+
+.dashboard-upcoming-events {
+    background-color: #fffffe;
+    padding: 10px;
+    color: #2B2C34;
+    border-radius: 20px;
+    text-align: center;
+    min-width: 400px;
+    min-height: 100%;
+    max-height: '100vh';
+    margin-top: 0;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 20px;
+    border: 2px solid black;
+}
+
+.h3 {
+    margin-top: 0px;
+    margin-bottom: 10px;
 }
