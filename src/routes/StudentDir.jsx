@@ -24,10 +24,9 @@ const StudentDir = () => {
             grades = classItem.grade + grades;
             count = count + 1;
           })
-
           const avgGrade = grades / count;
-        
-          temp.push({'fullName': docData['name'], 'id': docData['id'], 'grade': docData['grade'], 'averageGrade': avgGrade})
+
+          temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'grade': docData['grade'], 'averageGrade': avgGrade})
       }));
     setStudentsArray(temp);
   }
@@ -38,7 +37,7 @@ const StudentDir = () => {
 
   return (
     <div>
-      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} averageGrade={true} data={studentsArray}/>}></Dir>
+      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} averageGrades={true} data={studentsArray}/>}></Dir>
     </div>
   )
 }

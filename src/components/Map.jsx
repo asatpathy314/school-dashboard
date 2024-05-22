@@ -29,7 +29,7 @@ const Map = (props) => {
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
-                width: 100,
+                flex: 0.7,
             });
         }
 
@@ -37,28 +37,37 @@ const Map = (props) => {
             newColumns.push({
                 field: 'fullName',
                 headerName: 'Name',
-                flex: 1,
-                width: 200,
+                flex: 1.4,
             });
         }
 
         if (classNames) {
-            newColumns.push({ field: 'className', headerName: 'Class Name', width: 400});
+            newColumns.push({ 
+                field: 'className', 
+                headerName: 'Class Name', 
+                flex: 1 });
         }
         if (studentGrades) {
-            newColumns.push({ field: 'grade', headerName: 'Grade', width: 150 });
+            newColumns.push({ field: 'grade', 
+            headerName: 'Grade', 
+            flex: 1.4, });
         }
         if (averageGrades) {
-            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
+            newColumns.push({ field: 'averageGrade', 
+            headerName: 'Average Grade', 
+            flex: 2, 
+            valueFormatter: (value) => `${value}%` });
         }
         if (email) {
-            newColumns.push({ field: 'email', headerName: 'Email', width: 300 });
+            newColumns.push({ field: 'email', headerName: 'Email', width: 320 });
         }
         newColumns.push({
             field: 'edit',
             headerName: 'Edit',
-            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd}/>,
-            width: 70,
+            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
+            flex: 2,
+            headerAlign: 'right',
+            align: 'right',
         });
 
         setColumns(newColumns);
