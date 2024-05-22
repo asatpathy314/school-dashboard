@@ -1,6 +1,8 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import FormModal from './FormModal';
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
@@ -8,6 +10,15 @@ const Map = (props) => {
     const { data, ids, personNames, classNames, studentGrades, averageGrades, email } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
+    const [openAdd, setOpenAdd] = useState(false);
+
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
+    
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
 
     useEffect(() => {
         const newColumns = [];
@@ -32,10 +43,10 @@ const Map = (props) => {
         }
 
         if (classNames) {
-            newColumns.push({ field: 'classNames', headerName: 'Class Name', width: 300});
+            newColumns.push({ field: 'className', headerName: 'Class Name', width: 400});
         }
         if (studentGrades) {
-            newColumns.push({ field: 'grade', headerName: 'Grade', width: 125 });
+            newColumns.push({ field: 'grade', headerName: 'Grade', width: 150 });
         }
         if (averageGrades) {
             newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
@@ -43,6 +54,12 @@ const Map = (props) => {
         if (email) {
             newColumns.push({ field: 'email', headerName: 'Email', width: 300 });
         }
+        newColumns.push({
+            field: 'edit',
+            headerName: 'Edit',
+            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd}/>,
+            width: 70,
+        });
 
         setColumns(newColumns);
     }, [ids, personNames, classNames, studentGrades, averageGrades, email]);
@@ -96,6 +113,7 @@ const Map = (props) => {
                 pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick = {true}
             />
+            <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
         </div>
     );
 }
