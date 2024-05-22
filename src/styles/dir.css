@@ -3,23 +3,40 @@
     margin-left: 2%;
 }
 
-.list {
-    background-color: #fffffe;
-    padding: 10px;
-    color: #2B2C34;
-    border-radius: 20px;
-    border-color: #000000;
+.h2 {
     text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.overall {
     min-height: 55vh;
-    margin-top: 20px;
+    padding-bottom: 60px !important;
+    margin-top: 0px;
     margin-bottom: 20px;
     margin-left: 5vh;
     margin-right: 5vh;
+    position: relative;
+}
+
+.list {
+    background-color: #fffffe;
+    padding: 20px;
+    color: #2B2C34;
+    border-radius: 20px;
+    border: 2px solid black;
+    text-align: center;
+}
+
+.comp {
+    padding: 0px !important;
+    margin-bottom: 0;
 }
 
 .button-container {
-    padding: 10px;
-    text-align: center;
-    margin-right: 5%;
-    margin-left: 5%;
+    position: absolute;
+    bottom: 15px;
+    right: 0px;
+    display: flex;
+    gap: 10px;
 }
