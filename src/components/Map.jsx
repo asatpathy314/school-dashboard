@@ -19,7 +19,7 @@ const Map = (props) => {
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
-                width: 70,
+                width: 100,
             });
         }
 
@@ -28,17 +28,18 @@ const Map = (props) => {
                 field: 'fullName',
                 headerName: 'Name',
                 flex: 1,
+                width: 200,
             });
         }
 
         if (classNames) {
-            newColumns.push({ field: 'className', headerName: 'Class Name', width: 130});
+            newColumns.push({ field: 'className', headerName: 'Class Name', width: 300});
         }
         if (studentGrades) {
-            newColumns.push({ field: 'grade', headerName: 'Grade', width: 90 });
+            newColumns.push({ field: 'grade', headerName: 'Grade', width: 125 });
         }
         if (averageGrades) {
-            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 90 });
+            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
         }
 
         setColumns(newColumns);
@@ -86,11 +87,11 @@ const Map = (props) => {
                 initialState={{
                     ...data.initialState,
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 10 },
+                        paginationModel: { page: 0, pageSize: 5 },
                     },
                 }}
                 // If I add page size options, it will morph the CSS and make the div bigger than it should be
-                pageSizeOptions={[10]}
+                pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick = {true}
             />
         </div>
