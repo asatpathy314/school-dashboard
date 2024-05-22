@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Scheduler from 'react-mui-scheduler';
 import { db } from '../../firebase';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+import { collection, getDocs} from 'firebase/firestore';
 import './../styles/Calendars.css';
-
+import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents';
 const Calendars = () => {
   const [state] = useState({
     options: {
@@ -39,6 +40,7 @@ const Calendars = () => {
         });
         console.log(eventsData);
         setEvents(sortedEvents);
+        console.log(sortedEvents)
       } catch (error) {
         console.error('Error fetching events: ', error);
       }
@@ -65,6 +67,9 @@ const Calendars = () => {
 
   return (
     <div>
+      <div style={{ paddingTop: '20px' }}> 
+        <DashboardUpcomingEvents />
+      </div>
       <Scheduler
         locale="en"
         events={events}
