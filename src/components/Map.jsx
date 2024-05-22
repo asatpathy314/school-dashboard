@@ -18,7 +18,7 @@ const Map = (props) => {
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
-                width: 70,
+                width: 100,
             });
         }
 
@@ -27,6 +27,7 @@ const Map = (props) => {
                 field: 'fullName',
                 headerName: 'Name',
                 flex: 1,
+                width: 200,
             });
         }
 
@@ -34,7 +35,7 @@ const Map = (props) => {
             newColumns.push({ field: 'classNames', headerName: 'Class Name', width: 300});
         }
         if (studentGrades) {
-            newColumns.push({ field: 'grade', headerName: 'Grade', width: 90 });
+            newColumns.push({ field: 'grade', headerName: 'Grade', width: 125 });
         }
         if (averageGrades) {
             newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
