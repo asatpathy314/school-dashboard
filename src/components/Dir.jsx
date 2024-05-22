@@ -27,8 +27,7 @@ const Dir = (data) => {
     return (
         <div>
             <h1>{data['type']} Directory</h1>
-            <Autocomplete className="dir-search" options={['hi', 'bye']} renderInput={(params) => <TextField {...params} label={data['type']} />}/>
-
+            
             <div className='list'>{data['comp']}</div>
 
             <div className='button-container'>
