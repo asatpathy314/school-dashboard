@@ -54,7 +54,7 @@ const FormModal = ({
     retrieveObjects("teachers")
         .then((res) => {
             const teachers = res;
-            setTeachersAutocomplete(retrieveListByLabel("name", teachers))
+            setTeachersAutocomplete(retrieveListByLabel("fullName", teachers))
         })
         .catch((error) => {
             console.error("Failed to retrieve teachers:", error);
@@ -70,7 +70,7 @@ const FormModal = ({
     retrieveObjects("students")
         .then((res) => {
             const students= res;
-            setStudentsAutocomplete(retrieveListByLabel("name", students))
+            setStudentsAutocomplete(retrieveListByLabel("fullName", students))
         })
         .catch((error) => {
             console.error("Failed to retrieve teachers:", error);
