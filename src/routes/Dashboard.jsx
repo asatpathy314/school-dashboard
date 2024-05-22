@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { Box } from '@mui/system'
-import DashboardTeachers from '../components/DashboardTeachers'
-import DashboardClasses from '../components/DashboardClasses'
-import DashboardStudents from '../components/DashboardStudents'
-import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents'
+import DashboardComponent from '../components/DashboardComponent'
 import '../styles/dashboard/Dashboard.css'
 
 const Dashboard = () => {
@@ -49,16 +46,16 @@ const Dashboard = () => {
             "teachers upcoming-events upcoming-events students"` }}
         >
           <Box sx={{ gridArea: 'teachers' }}>
-            <DashboardTeachers data={data}/>
+            <DashboardComponent data={data} which={'teacher'}/>
           </Box>
           <Box sx={{ gridArea: 'classes' }}>
-            <DashboardClasses />
+            <DashboardComponent data={data} which={'class'} />
           </Box>
           <Box sx={{ gridArea: 'students' }}>
-            <DashboardStudents />
+            <DashboardComponent data={data} which={'student'} />
           </Box>
           <Box sx={{ gridArea: 'upcoming-events' }}>
-            <DashboardUpcomingEvents />
+            <DashboardComponent data={data} which={'upcoming-events'} />
           </Box>
         </Box>
       </div>
