@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import FormModal from './FormModal';
 
@@ -26,11 +25,8 @@ const Dir = (data) => {
 
     return (
         <div>
-            <h1>{data['type']} Directory</h1>
-            <Autocomplete className="dir-search" options={['hi', 'bye']} renderInput={(params) => <TextField {...params} label={data['type']} />}/>
-
+            <h2 className='h2'>{data['type']} Directory</h2>
             <div className='list'>{data['comp']}</div>
-
             <div className='button-container'>
                 <Button style={{float: "left"}} variant="contained" onClick={handleClickOpenAdd}>Add {data['type']}</Button>
                 <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>

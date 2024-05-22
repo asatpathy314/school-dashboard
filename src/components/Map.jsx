@@ -85,11 +85,11 @@ const Map = (props) => {
                 initialState={{
                     ...data.initialState,
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 10 },
+                        paginationModel: { page: 0, pageSize: 5 },
                     },
                 }}
                 // If I add page size options, it will morph the CSS and make the div bigger than it should be
-                pageSizeOptions={[10]}
+                pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick = {true}
             />
         </div>

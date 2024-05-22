@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Dir from '../components/Dir';
 import Map from '../components/Map';
-
 import { db } from "../../firebase";
 import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy } from "firebase/firestore";
 
@@ -18,12 +17,13 @@ const TeacherDir = () => {
           const id = doc.id;
           const classes = docData['classes'];
           
-          const classNames = await Promise.all(classes.map(async (classRef) => {
-              const classDoc = await getDoc(classRef);
-              return classDoc.data()['name'];
-          }));
+          // const classNames = await Promise.all(classes.map(async (classRef) => {
+          //     const classDoc = await getDoc(classRef);
+          //     return classDoc.data()['name'];
+          // }));
   
-          temp.push({ 'fullName': docData['name'], 'id': docData['id'], 'classNames': classNames });
+          // temp.push({ 'fullName': docData['name'], 'id': docData['id'], 'classNames': classNames });
+          temp.push({'fullName': docData['name'], 'id': docData['id']})
       }));
   
       console.log(temp);
@@ -36,7 +36,7 @@ const TeacherDir = () => {
 
   return (
     <div>
-      <Dir type="Teacher" comp={<Map ids={true} personNames={true} classNames={true} data={teachersArray}/>}></Dir>
+      <Dir type="Teacher" comp={<Map ids={true} personNames={true} data={teachersArray}/>}></Dir>
     </div>
   )
 }
