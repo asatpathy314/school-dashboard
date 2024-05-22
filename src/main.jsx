@@ -28,14 +28,14 @@ const router = createBrowserRouter([
   //   ],
   // },
   {
-    path: "/classes",
+    path: "/class-directory",
     element: <Classes/>,
-    children: [
-      {
-        path: ':/id',
-        element: <Class />
-      }
-    ]
+    // children: [
+    //   {
+    //     path: ':/id',
+    //     element: <Class />
+    //   }
+    // ]
   },
   {
     path: "/student-directory",

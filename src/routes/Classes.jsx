@@ -38,7 +38,7 @@ const Classes = () => {
         // console.log('tdoc', teacherDoc.data()['name'], teacherDoc.id, id);
         // console.log(avg);
 
-        temp.push({'id': doc.id, 'classNames': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['name']});
+        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg + '%', 'fullName': teacherDoc.data()['name']});
         // console.log(temp);
       } catch {
         console.log("a");

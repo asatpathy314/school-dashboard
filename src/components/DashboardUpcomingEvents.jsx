@@ -16,6 +16,7 @@ const DashboardUpcomingEvents = () => {
           const data = doc.data();
           const startDate = data['start-date'].toDate();
           return {
+            id: doc.id,
             name: data.name,
             description: data.description,
             startDate: startDate,
@@ -38,7 +39,7 @@ const DashboardUpcomingEvents = () => {
     <div className='dashboard-upcoming-events'>
       <h3>Upcoming Events</h3>
       {events.map(event => (
-        <Card key={event.id} sx={{ display: 'flex', marginBottom: 2 }}>
+        <Card key={event.id} sx={{ display: 'flex', marginBottom: 2, boxShadow: 4 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 1 }}>
             <Typography variant="body1">{event.startDate.toDateString()}</Typography>
             <Typography variant="body2" color="text.secondary" >{event.startHour}</Typography>

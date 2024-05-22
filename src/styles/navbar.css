@@ -4,7 +4,7 @@
   padding: 20px;
 }
 
-ul {
+.barList ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -12,12 +12,12 @@ ul {
   background-color: #6246EA;
 }
 
-li {
+.barList li {
   float: left;
   align-items: 'center';
 }
 
-li a {
+.barList li a {
   display: block;
   padding: 10px;
   padding-inline: 30px;
@@ -26,7 +26,7 @@ li a {
   text-decoration: none;
 }
 
-li a:hover {
+.barList li a:hover {
   background-color: rgb(80, 4, 201);
   color: white;
 }

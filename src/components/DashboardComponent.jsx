@@ -10,7 +10,6 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-teachers'>
           <h3 className='h3'>Teachers</h3>
-          <input placeholder="Search by name..." />
           <Map ids={true} personNames={true} data={data} />
         </div>
       );

@@ -14,19 +14,31 @@
     padding: 20px;
     color: #2B2C34;
     border-radius: 20px;
-    border-color: #000000;
+    border: 2px solid black;
     text-align: center;
     min-height: 55vh;
     margin-top: 0px;
     margin-bottom: 20px;
     margin-left: 5vh;
     margin-right: 5vh;
+    position: relative;
+}
+
+.comp {
+    padding: 30px !important;
+    margin-bottom: 15px;
 }
 
 .button-container {
-    padding: 10px;
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    /* padding: 10px;
     text-align: center;
     justify-items: 'center';
     margin-right: 37%;
     margin-left: 37%;
+    */
 }
