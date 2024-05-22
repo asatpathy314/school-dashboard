@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Dir from '../components/Dir';
-import Map from '../components/Map';
+import Map from '../components/Map'
 
 
 import { db } from "../../firebase";
