@@ -31,13 +31,13 @@ const Map = (props) => {
         }
 
         if (classNames) {
-            newColumns.push({ field: 'classNames', headerName: 'Class Name', width: 130});
+            newColumns.push({ field: 'classNames', headerName: 'Class Name', width: 300});
         }
         if (studentGrades) {
             newColumns.push({ field: 'grade', headerName: 'Grade', width: 90 });
         }
         if (averageGrades) {
-            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 90 });
+            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 125 });
         }
 
         setColumns(newColumns);
