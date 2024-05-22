@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Scheduler from 'react-mui-scheduler';
 import { db } from '../../firebase';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
-import { collection, getDocs} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import './../styles/Calendars.css';
 import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents';
+
 const Calendars = () => {
   const [state] = useState({
     options: {
@@ -17,9 +18,10 @@ const Calendars = () => {
       maxHeight: 540,
     },
   });
+
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -29,18 +31,18 @@ const Calendars = () => {
           const data = doc.data();
           const startDate = data['start-date'].toDate();
           const endDate = data['end-date'].toDate();
-          console.log(data);
           return {
-            name: data.name,
+            id: doc.id,
+            label: data.name,
             description: data.description,
-            startDate: startDate,
-            startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            date: startDate.toISOString().split('T')[0],
+            color: '#f28f6a', // Use a default color or fetch it from your data if available
+            groupLabel: 'Event Group', // Provide a default group label or fetch from your data if available
+            startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+            endHour: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+            date: startDate.toISOString().split('T')[0], // Ensure the date is in YYYY-MM-DD format
           };
         });
-        console.log(eventsData);
-        setEvents(sortedEvents);
-        console.log(sortedEvents)
+        setEvents(eventsData);
       } catch (error) {
         console.error('Error fetching events: ', error);
       }
@@ -60,7 +62,7 @@ const Calendars = () => {
     });
     setSelectedEvent(selectedDateEvents.length > 0 ? selectedDateEvents[0] : null);
   };
-  
+
   const handleDialogClose = () => {
     setSelectedEvent(null);
   };
@@ -92,8 +94,8 @@ const Calendars = () => {
           );
         }}
         renderHeader={(day, locale) => (
-          <div style={{ backgroundColor: '#8a2be2', color: '#8a2be2', padding: '8px', textAlign: 'center' }}>
-            {day.format('ddd')} 
+          <div style={{ backgroundColor: '#8a2be2', color: '#fff', padding: '8px', textAlign: 'center' }}>
+            {day.format('ddd')}
           </div>
         )}
       />
@@ -111,4 +113,5 @@ const Calendars = () => {
     </div>
   );
 };
+
 export default Calendars;
