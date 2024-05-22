@@ -121,7 +121,7 @@ const FormModal = ({
     }
     case "addTeacher": {
       return (
-        <AddTeacher open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
+        <AddTeacher open={open} handleClose={handleClose}/>
       );
     }
     case "removeTeacher": {

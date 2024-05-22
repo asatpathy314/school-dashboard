@@ -1,7 +1,6 @@
 import { useState } from "react";
 import TextInput from "./input/TextInput.jsx"
 import SingleSelectAutocomplete from "./input/SingleSelectAutocomplete.jsx";
-import MultiSelectAutocomplete from "./input/MultiSelectAutocomplete.jsx";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -10,13 +9,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { db } from "../../../firebase.js";
 import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 
-const AddTeacher = ( { open, handleClose, classesAutocomplete }) => {
-    const [selectedClasses, setSelectedClasses] = useState([]);
+const AddTeacher = ( { open, handleClose }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
         console.log(formJson); // TODO: Finish
         handleClose();
       };
@@ -39,12 +36,6 @@ const AddTeacher = ( { open, handleClose, classesAutocomplete }) => {
               <TextInput label="Teacher ID" field="id"/>
               <TextInput label="Teacher Email" field="email"/>
               <SingleSelectAutocomplete options={pronouns} name="pronoun" label="Title" />
-              <MultiSelectAutocomplete 
-              options={classesAutocomplete} 
-              name="classes"
-              label="Classes"
-              changeState={setSelectedClasses}
-                />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
