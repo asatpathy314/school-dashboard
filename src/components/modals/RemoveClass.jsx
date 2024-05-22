@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { db } from "../../../firebase.js";
 import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 
-const AddClass = ( { open, handleClose, classesAutocomplete}) => {
+const RemoveClass = ( { open, handleClose, classesAutocomplete}) => {
     const [selectedClasses, setSelectedClasses] = useState([]);
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -47,7 +47,7 @@ const AddClass = ( { open, handleClose, classesAutocomplete}) => {
       );
 }
 
-export default AddClass;
+export default RemoveClass;
 
 const grades = [
     { label: "Kindergarten" },

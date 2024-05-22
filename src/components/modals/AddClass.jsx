@@ -46,6 +46,7 @@ const AddClass = ( { open, handleClose, teachersAutocomplete, studentsAutocomple
               changeState={setSelectedStudents}
                 />
               <SingleSelectAutocomplete options={grades} name="grade" label="Grade" />
+              <SingleSelectAutocomplete options={subjects} name="subject" label="Subject" />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
@@ -67,9 +68,15 @@ const grades = [
     { label: "5th Grade" },
 ];
 
-const pronouns = [
-    { label: "Mr. " },
-    { label: "Mrs. " },
-    { label: "Ms. " },
-    { label: "Dr. " }
-]
+const subjects = [
+    { label: "Homeroom" },
+    { label: "Science" },
+    { label: "Math" },
+    { label: "English" },
+    { label: "History" },
+    { label: "Geography" },
+    { label: "Art" },
+    { label: "Music" },
+    { label: "Physical Education" },
+    { label: "Computer Science" }
+];

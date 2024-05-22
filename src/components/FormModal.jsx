@@ -12,6 +12,8 @@ import { db } from "../../firebase.js";
 import { doc, setDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 import AddClass from './modals/AddClass.jsx'
 import RemoveClass from './modals/RemoveClass.jsx'
+import RemoveStudent from './modals/RemoveStudent.jsx'
+import RemoveTeacher from './modals/RemoveTeacher.jsx'
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -84,55 +86,6 @@ const FormModal = ({
       );
     }
     case "removeClass": {
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        console.log(formJson);
-        handleClose();
-      };
-      /*
-      return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Remove Class(es)</DialogTitle>
-            <DialogContent>
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete} // TODO: Replace with classes data.
-                getOptionLabel={(option) => option.label}
-                value={selectedClasses}
-                onChange={(event, newValue) => setSelectedClasses(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="classes"
-                    name="classes"
-                    label="Classes"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Remove</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      );
-      */
      return (
       <RemoveClass open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
      )
@@ -233,53 +186,8 @@ const FormModal = ({
       );
     }
     case "removeStudent": {
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.students = selectedStudents;
-        console.log(formJson);
-        handleClose();
-      };
-
       return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Remove Students</DialogTitle>
-            <DialogContent>
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete}
-                getOptionLabel={(option) => option.label}
-                value={selectedStudents}
-                onChange={(event, newValue) => setSelectedStudents(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="students"
-                    name="students"
-                    label="Students to Remove"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Remove</Button>
-            </DialogActions>
-          </Dialog>
-        </>
+        <RemoveStudent open={open} handleClose={handleClose} studentsAutocomplete={studentsAutocomplete}/>
       );
     }
     case "addTeacher": {
@@ -363,60 +271,8 @@ const FormModal = ({
       );
     }
     case "removeTeacher": {
-      const handleSubmit = async (event) => {
-        event.preventDefault();
-        console.log(selectedTeachers);
-        for (let i = 0; i < selectedTeachers.length; i++) { // Changed from selectedClasses to selectedTeachers
-          const q = query(collection(db, "teachers"), where("name", "==", selectedTeachers[i].label));
-          const querySnapshot = await getDocs(q);
-          if (!querySnapshot.empty) { // Check if the querySnapshot is not empty
-            const teacherDocument = querySnapshot.docs[0];
-            //await deleteDoc(doc(db, '/teachers/'+teacherDocument.id))
-            console.log("Teacher document located at " + teacherDocument.id + " has been deleted.")
-          } else {
-            console.log("No document found for teacher: " + selectedTeachers[i].label);
-          }
-        }
-        handleClose();
-      };
-
       return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Remove Teachers</DialogTitle>
-            <DialogContent>
-              <Autocomplete
-                multiple
-                options={exampleAutocomplete}
-                getOptionLabel={(option) => option.label}
-                onChange={(event, newValue) => setSelectedTeachers(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="teachers"
-                    name="teachers"
-                    label="Teachers to Remove"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Remove</Button>
-            </DialogActions>
-          </Dialog>
-        </>
+          <RemoveTeacher open={open} handleClose={handleClose} teachersAutocomplete={teachersAutocomplete} />
       );
     }
     case "editGrade": {
