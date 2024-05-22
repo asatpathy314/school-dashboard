@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { retrieveListByLabel, retrieveObjects } from "../lib/modal/firebase_retrieval.js";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -10,6 +11,7 @@ import { Autocomplete, createFilterOptions } from "@mui/material";
 import { db } from "../../firebase.js";
 import { doc, setDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 import AddClass from './modals/AddClass.jsx'
+import RemoveClass from './modals/RemoveClass.jsx'
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -33,6 +35,9 @@ const FormModal = ({
   studentDBIDEdit,
   studentGradeEdit,
 }) => {
+  const [teachersAutocomplete, setTeachersAutocomplete] = useState([])
+  const [studentsAutocomplete, setStudentsAutocomplete] = useState([])
+  const [classesAutocomplete, setClassesAutocomplete] = useState([])
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedTeachers, setSelectedTeachers] = useState([]);
@@ -40,10 +45,42 @@ const FormModal = ({
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedGrade, setSelectedGrade] = useState(null);
 
+  useEffect(() => {
+    console.log("haha")
+    retrieveObjects("teachers")
+        .then((res) => {
+            const teachers = res;
+            setTeachersAutocomplete(retrieveListByLabel("name", teachers))
+        })
+        .catch((error) => {
+            console.error("Failed to retrieve teachers:", error);
+        });
+    retrieveObjects("classes")
+        .then((res) => {
+            const classes = res;
+            setClassesAutocomplete(retrieveListByLabel("name", classes))
+        })
+        .catch((error) => {
+            console.error("Failed to retrieve teachers:", error);
+        });
+    retrieveObjects("students")
+        .then((res) => {
+            const students= res;
+            setStudentsAutocomplete(retrieveListByLabel("name", students))
+        })
+        .catch((error) => {
+            console.error("Failed to retrieve teachers:", error);
+        });
+      }, []);
+
   switch (modalType) {
     case "addClass": {
       return (
-        <AddClass open={open} handleClose={handleClose}/>
+        <AddClass 
+        open={open} 
+        handleClose={handleClose}
+        teachersAutocomplete={teachersAutocomplete}
+        studentsAutocomplete={studentsAutocomplete}/>
       );
     }
     case "removeClass": {
@@ -55,6 +92,7 @@ const FormModal = ({
         console.log(formJson);
         handleClose();
       };
+      /*
       return (
         <>
           <Dialog
@@ -94,6 +132,10 @@ const FormModal = ({
           </Dialog>
         </>
       );
+      */
+     return (
+      <RemoveClass open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
+     )
     }
     case "addStudent": {
       const handleSubmit = async (event) => {

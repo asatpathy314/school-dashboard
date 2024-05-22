@@ -1,20 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Name from "./input/Name"
+import SingleSelectAutocomplete from "./input/SingleSelectAutocomplete.jsx";
+import MultiSelectAutocomplete from "./input/MultiSelectAutocomplete.jsx";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Autocomplete, createFilterOptions } from "@mui/material";
 import { db } from "../../../firebase.js";
 import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 
-
-const AddClass = ( { open, handleClose }) => {
-    const autocompletes = [
-        { label: "John Smith"}
-    ]
+const AddClass = ( { open, handleClose, teachersAutocomplete, studentsAutocomplete }) => {
     const [selectedStudents, setSelectedStudents] = useState([]);
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -36,69 +33,19 @@ const AddClass = ( { open, handleClose }) => {
           >
             <DialogTitle>Add Class</DialogTitle>
             <DialogContent>
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="schoolClassLabel"
-                name="schoolClassLabel"
-                label="Class label"
-                type="text"
-                variant="standard"
-              />
+              <Name label="Class Name"/>
               <DialogContentText>
                 * Select “Homeroom” for Class label if this class is the
                 students’ main class or if the teacher will teach all subjects
               </DialogContentText>
-              <Autocomplete
-                options={autocompletes}
-                //filterOptions={customFilterOptions} // Apply the custom filter options
-                getOptionLabel={(option) => option.label}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="classTeacherLabel"
-                    name="classTeacherLabel"
-                    label="Teacher"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                multiple
-                options={autocompletes}
-                getOptionLabel={(option) => option.label}
-                value={selectedStudents}
-                onChange={(event, newValue) => setSelectedStudents(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="students"
-                    name="students"
-                    label="Students"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
-              <Autocomplete
-                options={grades}
-                getOptionLabel={(option) => option.label}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    id="grade"
-                    name="grade"
-                    label="Grade"
-                    type="text"
-                    variant="standard"
-                  />
-                )}
-              />
+              <SingleSelectAutocomplete options={teachersAutocomplete} name="name" label="Teacher Name" />
+              <MultiSelectAutocomplete 
+              options={studentsAutocomplete} 
+              name="students"
+              label="Students"
+              changeState={setSelectedStudents}
+                />
+              <SingleSelectAutocomplete options={grades} name="grade" label="Grade" />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
@@ -119,3 +66,10 @@ const grades = [
     { label: "4th Grade" },
     { label: "5th Grade" },
 ];
+
+const pronouns = [
+    { label: "Mr. " },
+    { label: "Mrs. " },
+    { label: "Ms. " },
+    { label: "Dr. " }
+]
