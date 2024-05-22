@@ -11,7 +11,6 @@ const Map = (props) => {
 
     useEffect(() => {
         const newColumns = [];
-        console.log(data);
 
         // Conditionally add columns based on the props received
         if (ids) {
@@ -32,7 +31,7 @@ const Map = (props) => {
         }
 
         if (classNames) {
-            newColumns.push({ field: 'className', headerName: 'Class Name', width: 130});
+            newColumns.push({ field: 'classNames', headerName: 'Class Name', width: 130});
         }
         if (studentGrades) {
             newColumns.push({ field: 'grade', headerName: 'Grade', width: 90 });
