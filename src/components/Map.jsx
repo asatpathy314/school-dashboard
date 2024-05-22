@@ -56,7 +56,7 @@ const Map = (props) => {
             newColumns.push({ field: 'averageGrade', 
             headerName: 'Average Grade', 
             flex: 2, 
-            valueFormatter: (value) => `${value}%` });
+            valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
         }
         if (email) {
             newColumns.push({ field: 'email', headerName: 'Email', width: 320 });
