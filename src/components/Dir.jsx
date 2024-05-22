@@ -34,7 +34,7 @@ const Dir = (data) => {
             <div className='button-container'>
                 <Button style={{float: "left"}} variant="contained" onClick={handleClickOpenAdd}>Add {data['type']}</Button>
                 <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
-                <Button style={{float: "right"}} classname="but" variant="contained" onClick={handleClickOpenRemove}>Remove {data['type']}</Button>
+                <Button style={{float: "right"}} className="but" variant="contained" onClick={handleClickOpenRemove}>Remove {data['type']}</Button>
                 <FormModal modalType={"remove" + data['type']} open={openRemove} handleClose={handleCloseRemove} handleClickOpen={handleClickOpenRemove}/>
             </div>
         
