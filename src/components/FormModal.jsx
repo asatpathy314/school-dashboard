@@ -7,7 +7,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
-import { makeStyles } from '@mui/styles';
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -22,8 +21,15 @@ const customFilterOptions = (options, state) => {
 };
 */
 
-const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEdit }) => {
-  const [open, setOpen] = useState(false);
+const FormModal = ({
+  modalType,
+  open,
+  handleClickOpen,
+  handleClose,
+  studentNameEdit,
+  studentDBIDEdit,
+  studentGradeEdit,
+}) => {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedTeachers, setSelectedTeachers] = useState([]);
@@ -33,32 +39,18 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
   const [selectedName, setSelectedName] = useState(null);
   const [selectedID, setSelectedID] = useState(null);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   switch (modalType) {
     case "addClass": {
       const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        formJson.schoolClassLabel = selectedName;
-        formJson.classTeacherLabel = selectedTeacher;
         formJson.students = selectedStudents;
-        formJson.grade = selectedGrade;
         console.log(formJson);
         handleClose();
       };
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -73,7 +65,6 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
                 autoFocus
                 required
                 margin="dense"
-                onChange={(event, newValue) => setSelectedName(newValue)}
                 id="schoolClassLabel"
                 name="schoolClassLabel"
                 label="Class label"
@@ -81,24 +72,25 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
                 variant="standard"
               />
               <DialogContentText>
-                * Select “Homeroom” for Class label if this class is the students’ main class or if the teacher will teach all subjects
+                * Select “Homeroom” for Class label if this class is the
+                students’ main class or if the teacher will teach all subjects
               </DialogContentText>
               <Autocomplete
                 options={exampleAutocomplete}
                 //filterOptions={customFilterOptions} // Apply the custom filter options
                 getOptionLabel={(option) => option.label}
                 value={selectedTeacher}
-                onChange={(event, newValue) => setSelectedTeacher(newValue)}
-                renderInput={(params) => 
-                  <TextField 
-                    {...params} 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
                     margin="dense"
                     id="classTeacherLabel"
                     name="classTeacherLabel"
                     label="Teacher"
                     type="text"
                     variant="standard"
-                  />}
+                  />
+                )}
               />
               <Autocomplete
                 multiple
@@ -122,17 +114,17 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
                 options={grades}
                 getOptionLabel={(option) => option.label}
                 value={selectedGrade}
-                onChange={(event, newValue) => setSelectedGrade(newValue)}
-                renderInput={(params) => 
-                  <TextField 
-                    {...params} 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
                     margin="dense"
                     id="grade"
                     name="grade"
                     label="Grade"
                     type="text"
                     variant="standard"
-                  />}
+                  />
+                )}
               />
             </DialogContent>
             <DialogActions>
@@ -151,12 +143,9 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
         formJson.classes = selectedClasses;
         console.log(formJson);
         handleClose();
-      };  
+      };
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -166,26 +155,26 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
               style: { minWidth: "400px" },
             }}
           >
-            <DialogTitle>Remove Classes)</DialogTitle>
+            <DialogTitle>Remove Class(es)</DialogTitle>
             <DialogContent>
-            <Autocomplete
-              multiple
-              options={exampleAutocomplete} // TODO: Replace with classes data.
-              getOptionLabel={(option) => option.label}
-              value={selectedStudents}
-              onChange={(event, newValue) => setSelectedStudents(newValue)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  margin="dense"
-                  id="classes"
-                  name="classes"
-                  label="Classes"
-                  type="text"
-                  variant="standard"
-                />
-              )}
-            />
+              <Autocomplete
+                multiple
+                options={exampleAutocomplete} // TODO: Replace with classes data.
+                getOptionLabel={(option) => option.label}
+                value={selectedClasses}
+                onChange={(event, newValue) => setSelectedClasses(newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="dense"
+                    id="classes"
+                    name="classes"
+                    label="Classes"
+                    type="text"
+                    variant="standard"
+                  />
+                )}
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
@@ -204,12 +193,9 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
         console.log(formJson); // This will log the form data including studentName, studentID, and grade
         handleClose();
       };
-    
+
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -295,12 +281,9 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
         console.log(formJson);
         handleClose();
       };
-    
+
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -312,11 +295,11 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
           >
             <DialogTitle>Remove Students</DialogTitle>
             <DialogContent>
-            <Autocomplete
+              <Autocomplete
                 multiple
                 options={exampleAutocomplete}
                 getOptionLabel={(option) => option.label}
-                value={selectedStudents} 
+                value={selectedStudents}
                 onChange={(event, newValue) => setSelectedStudents(newValue)}
                 renderInput={(params) => (
                   <TextField
@@ -348,12 +331,9 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
         console.log(formJson); // This will log the form data including studentName, studentID, and grade
         handleClose();
       };
-    
+
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -423,12 +403,9 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
         console.log(formJson);
         handleClose();
       };
-    
+
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
           <Dialog
             open={open}
             onClose={handleClose}
@@ -440,7 +417,7 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
           >
             <DialogTitle>Remove Teachers</DialogTitle>
             <DialogContent>
-            <Autocomplete
+              <Autocomplete
                 multiple
                 options={exampleAutocomplete}
                 getOptionLabel={(option) => option.label}
@@ -474,7 +451,7 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
         console.log(formJson);
         handleClose();
       };
-    
+
       return (
         <>
           <Button variant="outlined" onClick={handleClickOpen}>
@@ -491,22 +468,23 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
           >
             <DialogTitle>Edit Grade</DialogTitle>
             <DialogContent>
-            <Autocomplete
+              <Autocomplete
                 options={exampleAutocomplete}
                 //filterOptions={customFilterOptions} // Apply the custom filter options
                 getOptionLabel={(option) => option.label}
                 value={selectedStudent}
                 onChange={(event, newValue) => setSelectedStudent(newValue)}
-                renderInput={(params) => 
-                  <TextField 
-                    {...params} 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
                     margin="dense"
                     id="classTeacherLabel"
                     name="classTeacherLabel"
                     label="Teacher"
                     type="text"
                     variant="standard"
-                  />}
+                  />
+                )}
               />
               <TextField
                 autoFocus
@@ -530,15 +508,15 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
       );
     }
     default: {
-    // Format for any other modal type. Change in prod to an error message.
-    const handleSubmit = (event) => {
+      // Format for any other modal type. Change in prod to an error message.
+      const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
         console.log(formJson);
         handleClose();
-      };  
+      };
       return (
         <>
           <Button variant="outlined" onClick={handleClickOpen}>
@@ -553,9 +531,8 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
               style: { minWidth: "400px" },
             }}
           >
-          <DialogTitle>Remove Classes</DialogTitle>
-            <DialogContent>
-            </DialogContent>
+            <DialogTitle>Remove Classes</DialogTitle>
+            <DialogContent></DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit">Placeholder</Button>
@@ -569,7 +546,7 @@ const FormModal = ({ modalType, studentNameEdit, studentDBIDEdit, studentGradeEd
 
 export default FormModal;
 
- // Testing Autocomplete. Remove in prod.
+// Testing Autocomplete. Remove in prod.
 const grades = [
   { label: "Kindergarten" },
   { label: "1st Grade" },
@@ -577,9 +554,9 @@ const grades = [
   { label: "3rd Grade" },
   { label: "4th Grade" },
   { label: "5th Grade" },
-]
+];
 
- const exampleAutocomplete = [
+const exampleAutocomplete = [
   { label: "John Smith" },
   { label: "Jane Doe" },
   { label: "Alice Johnson" },
