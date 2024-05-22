@@ -13,7 +13,7 @@ const TeacherDir = () => {
     const teacherSnapshot = await getDocs(query(collRef));
     let temp = [];
     teacherSnapshot.forEach((doc) => {
-      temp.push({'fullName': doc.data()['name'], 'id': doc.id});
+      temp.push({'fullName': doc.data()['fullName'], 'id': doc.id});
     });
     setTeachersArray(temp);
     console.log(temp);
