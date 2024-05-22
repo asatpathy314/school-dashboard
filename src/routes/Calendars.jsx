@@ -86,7 +86,7 @@ const Calendars = () => {
           );
         }}
         renderHeader={(day, locale) => (
-          <div style={{ backgroundColor: '#8a2be2', color: '#8a2be2', padding: '50px', textAlign: 'center' }}>
+          <div style={{ backgroundColor: '#8a2be2', color: '#8a2be2', padding: '8px', textAlign: 'center' }}>
             {day.format('ddd')} 
           </div>
         )}

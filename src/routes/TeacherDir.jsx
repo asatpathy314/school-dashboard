@@ -1,7 +1,11 @@
+import * as React from 'react';
+import Dir from '../components/Dir';
+
 const TeacherDir = () => {
   return (
     <div>
-      <h1>Teacher Directory</h1>
+      {/* Replace div with component */}
+      <Dir type="Teacher" comp={<div></div>}></Dir>
     </div>
   )
 }

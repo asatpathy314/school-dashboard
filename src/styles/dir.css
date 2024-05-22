@@ -1,0 +1,25 @@
+.dir-search {
+    width: 20%;
+    margin-left: 2%;
+}
+
+.list {
+    background-color: #fffffe;
+    padding: 10px;
+    color: #2B2C34;
+    border-radius: 20px;
+    border-color: #000000;
+    text-align: center;
+    min-height: 55vh;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5vh;
+    margin-right: 5vh;
+}
+
+.button-container {
+    padding: 10px;
+    text-align: center;
+    margin-right: 5%;
+    margin-left: 5%;
+}
