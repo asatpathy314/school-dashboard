@@ -6,9 +6,10 @@ import StudentDir from './routes/StudenDir.jsx'
 import TeacherDir from './routes/TeacherDir.jsx'
 import Classes from './routes/Classes.jsx'
 import Dashboard from './routes/Dashboard.jsx'
-import Calendar from './routes/Calendar.jsx'
+import Calendars from './routes/Calendars.jsx'
 import Dev from './routes/Dev.jsx'
 import Navbar from './components/Navbar.jsx'
+
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/calendar",
-    element: <Calendar/>
+    element: <Calendars/>
   },
   // This should be removed in prod.
   {
