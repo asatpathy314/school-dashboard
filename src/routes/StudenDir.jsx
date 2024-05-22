@@ -28,7 +28,7 @@ const StudentDir = () => {
   return (
     <div>
       {/* Replace div with component */}
-      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} data={studentsArray}/>}></Dir>
+      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} data={studentsArray} dataType={'Student'}/>}></Dir>
     </div>
   )
 }
