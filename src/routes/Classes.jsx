@@ -53,7 +53,7 @@ const Classes = () => {
   return (
     <div>
       {/* Replace div with component */}
-      <Dir type="Class" comp={<Map classNames={true} averageGrades={true} personNames={true} data={classesArray}/>}></Dir>
+      <Dir type="Class" comp={<Map ids={true} classNames={true} averageGrades={true} personNames={true} data={classesArray} dataType={'Class'}/>}></Dir>
     </div>
   )
 }

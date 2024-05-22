@@ -7,7 +7,7 @@ import FormModal from './FormModal';
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades, email } = props;
+    const { data, ids, personNames, classNames, studentGrades, averageGrades, email, dataType } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -122,7 +122,7 @@ const Map = (props) => {
                 pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick = {true}
             />
-            <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+            <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
         </div>
     );
 }

@@ -194,37 +194,9 @@ const FormModal = ({
     }
     default: {
       // Format for any other modal type. Change in prod to an error message.
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        console.log(formJson);
-        handleClose();
-      };
       return (
-        <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Remove Classes</DialogTitle>
-            <DialogContent></DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Placeholder</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      );
+        <p>Invalid modal type, check your data prop.</p>
+      )
     }
   }
 };

@@ -29,7 +29,8 @@ const TeacherDir = () => {
 
   return (
     <div>
-      <Dir type="Teacher" comp={<Map ids={true} personNames={true} data={teachersArray} email={true}/>}></Dir>
+      {/* Replace div with component */}
+      <Dir type="Teacher" comp={<Map ids={true} personNames={true} data={teachersArray} dataType={'Teacher'}/>}></Dir>
     </div>
   )
 }

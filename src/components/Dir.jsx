@@ -19,7 +19,7 @@ const Dir = (data) => {
     
     const handleCloseRemove = () => {
         setOpenRemove(false);
-    };
+    };    
 
     return (
         <>
