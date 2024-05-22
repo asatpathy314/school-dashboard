@@ -12,20 +12,20 @@ const Classes = () => {
   async function getTeachers() {
     const collRef = collection(db, "classes");
     const classSnapshot = await getDocs(query(collRef));
+    console.log(classSnapshot);
     let temp = [];
 
     await Promise.all(classSnapshot.docs.map(async (doc) =>  {
       try {
+        console.log("hi")
         const id = doc.id;
         const students = doc.data()['students'];
         let grade = 0;
         
         for (const stuRef of students) {
           const stuDoc = await getDoc(stuRef);
-          // console.log('stu', stuRef);
           const classes = stuDoc.data()['classes'];
           classes.forEach((c) => {
-            // console.log(c['class'].id, id)
             if (c['class'].id === id) {
               grade = grade + c['grade'];
             }
@@ -33,15 +33,13 @@ const Classes = () => {
         }
 
         const avg = grade / students.length;
+        console.log(avg)
 
         const teacherRef = doc.data()['teacher']
-        // console.log('tea', teacherRef);
         const teacherDoc = await getDoc(teacherRef);
-        // console.log('tdoc', teacherDoc.data()['name'], teacherDoc.id, id);
-        // console.log(avg);
 
-        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg + '%', 'fullName': teacherDoc.data()['name']});
-        // console.log(temp);
+        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg + '%', 'fullName': teacherDoc.data()['fullName']});
+        console.log('hiiiiiii', temp)
       } catch {
         console.log("a");
       }
