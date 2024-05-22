@@ -1,9 +1,13 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
+import TextField from '@mui/material/TextField';
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
+    const [hasSearched, setHasSearched] = useState(false);
+    const [filteredData, setFilteredData] = useState([]);
 
     useEffect(() => {
         const newColumns = [];
@@ -39,10 +43,43 @@ const Map = (props) => {
         setColumns(newColumns);
     }, [ids, personNames, classNames, studentGrades, averageGrades]);
 
+    useEffect(() => { 
+        if (hasSearched) {
+            setFilteredData(data.filter((row) =>
+                Object.values(row).some(
+                    (value) => typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+            ));
+        } else {
+            // Reset filteredData if searchQuery is empty
+            setFilteredData(data);
+        }
+    }, [searchQuery, hasSearched, data]);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+        setHasSearched(true);
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            setSearchQuery(e.target.value);
+            setHasSearched(true);
+        }
+    };
+    
     return (
         <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+            <TextField
+                label="Search"
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyPress}
+                variant="outlined"
+                fullWidth
+                style={{ marginBottom: '1rem' }}
+            />
             <DataGrid
-                rows={data}
+                rows={filteredData}
                 columns={columns}
                 autoHeight={true}
                 initialState={{
