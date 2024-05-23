@@ -70,7 +70,7 @@ export const addStudent = async (student) => {
 
 /**
  * Removes students from the 'students' collection based on their names.
- * @param {Object} studentsToRemove - An object containing an array of students to remove.
+ * @param {Object} studentsToRemove - An object containing an array of student objects to remove. Key label, data fullName.
  * @param {Array} studentsToRemove.students - An array of students to remove.
  * @param {string} studentsToRemove.students[].label - The name of the student to remove.
  * @returns {Promise<void>} - A promise that resolves when all students have been removed.

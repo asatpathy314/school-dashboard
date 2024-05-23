@@ -49,7 +49,7 @@ const Map = (props) => {
                 newColumns.push({
                     field: 'fullName',
                     headerName: 'Name',
-                    width: 150,
+                    width: 125,
                 })
             } else {
                 newColumns.push({
@@ -67,9 +67,15 @@ const Map = (props) => {
                 width: 500 });
         }
         if (studentGrades) {
-            newColumns.push({ field: 'grade', 
-            headerName: 'Grade', 
-            flex: 1.4, });
+            if (forDashboard) {
+                newColumns.push({ field: 'grade', 
+                headerName: 'Grade', 
+                width: 120, });
+            } else {
+                newColumns.push({ field: 'grade', 
+                headerName: 'Grade', 
+                flex: 1.4, });
+            }
         }
         if (classGrade) {
             newColumns.push({ field: 'classGrade', 
@@ -82,8 +88,32 @@ const Map = (props) => {
             flex: 2, 
             valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
         }
+        
+        if (averageGrades) {
+            if (forDashboard) {
+                newColumns.push({ field: 'averageGrade', 
+                headerName: 'Avg Grade', 
+                width: 80, 
+                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+            } else {
+                newColumns.push({ field: 'averageGrade', 
+                headerName: 'Average Grade', 
+                flex: 2, 
+                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+            }
+        }
         if (email) {
-            newColumns.push({ field: 'email', headerName: 'Email', width: 320 });
+            if (forDashboard) {
+                newColumns.push({ field: 'email', 
+                    headerName: 'Email', 
+                    width: 150 
+                });
+            } else {
+                newColumns.push({ field: 'email', 
+                    headerName: 'Email', 
+                    width: 320 
+                });
+            }
         }
         if (dataType) {
             newColumns.push({
