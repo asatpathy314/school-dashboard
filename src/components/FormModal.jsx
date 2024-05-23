@@ -11,22 +11,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
-import { db } from "../../firebase.js";
-import {
-  doc,
-  setDoc,
-  deleteDoc,
-  getDocs,
-  query,
-  collection,
-  where,
-} from "firebase/firestore";
+
 import AddClass from "./modals/AddClass.jsx";
 import AddStudent from "./modals/AddStudent.jsx";
 import AddTeacher from "./modals/AddTeacher.jsx";
 import RemoveClass from "./modals/RemoveClass.jsx";
 import RemoveStudent from "./modals/RemoveStudent.jsx";
 import RemoveTeacher from "./modals/RemoveTeacher.jsx";
+import AddEvent from "./modals/AddEvent.jsx";
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -46,6 +38,7 @@ const FormModal = ({
   open,
   handleClickOpen,
   handleClose,
+  values,
 }) => {
   const [teachersAutocomplete, setTeachersAutocomplete] = useState([]);
   const [studentsAutocomplete, setStudentsAutocomplete] = useState([]);
@@ -88,6 +81,7 @@ const FormModal = ({
           handleClose={handleClose}
           teachersAutocomplete={teachersAutocomplete}
           studentsAutocomplete={studentsAutocomplete}
+          values={values}
         />
       );
     }
@@ -97,6 +91,7 @@ const FormModal = ({
           open={open}
           handleClose={handleClose}
           classesAutocomplete={classesAutocomplete}
+          values={values}
         />
       );
     }
@@ -106,6 +101,7 @@ const FormModal = ({
           open={open}
           handleClose={handleClose}
           classesAutocomplete={classesAutocomplete}
+          values={values}
         />
       );
     }
@@ -115,20 +111,28 @@ const FormModal = ({
           open={open}
           handleClose={handleClose}
           studentsAutocomplete={studentsAutocomplete}
+          values={values}
         />
       );
     }
     case "addTeacher": {
-      return <AddTeacher open={open} handleClose={handleClose} />;
+      return (
+        <AddTeacher open={open} handleClose={handleClose} values={values} />
+      );
     }
+
     case "removeTeacher": {
       return (
         <RemoveTeacher
           open={open}
           handleClose={handleClose}
           teachersAutocomplete={teachersAutocomplete}
+          values={values}
         />
       );
+    }
+    case "addEvent": {
+      return <AddEvent open={open} handleClose={handleClose} values={values} />;
     }
     case "editGrade": {
       const handleSubmit = (event) => {

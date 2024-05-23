@@ -1,4 +1,7 @@
-import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import TextInput from './TextInput';
 
 /**
  * A text input component.
@@ -10,23 +13,23 @@ import TextField from "@mui/material/TextField";
  * @param {string} props.value - The value of the text input.
  * @returns {JSX.Element} The rendered TextInput component.
  */
-const TextInput = ({ label, field, defaultValue }) => {
+const DateTimeInput = ({ label, field, defaultValue }) => {
   return (
     <>
-      <TextField
-        autoFocus
-        required
-        margin="dense"
-        id="name"
-        name={field}
-        label={label}
-        type="text"
-        variant="standard"
-        defaultValue={defaultValue}
-      />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              required
+              margin = "dense"
+              id = "dateTime"
+              name={field}
+              label={label}
+              defaultValue={defaultValue}
+              renderInput={(params) => <TextInput {...params} />}
+            />
+        </LocalizationProvider>
       <br />
     </>
   );
 };
 
-export default TextInput;
+export default DateTimeInput;
