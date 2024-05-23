@@ -4,6 +4,7 @@ import { db } from '../../firebase';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
 import './../styles/Calendars.css';
+import DashboardComponent from '../components/DashboardComponent';
 import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents';
 
 const Calendars = () => {
@@ -70,6 +71,7 @@ const Calendars = () => {
   return (
     <div>
       <div style={{ paddingTop: '20px' }}> 
+        {/* <DashboardComponent data={events} which={'upcoming-events'}/> */}
         <DashboardUpcomingEvents />
       </div>
       <Scheduler
