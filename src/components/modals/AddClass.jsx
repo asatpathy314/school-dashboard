@@ -8,17 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { db } from "../../../firebase.js";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  deleteDoc,
-  getDocs,
-  query,
-  collection,
-  where,
-} from "firebase/firestore";
+import { addClass } from "../../lib/class.js";
 
 /**
  * AddClass component.
@@ -66,12 +56,13 @@ const AddClass = ({
 
   const [selectedStudents, setSelectedStudents] = useState(students);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    formJson.students = selectedStudents.map((student) => student.label); // Assuming you want to save labels
+    formJson.students = selectedStudents
     console.log(formJson);
+    await addClass(formJson);
     handleClose();
   };
 
