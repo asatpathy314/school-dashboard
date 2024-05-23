@@ -28,8 +28,12 @@ const Class = () => {
           grade = c['grade'];
         }
       }
-      temp = [...temp, {'id': stuDoc.data()['id'], 'classGrade': grade + '%', 'grade': stuDoc.data()['grade'], 'fullName': stuDoc.data()['fullName']}];
-      console.log(temp);
+      temp = [...temp, {
+        'id': stuDoc.data()['id'], 
+        'docId': stuDoc.id, 
+        'classGrade': grade + '%', 
+        'grade': stuDoc.data()['grade'], 
+        'fullName': stuDoc.data()['fullName']}];
     }))
     setStudentsArray(temp);
   }
@@ -37,11 +41,43 @@ const Class = () => {
   useEffect(() => {
     getStudents();
   }, [])
+
+  const handleSaveGrade = async (upRow) => {
+    const grade = parseInt(upRow['classGrade'].split('%'));
+    console.log(grade);
+    const stuId = upRow['docId'];
+    console.log(id);
+    if (0 <= grade && 100 >= grade) {
+      const stuDocRef = doc(db, 'students', stuId);
+      const stuData = (await getDoc(stuDocRef)).data();
+      let classes = stuData['classes']
+      console.log()
+      for (let i = 0; i < classes.length; i++) {
+        console.log(classes[i]['class'].id, id);
+        if (classes[i]['class'].id === id) {
+          console.log(id);
+          classes[i]['grade'] = grade;
+        }
+      }
+      console.log(classes);
+      await updateDoc(stuDocRef, {'classes': classes});
+    }
+}
   
   return (
     <>
       <div>
-        <Dir type="indClass" name={className} comp={<Map id={true} classGrade={true} personNames={true} studentGrades={true} data={studentsArray} dataType="Student"/>}></Dir>
+        <Dir 
+          type="indClass" name={className} comp={
+            <Map 
+              id={true} 
+              classGrade={true} 
+              personNames={true} 
+              studentGrades={true} 
+              data={studentsArray} 
+              dataType="indClass"
+              handleSaveGrade={handleSaveGrade}/>
+          } />
       </div>  
     </>
   )

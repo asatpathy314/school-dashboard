@@ -5,23 +5,19 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
 import { Link } from 'react-router-dom';
-import AddClass from './modals/AddClass.jsx';
-import AddStudent from './modals/AddStudent.jsx';
-import AddTeacher from './modals/AddTeacher.jsx';
+
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard } = props;
+    const { data, ids, personNames, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard, handleSaveGrade } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowSelected, setRowSelected] = useState(false);
-    const [values, setValues] = useState({})
-
-    console.log(data);
+    const [values, setValues] = useState({});
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -98,6 +94,12 @@ const Map = (props) => {
             flex: 2, 
             valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
         }
+
+        if (Object.hasOwn(data, 'docId')) {
+            newColumns.push({ field: 'docId', 
+            headerName: 'docId', 
+            flex: 0 })
+        }
         
         // if (averageGrades) {
         //     if (forDashboard) {
@@ -125,7 +127,7 @@ const Map = (props) => {
                 });
             }
         }
-        if (dataType) {
+        if (dataType != 'indClass') {
             newColumns.push({
                 field: 'edit',
                 headerName: 'Edit',
@@ -260,8 +262,23 @@ const Map = (props) => {
                     disableRowSelectionOnClick = {true}
                     rowSelectionModel={rowSelectionModel}
                     onRowSelectionModelChange={handleRowSelection}
+                    processRowUpdate={(upRow, ogRow) => {handleSaveGrade(upRow)}}
+                    onProcessRowUpdateError={(e) => {console.log(e);}}
+                    columnVisibilityModel={{
+                        // Hide columns status and traderName, the other columns will remain visible
+                        docId: false,
+                      }}
                 />
-                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd} values={values['row']}/>
+                {
+                    dataType == 'indClass' ? '' : 
+                    <FormModal 
+                        modalType={"add" + dataType} 
+                        open={openAdd} 
+                        handleClose={handleCloseAdd} 
+                        handleClickOpen={handleClickOpenAdd} 
+                        values={values['row']}
+                    />
+                }
                 <div>{rowSelected ? <button onClick={handleDelete}>Test</button> : ''}</div>
             </div>
         );
