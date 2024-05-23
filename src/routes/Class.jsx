@@ -7,12 +7,14 @@ import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy, av
 
 const Class = () => {
   const [studentsArray, setStudentsArray] = useState([]);
+  const [className, setClassName] = useState('');
   const {id} = useParams();
 
   async function getStudents() {
     const classRef = doc(db, "classes", id);
     const classDoc = await getDoc(classRef);
     const students = classDoc.data()['students'];
+    setClassName(classDoc.data()['name'])
 
     let temp = [];
 
@@ -39,7 +41,7 @@ const Class = () => {
   return (
     <>
       <div>
-        <Dir type="Student" comp={<Map id={true} classGrade={true} personNames={true} studentGrades={true} data={studentsArray}/>}></Dir>
+        <Dir type="indClass" name={className} comp={<Map id={true} classGrade={true} personNames={true} studentGrades={true} data={studentsArray} dataType="Student"/>}></Dir>
       </div>  
     </>
   )
