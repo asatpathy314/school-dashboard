@@ -11,7 +11,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Teachers</h3>
-          <Map ids={true} personNames={true} data={data} />
+          <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} />
         </div>
       );
       break;

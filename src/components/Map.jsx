@@ -7,7 +7,7 @@ import FormModal from './FormModal';
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades, email, dataType } = props;
+    const { data, ids, personNames, classNames, studentGrades, averageGrades, email, dataType, forDashboard } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -24,7 +24,7 @@ const Map = (props) => {
         const newColumns = [];
 
         // Conditionally add columns based on the props received
-        if (ids) {
+        if (!forDashboard && ids) {
             newColumns.push({
                 field: 'id',
                 headerName: 'ID',
@@ -34,11 +34,19 @@ const Map = (props) => {
         } 
 
         if (personNames) {
-            newColumns.push({
-                field: 'fullName',
-                headerName: 'Name',
-                flex: 1.4,
-            });
+            if (forDashboard) {
+                newColumns.push({
+                    field: 'fullName',
+                    headerName: 'Name',
+                    width: 150,
+                })
+            } else {
+                newColumns.push({
+                    field: 'fullName',
+                    headerName: 'Name',
+                    flex: 1.4,
+                });
+            }
         }
 
         if (classNames) {

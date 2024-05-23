@@ -1,38 +1,54 @@
 import React, { useState, useEffect } from 'react'
 import DashboardComponent from '../components/DashboardComponent'
 import '../styles/dashboard/Dashboard.css'
-import { collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy } from "firebase/firestore";
 import { db } from '../../firebase';
 import { Box } from '@mui/material'
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
+  const [teachersArray, setTeachersArray] = useState([]);
+
+  const fetchEvents = async () => {
+    try {
+      const eventsCollection = collection(db, 'events');
+      const eventsSnapshot = await getDocs(eventsCollection);
+      const eventsData = eventsSnapshot.docs.map(doc => {
+        const data = doc.data();
+        const startDate = data['start-date'].toDate();
+        return {
+          id: doc.id,
+          name: data.name,
+          description: data.description,
+          startDate: startDate,
+          startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          endDate: data['end-date'].toDate(),
+        };
+      });
+      const sortedEvents = eventsData.sort((a, b) => a.startDate - b.startDate);
+      setEvents(sortedEvents);
+    } catch (error) {
+      console.error('Error fetching events: ', error);
+    }
+  };
+
+  async function getTeachers() {
+    const collRef = collection(db, "teachers");
+    const teacherSnapshot = await getDocs(query(collRef));
+    let temp = [];
+    
+    await Promise.all(teacherSnapshot.docs.map(async (doc) => {
+        const docData = doc.data();
+        const id = doc.id;
+        const classes = docData['classes'];
+        temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email']})
+    }));
+    setTeachersArray(temp);
+}
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const eventsCollection = collection(db, 'events');
-        const eventsSnapshot = await getDocs(eventsCollection);
-        const eventsData = eventsSnapshot.docs.map(doc => {
-          const data = doc.data();
-          const startDate = data['start-date'].toDate();
-          return {
-            id: doc.id,
-            name: data.name,
-            description: data.description,
-            startDate: startDate,
-            startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            endDate: data['end-date'].toDate(),
-          };
-        });
-        const sortedEvents = eventsData.sort((a, b) => a.startDate - b.startDate);
-        setEvents(sortedEvents);
-      } catch (error) {
-        console.error('Error fetching events: ', error);
-      }
-    };
-
     fetchEvents();
+    getTeachers();
   }, []);
 
   const [data] = useState([
@@ -76,7 +92,7 @@ const Dashboard = () => {
             "teachers upcoming-events upcoming-events students"` }}
         >
           <Box sx={{ gridArea: 'teachers' }}>
-            <DashboardComponent data={data} which={'teacher'}/>
+            <DashboardComponent data={teachersArray} which={'teacher'}/>
           </Box>
           <Box sx={{ gridArea: 'classes' }}>
             <DashboardComponent data={data} which={'class'} />
