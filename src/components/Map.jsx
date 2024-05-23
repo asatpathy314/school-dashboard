@@ -2,6 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { React, useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import Button from '@mui/material/Button'
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
 import { Link } from 'react-router-dom';
@@ -258,7 +259,11 @@ const Map = (props) => {
                     onRowSelectionModelChange={handleRowSelection}
                 />
                 <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
-                <div>{rowSelected ? <button className='button' onClick={handleDelete}>Test</button> : ''}</div>
+                <div className='button'>{rowSelected ? <Button 
+                    variant='contained'  
+                    mt='5'
+                    onClick={handleDelete}>Delete Selected</Button> : ''}
+                    </div>
             </div>
         );
     }
