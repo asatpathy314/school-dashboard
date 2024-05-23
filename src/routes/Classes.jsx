@@ -20,13 +20,15 @@ const Classes = () => {
         let gradeSum = 0;
         let avg = 0;
         
-        console.log(students.length)
+        // console.log(students.length)
         if (students.length > 0) {
           for (const stuRef of students) {
             const stuDoc = await getDoc(stuRef);
             const classes = stuDoc.data()['classes'];
             classes.forEach((c) => {
-              gradeSum = gradeSum + c['grade'];
+              if (c['class'].id === id) {
+                gradeSum = gradeSum + c['grade'];
+              }
             })
           }
           avg = gradeSum / students.length;
@@ -36,20 +38,19 @@ const Classes = () => {
         }
 
         // console.log(gradeSum)
-        
-        console.log(avg);
+        // console.log(avg);
 
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
 
         temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
       } catch (error) {
-        console.log("Error fetching class data: ", error);
+        console.log("Error fetching class data: ", error, doc.id);
       }
     }));
 
     setClassesArray(temp);
-}
+  }
 
   useEffect(() => {
     getClasses();

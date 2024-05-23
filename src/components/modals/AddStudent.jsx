@@ -42,7 +42,7 @@ const AddStudent = ({
   values = {},
 }) => {
   // Providing default values for destructured properties of `values`
-  console.log(classesAutocomplete);
+  // console.log(classesAutocomplete);
   const {
     firstName = "",
     lastName = "",
