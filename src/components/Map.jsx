@@ -94,19 +94,19 @@ const Map = (props) => {
             valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
         }
         
-        if (averageGrades) {
-            if (forDashboard) {
-                newColumns.push({ field: 'averageGrade', 
-                headerName: 'Avg Grade', 
-                width: 80, 
-                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
-            } else {
-                newColumns.push({ field: 'averageGrade', 
-                headerName: 'Average Grade', 
-                flex: 2, 
-                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
-            }
-        }
+        // if (averageGrades) {
+        //     if (forDashboard) {
+        //         newColumns.push({ field: 'averageGrade', 
+        //         headerName: 'Avg Grade', 
+        //         width: 80, 
+        //         valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+        //     } else {
+        //         newColumns.push({ field: 'averageGrade', 
+        //         headerName: 'Average Grade', 
+        //         flex: 2, 
+        //         valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+        //     }
+        // }
         if (email) {
             if (forDashboard) {
                 newColumns.push({ field: 'email', 
