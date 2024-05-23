@@ -9,6 +9,7 @@ const Dashboard = () => {
   const [events, setEvents] = useState([]);
   const [teachersArray, setTeachersArray] = useState([]);
   const [studentsArray, setStudentsArray] = useState([]);
+  const [classesArray, setClassesArray] = useState([]);
 
   const fetchEvents = async () => {
     try {
@@ -47,66 +48,92 @@ const Dashboard = () => {
     setTeachersArray(temp);
 }
 
-async function getStudents() {
-  const collRef = collection(db, "students");
-  const studentSnapshot = await getDocs(query(collRef));
-  let temp = [];
-  
-  await Promise.all(studentSnapshot.docs.map(async (doc) => {
-      const docData = doc.data();
-      const classes = doc.data()['classes'];
-      const id = doc.id;
+  async function getStudents() {
+    const collRef = collection(db, "students");
+    const studentSnapshot = await getDocs(query(collRef));
+    let temp = [];
+    
+    await Promise.all(studentSnapshot.docs.map(async (doc) => {
+        const docData = doc.data();
+        const classes = doc.data()['classes'];
+        const id = doc.id;
 
-      let grades = 0;
-      let count = 0;
-      const gradeSum = classes.forEach(classItem => {
-        grades = classItem.grade + grades;
-        count = count + 1;
-      })
-      const avgGrade = grades / count;
+        let grades = 0;
+        let count = 0;
+        const gradeSum = classes.forEach(classItem => {
+          grades = classItem.grade + grades;
+          count = count + 1;
+        })
+        const avgGrade = grades / count;
 
-      temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'grade': docData['grade'], 'averageGrade': avgGrade})
-  }));
-setStudentsArray(temp);
-}
+        temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'grade': docData['grade'], 'averageGrade': avgGrade})
+    }));
+  setStudentsArray(temp);
+  }
+
+  async function getClasses() {
+    const collRef = collection(db, "classes");
+    const classSnapshot = await getDocs(query(collRef));
+    let temp = [];
+
+    await Promise.all(classSnapshot.docs.map(async (doc) =>  {
+      try {
+        // console.log("hi")
+        const id = doc.id;
+        const students = doc.data()['students'];
+        let gradeSum = 0;
+        let avg = 0;    
+
+        // console.log(students.length)
+        if (students.length > 0) {
+          for (const stuRef of students) {
+            if (stuRef) {
+              const stuDoc = await getDoc(stuRef);
+              if (stuDoc.data() != undefined) {
+                const classes = stuDoc.data()['classes'];
+                classes.forEach((c) => {
+                  gradeSum = gradeSum + c['grade'];
+                })
+              } else {
+                continue;
+              } 
+            }
+          }
+          avg = gradeSum / students.length;
+          avg = avg.toFixed(2);
+        } else {
+          avg = 'N/A';
+        }
+
+        // console.log(gradeSum)
+        // console.log(avg);
+
+        const teacherRef = doc.data()['teacher']
+        const teacherDoc = await getDoc(teacherRef);
+
+        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
+      } catch (error) {
+        console.log("Error fetching class data: ", error);
+      }
+    }));
+
+    setClassesArray(temp);
+  }
 
   useEffect(() => {
     fetchEvents();
     getTeachers();
     getStudents();
+    getClasses();
   }, []);
 
-  const [data] = useState([
-    { fullName: 'John Doe', id: '100001' },
-    { fullName: 'Jane Smith', id: '100002' },
-    { fullName: 'Michael Johnson', id: '100003' },
-    { fullName: 'Emily Brown', id: '100004' },
-    { fullName: 'William Taylor', id: '100005' },
-    { fullName: 'Olivia Anderson', id: '100006' },
-    { fullName: 'James Thomas', id: '100007' },
-    { fullName: 'Emma Wilson', id: '100008' },
-    { fullName: 'Alexander Martinez', id: '100009' },
-    { fullName: 'Sophia Garcia', id: '100010' },
-    { fullName: 'Benjamin Miller', id: '100011' },
-    { fullName: 'Isabella Jackson', id: '100012' },
-    { fullName: 'Daniel Davis', id: '100013' },
-    { fullName: 'Mia White', id: '100014' },
-    { fullName: 'Joseph Harris', id: '100015' },
-    { fullName: 'Charlotte Clark', id: '100016' },
-    { fullName: 'Samuel Lewis', id: '100017' },
-    { fullName: 'Amelia Allen', id: '100018' },
-    { fullName: 'David Young', id: '100019' },
-    { fullName: 'Sofia King', id: '100020' },
-    { fullName: 'Matthew Lee', id: '100021' },
-    { fullName: 'Ava Wright', id: '100022' },
-  ]);
 
   return (
     <>
       <h2 className='header'>Admin Dashboard</h2>
       <div className='dashboard'>
         <Box sx={{ 
-          mt: -1,
+          mt: 1,
           display: 'grid', 
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 1,
@@ -116,16 +143,16 @@ setStudentsArray(temp);
             "teachers classes classes students"
             "teachers upcoming-events upcoming-events students"` }}
         >
-          <Box sx={{ gridArea: 'teachers' }}>
+          <Box sx={{ gridArea: 'teachers', ml: 5 }}>
             <DashboardComponent data={teachersArray} which={'teacher'}/>
           </Box>
           <Box sx={{ gridArea: 'classes' }}>
-            <DashboardComponent data={data} which={'class'} />
+            <DashboardComponent data={classesArray} which={'class'} />
           </Box>
-          <Box sx={{ gridArea: 'students' }}>
+          <Box sx={{ gridArea: 'students', mr: 5 }}>
             <DashboardComponent data={studentsArray} which={'student'} />
           </Box>
-          <Box sx={{ gridArea: 'upcoming-events' }}>
+          <Box sx={{ gridArea: 'upcoming-events', mb: 2 }}>
             <DashboardComponent data={events} which={'upcoming-events'}/>
           </Box>
         </Box>
