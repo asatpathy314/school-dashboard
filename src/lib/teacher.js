@@ -1,5 +1,6 @@
 import { db } from "../../firebase.js";
-import { doc, getDoc, setDoc, query, collection, where, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, collection, addDoc, getDocs, query, where, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getByFullName } from "./class.js";
 
 /**
  * Adds a teacher to the Firestore database.
@@ -24,92 +25,69 @@ import { doc, getDoc, setDoc, query, collection, where, getDocs, deleteDoc } fro
  * }
  */
 export const addTeacher = async (teacher) => {
-  // Create a reference to the teacher document based on the teacher's id
-  const teacherRef = doc(db, "teachers", teacher.id);
+  try {
+    // Create a reference to the teachers collection
+    const teachersCollectionRef = collection(db, "teachers");
 
-  // Try to retrieve the document from Firestore
-  const docSnap = await getDoc(teacherRef);
+    // Check if the teacher already exists by full name
+    const docSnap = await getByFullName(`${teacher.firstName} ${teacher.lastName}`, "teachers");
 
-  // Check if the document exists
-  if (docSnap.exists()) {
-    // Document exists, update the existing document with new data
-    await setDoc(
-      teacherRef,
-      {
-        firstName: teacher["firstName"],
-        lastName: teacher["lastName"],
-        id: teacher["id"],
-        title: teacher["title"],
-        email: teacher["email"],
-        fullName: teacher["firstName"] + " " + teacher["lastName"],
-      },
-      { merge: true }
-    ); // Use merge option to update existing fields and add new fields
-    console.log("Teacher information updated.");
-  } else {
-    // Document does not exist, create a new document
-    await setDoc(teacherRef, {
-      firstName: teacher["firstName"],
-      lastName: teacher["lastName"],
-      id: teacher["id"],
-      title: teacher["title"],
-      email: teacher["email"],
-      fullName: teacher["firstName"] + " " + teacher["lastName"],
-    });
-    console.log("New teacher added.");
+    if (docSnap!==null) {
+      const teacherRef = doc(db, "collection", docSnap.id)
+      // Document exists, update the existing document with new data
+      await updateDoc(teacherRef, {
+        firstName: teacher.firstName,
+        lastName: teacher.lastName,
+        id: teacher.id,
+        title: teacher.title,
+        email: teacher.email,
+        fullName: `${teacher.firstName} ${teacher.lastName}`,
+      });
+      console.log("Teacher information updated.");
+    } else {
+      // Document does not exist, create a new document with an auto-generated ID
+      await addDoc(teachersCollectionRef, {
+        firstName: teacher.firstName,
+        lastName: teacher.lastName,
+        id: teacher.id,
+        title: teacher.title,
+        email: teacher.email,
+        fullName: `${teacher.firstName} ${teacher.lastName}`,
+      });
+      console.log("New teacher added.");
+    }
+  } catch (error) {
+    console.error("Error adding or updating teacher: ", error);
   }
 };
 
-/* 
-example input
-[
-    {
-        "label": "Noah White"
-    },
-    {
-        "label": "Emma Garcia"
-    }
-]
-*/
-
 /**
- * Removes teachers from the Firestore database.
- * 
- * @param {Array} teachers - An array of teacher objects to be removed.
- * @param {string} teachers[].label - The full name of the teacher to be removed.
+ * Removes teachers from the Firestore database based on their full names.
+ *
+ * @param {Array} teachers - An array of teacher objects.
+ * @param {string} teachers[].label - The full name of the teacher.
  *
  * @example
  * // Example input:
  * [
  *     {
- *         "label": "Noah White"
+ *         "label": "Jenkins Long"
  *     },
  *     {
- *         "label": "Emma Garcia"
+ *         "label": "John Doe"
  *     }
  * ]
  */
-
 export const removeTeacher = async (teachers) => {
-  for (const teacher of teachers) {
-    // Create a query to find the teacher document based on the full name
-    const teacherQuery = query(
-      collection(db, "teachers"),
-      where("fullName", "==", teacher.label)
-    );
-    const querySnapshot = await getDocs(teacherQuery);
-
-    if (querySnapshot.empty) {
-      console.error(`Teacher not found: ${teacher.label}`);
-      continue;
+  for (let i = 0; i < teachers.length; i++) {
+    const q = query(collection(db, "teachers"), where("fullName", "==", teachers[i].label));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const teacherDocument = querySnapshot.docs[0];
+      await deleteDoc(doc(db, "teachers", teacherDocument.id));
+      console.log("Teacher document located at " + teacherDocument.id + " has been deleted.");
+    } else {
+      console.log("No document found for teacher: " + teachers[i].label);
     }
-
-    // Assuming there is only one document with the given fullName
-    const teacherDoc = querySnapshot.docs[0];
-    const teacherRef = teacherDoc.ref;
-
-    // Delete the teacher document
-    await deleteDoc(teacherRef);
-    console.log(`Teacher ${teacher.label} removed successfully.`);
   }
 };

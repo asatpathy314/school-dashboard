@@ -5,17 +5,18 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import MultiSelectAutocomplete from "./input/MultiSelectAutocomplete.jsx";
+import { removeEvent } from "../../lib/event.js";
 
 
-const RemoveEvent = ( { open, handleClose, eventsAutocomplete}) => {
+const RemoveEvent = ( { open, handleClose, eventsAutocomplete} ) => {
     const [selectedEvents, setSelectedEvents] = useState([]);
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.eventData = selectedEvents;
-        console.log(formJson)
-        //removeEvent(formJson); TODO: complete
+        console.log(formJson);
+        removeEvent(selectedEvents); 
         handleClose();
     };
     return (

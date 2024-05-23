@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import DateTimeInput from "./input/DateTimeInput.jsx";
+import { addEvent } from "../../lib/event.js";
 
 /**
  * Renders a modal for adding or editing an event.
@@ -38,9 +39,10 @@ const AddEvent = ({ open, handleClose, values = {} }) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        formJson.startDate = startDate.$d;
-        formJson.endDate = endDate.$d;
+        formJson.startDate = startDate.toISOString();
+        formJson.endDate = endDate.toISOString();
         console.log(formJson);
+        await addEvent(formJson);
         handleClose();
       };
 

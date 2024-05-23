@@ -131,7 +131,7 @@ export const addClass = async (classData) => {
   }
 };
 
-const getByFullName = async (fullName, collectionName) => {
+export const getByFullName = async (fullName, collectionName) => {
   // Create a query to find the document by fullName
   console.log(collectionName, fullName);
   const q = query(
