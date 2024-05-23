@@ -30,13 +30,17 @@ import DateTimeInput from "./input/DateTimeInput.jsx";
 
 const AddEvent = ({ open, handleClose, values = {} }) => {
     //TODO: Finish
-    const { description = "", name = "", startDate = "", endDate = "" } = values;
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+    const { description = "", name = ""} = values;
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson); 
+        formJson.startDate = startDate.$d;
+        formJson.endDate = endDate.$d;
+        console.log(formJson);
         handleClose();
       };
 
@@ -67,12 +71,12 @@ const AddEvent = ({ open, handleClose, values = {} }) => {
           <DateTimeInput
             label="Start Date"
             field="startDate"
-            defaultValue={startDate}
+            changeState={setStartDate}
           />
           <DateTimeInput
             label="Start Date"
             field="startDate"
-            defaultValue={endDate}
+            changeState={setEndDate}
           />
         </DialogContent>
         <DialogActions>

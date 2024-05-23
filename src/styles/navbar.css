@@ -19,12 +19,12 @@
 
 .bar li a {
   padding-inline: 20px;
-  color: whitesmoke;
+  color: #fffffe;
   text-decoration: none;
 }
 
 .bar li a:hover {
-  color: rgb(220, 204, 246);
+  color: #d1d1e9;
 }
 
 .toggle-btn{
@@ -38,7 +38,7 @@
   left: 1rem;
   top: 3rem;
   width: 200px;
-  background:rgb(255, 255, 255);
+  background:#fffffe;
   border-radius: 10px;
   overflow:hidden;
 }
@@ -49,7 +49,7 @@
 }
 .dropdown-menu li a{
   text-decoration: none;
-  color: #6246EA;
+  color: #2b2c34;
   align-items: center;
   justify-content: center;
 }

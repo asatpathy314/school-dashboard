@@ -19,6 +19,8 @@ import RemoveClass from "./modals/RemoveClass.jsx";
 import RemoveStudent from "./modals/RemoveStudent.jsx";
 import RemoveTeacher from "./modals/RemoveTeacher.jsx";
 import AddEvent from "./modals/AddEvent.jsx";
+import RemoveEvent from "./modals/RemoveEvent.jsx";
+import { Remove } from "@mui/icons-material";
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -43,6 +45,7 @@ const FormModal = ({
   const [teachersAutocomplete, setTeachersAutocomplete] = useState([]);
   const [studentsAutocomplete, setStudentsAutocomplete] = useState([]);
   const [classesAutocomplete, setClassesAutocomplete] = useState([]);
+  const [eventsAutocomplete, setEventsAutocomplete] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   useEffect(() => {
@@ -61,7 +64,7 @@ const FormModal = ({
         setClassesAutocomplete(retrieveListByLabel("name", classes));
       })
       .catch((error) => {
-        console.error("Failed to retrieve teachers:", error);
+        console.error("Failed to retrieve :", error);
       });
     retrieveObjects("students")
       .then((res) => {
@@ -69,7 +72,15 @@ const FormModal = ({
         setStudentsAutocomplete(retrieveListByLabel("fullName", students));
       })
       .catch((error) => {
-        console.error("Failed to retrieve teachers:", error);
+        console.error("Failed to retrieve students:", error);
+      });
+    retrieveObjects("events")
+      .then((res) => {
+        const events = res;
+        setEventsAutocomplete(retrieveListByLabel("name", events));
+      })
+      .catch((error) => {
+        console.error("Failed to retrieve events:", error);
       });
   }, []);
 
@@ -133,6 +144,9 @@ const FormModal = ({
     }
     case "addEvent": {
       return <AddEvent open={open} handleClose={handleClose} values={values} />;
+    }
+    case "removeEvent": { 
+      return <RemoveEvent open={open} handleClose={handleClose} eventsAutocomplete={eventsAutocomplete} />;
     }
     case "editGrade": {
       const handleSubmit = (event) => {

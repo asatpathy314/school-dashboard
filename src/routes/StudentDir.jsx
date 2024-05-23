@@ -17,6 +17,13 @@ const StudentDir = () => {
           const classes = doc.data()['classes'];
           const id = doc.id;
 
+          const valClasses = []
+          
+          await Promise.all(classes.map(async (c) => {
+            const cDoc = await getDoc(c['class']);
+            valClasses.push({'label': cDoc.data()['name']});
+          }))
+
           let grades = 0;
           let count = 0;
           const gradeSum = classes.forEach(classItem => {
@@ -25,7 +32,17 @@ const StudentDir = () => {
           })
           const avgGrade = grades / count;
 
-          temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'grade': docData['grade'], 'averageGrade': avgGrade})
+          const name = docData['fullName'];
+          const splitName = name.split(' ');
+
+          temp.push({
+            'firstName' : splitName[0], 
+            'lastName' : splitName[1], 
+            'fullName': docData['fullName'], 
+            'id': docData['id'], 
+            'grade': docData['grade'], 
+            'averageGrade': avgGrade,
+            'classes' : valClasses})
       }));
     setStudentsArray(temp);
   }

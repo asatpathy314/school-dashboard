@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import DashboardComponent from '../components/DashboardComponent'
 import '../styles/dashboard/Dashboard.css'
-import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, getDoc } from "firebase/firestore";
 import { db } from '../../firebase';
 import { Box, Grid } from '@mui/material'
 

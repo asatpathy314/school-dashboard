@@ -13,19 +13,22 @@ import TextInput from './TextInput';
  * @param {string} props.value - The value of the text input.
  * @returns {JSX.Element} The rendered TextInput component.
  */
-const DateTimeInput = ({ label, field, defaultValue }) => {
+const DateTimeInput = ({ label, field, changeState }) => {
+  const handleChange = (newValue) => {
+    changeState(newValue)
+  };
+  
   return (
     <>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              required
-              margin = "dense"
-              id = "dateTime"
-              name={field}
-              label={label}
-              defaultValue={defaultValue}
-              renderInput={(params) => <TextInput {...params} />}
-            />
+            <DateTimePicker 
+            required
+            margin="dense"
+            id="name"
+            label={label}
+            field={field}
+            onChange={handleChange}
+            variant="standard" />
         </LocalizationProvider>
       <br />
     </>

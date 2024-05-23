@@ -9,6 +9,9 @@ import { removeTeacher } from '../lib/teacher.js';
 import { removeClass } from '../lib/class.js';
 import { Link } from 'react-router-dom';
 import '../styles/Map.css'
+import AddClass from './modals/AddClass.jsx';
+import AddStudent from './modals/AddStudent.jsx';
+import AddTeacher from './modals/AddTeacher.jsx';
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
@@ -20,6 +23,9 @@ const Map = (props) => {
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowSelected, setRowSelected] = useState(false);
+    const [values, setValues] = useState({})
+
+    // console.log(data);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -127,7 +133,10 @@ const Map = (props) => {
             newColumns.push({
                 field: 'edit',
                 headerName: 'Edit',
-                renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
+                renderCell: (params) => <EditRoundedIcon onClick={() => {
+                    setValues(params);
+                    handleClickOpenAdd()
+                }} />,
                 flex: 2,
                 headerAlign: 'right',
                 align: 'right',
@@ -226,20 +235,17 @@ const Map = (props) => {
         setRowSelected(false);
     }
 
-    // useEffect(() => {
-    //     console.log(selectedRows);
-    // }, [selectedRows]);
-
     if (forDashboard) {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                 <TextField
+                    size='small'
                     label="Search"
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyPress}
                     variant="outlined"
                     fullWidth
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '0.5rem' }}
                 />
                 <DataGrid
                     rows={filteredData}
@@ -251,7 +257,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 25]}
+                    pageSizeOptions={[10, 25]}
                     disableRowSelectionOnClick = {true}
                 />
                 <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
@@ -261,12 +267,13 @@ const Map = (props) => {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                 <TextField
+                    size='small'
                     label="Search"
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyPress}
                     variant="outlined"
                     fullWidth
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '0.5rem' }}
                 />
                 <DataGrid
                     rows={filteredData}
@@ -278,7 +285,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 25]}
+                    pageSizeOptions={[10, 25]}
                     checkboxSelection
                     keepNonExistentRowsSelected
                     disableRowSelectionOnClick = {true}
