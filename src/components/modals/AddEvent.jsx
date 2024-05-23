@@ -5,10 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
+import DateTimeInput from "./input/DateTimeInput.jsx";
 
 /**
  * Renders a modal for adding or editing an event.
@@ -67,20 +64,16 @@ const AddEvent = ({ open, handleClose, values = {} }) => {
             field="description"
             defaultValue={description}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              label="Start Date & Time"
-              value={startDate}
-              onChange={(date) => handleChange("startDate", date)}
-              renderInput={(params) => <TextInput {...params} />}
-            />
-            <DateTimePicker
-              label="End Date & Time"
-              value={endDate}
-              onChange={(date) => handleChange("endDate", date)}
-              renderInput={(params) => <TextInput {...params} />}
-            />
-          </LocalizationProvider>
+          <DateTimeInput
+            label="Start Date"
+            field="startDate"
+            defaultValue={startDate}
+          />
+          <DateTimeInput
+            label="Start Date"
+            field="startDate"
+            defaultValue={endDate}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
