@@ -23,8 +23,7 @@ const Map = (props) => {
 
     console.log(data);
 
-    const handleClickOpenAdd = (p) => {
-        setValues(p);
+    const handleClickOpenAdd = () => {
         setOpenAdd(true);
     };
     
@@ -130,7 +129,10 @@ const Map = (props) => {
             newColumns.push({
                 field: 'edit',
                 headerName: 'Edit',
-                renderCell: (params) => <EditRoundedIcon onClick={handleClickOpenAdd(params)} />,
+                renderCell: (params) => <EditRoundedIcon onClick={() => {
+                    setValues(params);
+                    handleClickOpenAdd()
+                }} />,
                 flex: 2,
                 headerAlign: 'right',
                 align: 'right',
