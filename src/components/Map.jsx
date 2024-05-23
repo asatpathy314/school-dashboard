@@ -5,6 +5,9 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
 import { Link } from 'react-router-dom';
+import AddClass from './modals/AddClass.jsx';
+import AddStudent from './modals/AddStudent.jsx';
+import AddTeacher from './modals/AddTeacher.jsx';
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
@@ -16,8 +19,12 @@ const Map = (props) => {
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowSelected, setRowSelected] = useState(false);
+    const [values, setValues] = useState({})
 
-    const handleClickOpenAdd = () => {
+    console.log(data);
+
+    const handleClickOpenAdd = (p) => {
+        setValues(p);
         setOpenAdd(true);
     };
     
@@ -123,7 +130,7 @@ const Map = (props) => {
             newColumns.push({
                 field: 'edit',
                 headerName: 'Edit',
-                renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
+                renderCell: (params) => <EditRoundedIcon onClick={handleClickOpenAdd(params)} />,
                 flex: 2,
                 headerAlign: 'right',
                 align: 'right',
@@ -197,10 +204,6 @@ const Map = (props) => {
         setFilteredData(updatedData);
     }
 
-    // useEffect(() => {
-    //     console.log(selectedRows);
-    // }, [selectedRows]);
-
     if (forDashboard) {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
@@ -256,7 +259,14 @@ const Map = (props) => {
                     rowSelectionModel={rowSelectionModel}
                     onRowSelectionModelChange={handleRowSelection}
                 />
-                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+                {
+                    {
+                    'Teacher': <AddTeacher handleClose={handleCloseAdd} open={openAdd} values={values['row']}/>,
+                    'Class': <AddStudent handleClose={handleCloseAdd} open={openAdd} values={values['row']}/>,
+                    'Student': <AddClass handleClose={handleCloseAdd} open={openAdd} values={values['row']}/>
+                    }[dataType]
+                }
+                {/* <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/> */}
                 <div>{rowSelected ? <button onClick={handleDelete}>Test</button> : ''}</div>
             </div>
         );
