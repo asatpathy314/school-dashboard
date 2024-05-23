@@ -24,7 +24,7 @@ const Dir = (data) => {
     return (
         <>
             <div className='container'>
-                <h2 className='h2'>{data['type'] === 'indClass' ? data['name'] : 'Directory'}</h2>
+                <h2 className='h2'>{data['type'] === 'indClass' ? data['name'] : data['type'] + ' Directory'}</h2>
                 <div className='overall'>
                     <div className='list'>
                         <div className='comp'>{data['comp']}</div>

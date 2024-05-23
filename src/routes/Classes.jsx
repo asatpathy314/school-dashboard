@@ -25,7 +25,9 @@ const Classes = () => {
             const stuDoc = await getDoc(stuRef);
             const classes = stuDoc.data()['classes'];
             classes.forEach((c) => {
-              gradeSum = gradeSum + c['grade'];
+              if (c['class'].id === id) {
+                gradeSum = gradeSum + c['grade'];
+              }
             })
           }
           avg = gradeSum / students.length;
