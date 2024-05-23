@@ -8,8 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { db } from "../../../firebase.js";
-import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
+import { addStudent } from "../../lib/student.js";
 
 const AddStudent = ( { open, handleClose, classesAutocomplete }) => {
     const [selectedClasses, setSelectedClasses] = useState([]);
@@ -19,6 +18,9 @@ const AddStudent = ( { open, handleClose, classesAutocomplete }) => {
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
         console.log(formJson); // TODO: Finish
+        await addStudent(formJson)
+          .then((res) => console.log(res))
+          .catch(console.error('Error adding student'));
         handleClose();
       };
 
