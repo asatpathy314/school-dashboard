@@ -11,7 +11,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Teachers</h3>
-          <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} />
+          <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} dataType="Teacher" />
         </div>
       );
       break;
@@ -19,7 +19,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Students</h3>
-          <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} />
+          <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} dataType="Student" />
         </div>
       );
       break;
@@ -27,7 +27,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-classes'>
           <h3 className='h3'>Classes</h3>
-          <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} />
+          <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} dataType="Class" />
         </div>
       );
       break;

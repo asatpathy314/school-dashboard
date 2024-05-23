@@ -19,17 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/class/:id",
     element: <Class/>
-    // when firebase is set up loop through all possible classes and add route to that class using children (I added an example id)
   },
   {
     path: "/class-directory",
     element: <Classes/>,
-    // children: [
-    //   {
-    //     path: ':/id',
-    //     element: <Class />
-    //   }
-    // ]
   },
   {
     path: "/student-directory",
