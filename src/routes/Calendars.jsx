@@ -70,37 +70,38 @@ const Calendars = () => {
 
   return (
     <div>
-      <div style={{ paddingTop: '20px' }}> 
-        {/* <DashboardComponent data={events} which={'upcoming-events'}/> */}
+      <div style={{ paddingTop: '20px', paddingBottom: '20px', paddingRight: '30px', paddingLeft: '30px'}}> 
         <DashboardUpcomingEvents />
       </div>
-      <Scheduler
-        locale="en"
-        events={events}
-        legacyStyle={false}
-        options={state?.options}
-        onCellClick={handleCellClick}
-        renderDay={(day, row, column, selectedDate, isToday, locale) => {
-          const dayEvents = events.filter(event => event.date === day.toISOString().split('T')[0]);
-          return (
-            <div className="date-cell" onClick={() => setSelectedEvent(dayEvents[0])}>
-              {day.getDate()}
-              <div className="tooltip">
-                {dayEvents.map(event => (
-                  <div key={event.id} style={{ color: event.color }}>
-                    {event.label}
-                  </div>
-                ))}
+      <div className="calendar-container">
+        <Scheduler
+          locale="en"
+          events={events}
+          legacyStyle={false}
+          options={state?.options}
+          onCellClick={handleCellClick}
+          renderDay={(day, row, column, selectedDate, isToday, locale) => {
+            const dayEvents = events.filter(event => event.date === day.toISOString().split('T')[0]);
+            return (
+              <div className="date-cell" onClick={() => setSelectedEvent(dayEvents[0])}>
+                {day.getDate()}
+                <div className="tooltip">
+                  {dayEvents.map(event => (
+                    <div key={event.id} style={{ color: event.color }}>
+                      {event.label}
+                    </div>
+                  ))}
+                </div>
               </div>
+            );
+          }}
+          renderHeader={(day, locale) => (
+            <div style={{ backgroundColor: '#8a2be2', color: '#fff', padding: '8px', textAlign: 'center' }}>
+              {day.format('ddd')}
             </div>
-          );
-        }}
-        renderHeader={(day, locale) => (
-          <div style={{ backgroundColor: '#8a2be2', color: '#fff', padding: '8px', textAlign: 'center' }}>
-            {day.format('ddd')}
-          </div>
-        )}
-      />
+          )}
+        />
+      </div>
       <Dialog open={selectedEvent !== null} onClose={handleDialogClose}>
         <DialogTitle>{selectedEvent && selectedEvent.label}</DialogTitle>
         <DialogContent>
