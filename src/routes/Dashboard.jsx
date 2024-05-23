@@ -3,7 +3,7 @@ import DashboardComponent from '../components/DashboardComponent'
 import '../styles/dashboard/Dashboard.css'
 import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy } from "firebase/firestore";
 import { db } from '../../firebase';
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
@@ -130,9 +130,32 @@ const Dashboard = () => {
 
   return (
     <>
-      <h2 className='header'>Admin Dashboard</h2>
-      <div className='dashboard'>
-        <Box sx={{ 
+      <div >
+      <Box 
+        sx={{ flexGrow: 1 }}
+        margin={2}>
+        <Grid container 
+          alignItems="stretch"
+          columnSpacing={2}
+          rowSpacing={2}>
+          <Grid item xs = {12} sm={3}>
+            <DashboardComponent data={teachersArray} which={'teacher'}/>
+          </Grid>
+          <Grid container item xs={12} sm ={6}
+            rowSpacing ={2}>
+            <Grid item xs = {12}>
+              <DashboardComponent data={classesArray} which={'class'} />
+            </Grid>
+            <Grid item xs={12}>
+              <DashboardComponent data={events} which={'upcoming-events'}/>
+            </Grid>
+          </Grid>
+          <Grid item xs = {12} sm={3}>
+            <DashboardComponent data={studentsArray} which={'student'} />
+          </Grid>
+        </Grid>
+      </Box>
+        {/* <Box sx={{ 
           mt: 1,
           display: 'grid', 
           gridTemplateColumns: 'repeat(4, 1fr)',
@@ -155,7 +178,7 @@ const Dashboard = () => {
           <Box sx={{ gridArea: 'upcoming-events', mb: 2 }}>
             <DashboardComponent data={events} which={'upcoming-events'}/>
           </Box>
-        </Box>
+        </Box> */}
       </div>
       
     </>
