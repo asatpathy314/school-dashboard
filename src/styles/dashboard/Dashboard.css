@@ -30,7 +30,6 @@
     margin: 10px 20px;
     border: 1px solid black;
     box-sizing: border-box;
-    overflow-y: auto;
 }
 
 .dashboard-left-right {
@@ -52,6 +51,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    overflow-y: auto;
+    max-height: 30vh;
 }
   
 .event-card {
@@ -61,8 +62,8 @@
     margin: 10px;
     box-shadow: 8;
     /* padding-top: 10px; */
-    width: calc(50% - 20px); /* Adjust width to fit two cards per row */
-    /* width: 100%; */
+    /* width: calc(50% - 20px); Adjust width to fit two cards per row */
+    width: 100%;
     min-width: 300px;
     box-sizing: border-box;
 }
