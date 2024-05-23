@@ -1,87 +1,99 @@
 import { useState } from "react";
-import TextInput from "./input/TextInput.jsx"
+import TextInput from "./input/TextInput.jsx";
 import SingleSelectAutocomplete from "./input/SingleSelectAutocomplete.jsx";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { db } from "../../../firebase.js";
-import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
 
-const AddTeacher = ( { open, handleClose }) => {
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson); // TODO: Finish
-        handleClose();
-      };
+/**
+ * Renders a modal for adding a teacher.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} props.open - Whether the modal is open or not.
+ * @param {function} props.handleClose - The function to handle closing the modal.
+ * @param {Object} [props.values={}] - The initial values for the form fields.
+ * @returns {JSX.Element} The AddTeacher component.
+ *
+ * @example
+ * // Example usage of AddTeacher component
+ * const values = {
+ *   firstName: "John",
+ *   lastName: "Doe",
+ *   id: "12345",
+ *   email: "johndoe@example.com",
+ *   title: "Teacher",
+ * };
+ *
+ * <AddTeacher open={true} handleClose={handleClose} values={values} />
+ */
 
-    return (
-        <>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Add Teacher</DialogTitle>
-            <DialogContent>
-              <TextInput label="Teacher First Name" field="firstName"/>
-              <TextInput label="Teacher Last Name" field="lastName"/>
-              <TextInput label="Teacher ID" field="id"/>
-              <TextInput label="Teacher Email" field="email"/>
-              <SingleSelectAutocomplete options={pronouns} name="pronoun" label="Title" />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Create</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      );
-}
+const AddTeacher = ({ open, handleClose, values = {} }) => {
+  const {
+    firstName = "",
+    lastName = "",
+    id = "",
+    email = "",
+    title = "",
+  } = values;
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const formJson = Object.fromEntries(formData.entries());
+    console.log(formJson); // TODO: Finish
+    handleClose();
+  };
+
+  return (
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          component: "form",
+          onSubmit: handleSubmit,
+          style: { minWidth: "400px" },
+        }}
+      >
+        <DialogTitle>Add Teacher</DialogTitle>
+        <DialogContent>
+          <TextInput
+            label="Teacher First Name"
+            field="firstName"
+            value={values.firstName}
+          />
+          <TextInput
+            label="Teacher Last Name"
+            field="lastName"
+            value={values.lastName}
+          />
+          <TextInput label="Teacher ID" field="id" value={values.id} />
+          <TextInput label="Teacher Email" field="email" value={values.email} />
+          <SingleSelectAutocomplete
+            options={pronouns}
+            name="title"
+            label="Title"
+            value={values.title}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit">Create</Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
 
 export default AddTeacher;
 
-const grades = [
-    { label: "Kindergarten" },
-    { label: "1st Grade" },
-    { label: "2nd Grade" },
-    { label: "3rd Grade" },
-    { label: "4th Grade" },
-    { label: "5th Grade" },
-];
-
 const pronouns = [
-    { label: "Mr. "},
-    { label: "Mrs. "},
-    { label: "Ms. "},
-    { label: "Miss "},
-    { label: "Dr. "},
+  { label: "Mr." },
+  { label: "Mrs." },
+  { label: "Ms." },
+  { label: "Miss" },
+  { label: "Dr." },
 ];
-
-/*
-      const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        let classList = [];
-        console.log(selectedClasses)
-        for (let i = 0; i < selectedClasses.length; i++) { 
-          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
-          const querySnapshot = await getDocs(q);
-          const classDocument = querySnapshot.docs[0];
-          console.log(classDocument.id + " => " + classDocument.data());
-          classList.push({class: doc(db, '/classes/'+classDocument.id)});
-        }
-        formJson.classes = classList;
-        console.log(formJson); // TODO: Finish
-        handleClose();
-      };
-*/

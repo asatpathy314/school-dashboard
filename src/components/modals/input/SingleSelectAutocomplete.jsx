@@ -2,15 +2,16 @@ import TextField from "@mui/material/TextField";
 import { Autocomplete } from "@mui/material";
 
 /**
- * Renders a single select autocomplete component.
+ * A component that renders a single select autocomplete input field.
  *
  * @component
  * @param {Object[]} options - The options for the autocomplete.
  * @param {string} name - The name of the input field.
  * @param {string} label - The label for the input field.
- * @returns {JSX.Element} The single select autocomplete component.
+ * @param {string} value - The current value of the input field.
+ * @returns {JSX.Element} The rendered SingleSelectAutocomplete component.
  */
-const SingleSelectAutocomplete = ( { options, name, label } ) => {
+const SingleSelectAutocomplete = ( { options, name, label, value } ) => {
     return (
         <Autocomplete
         options={options}
@@ -23,6 +24,7 @@ const SingleSelectAutocomplete = ( { options, name, label } ) => {
             label={label}
             type="text"
             variant="standard"
+            value={value}
           />
         )}
       />
