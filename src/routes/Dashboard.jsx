@@ -152,7 +152,7 @@ const Dashboard = () => {
           <Box sx={{ gridArea: 'students', mr: 5 }}>
             <DashboardComponent data={studentsArray} which={'student'} />
           </Box>
-          <Box sx={{ gridArea: 'upcoming-events' }}>
+          <Box sx={{ gridArea: 'upcoming-events', mb: 2 }}>
             <DashboardComponent data={events} which={'upcoming-events'}/>
           </Box>
         </Box>
