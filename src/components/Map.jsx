@@ -38,7 +38,7 @@ const Map = (props) => {
                 newColumns.push({
                     field: 'fullName',
                     headerName: 'Name',
-                    width: 100,
+                    width: 125,
                 })
             } else {
                 newColumns.push({
@@ -66,11 +66,18 @@ const Map = (props) => {
                 flex: 1.4, });
             }
         }
-        if (!forDashboard && averageGrades) {
-            newColumns.push({ field: 'averageGrade', 
-            headerName: 'Average Grade', 
-            flex: 2, 
-            valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+        if (averageGrades) {
+            if (forDashboard) {
+                newColumns.push({ field: 'averageGrade', 
+                headerName: 'Avg Grade', 
+                width: 80, 
+                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+            } else {
+                newColumns.push({ field: 'averageGrade', 
+                headerName: 'Average Grade', 
+                flex: 2, 
+                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+            }
         }
         if (email) {
             if (forDashboard) {
