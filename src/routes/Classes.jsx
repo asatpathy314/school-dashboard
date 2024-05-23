@@ -15,7 +15,7 @@ const Classes = () => {
 
     await Promise.all(classSnapshot.docs.map(async (doc) =>  {
       try {
-        console.log(doc.data());
+        // console.log(doc.data());
         const id = doc.id;
         const students = doc.data()['students'];
         let gradeSum = 0;
@@ -25,20 +25,25 @@ const Classes = () => {
           
           await Promise.all(students.map(async (s) => {
             const cDoc = await getDoc(s);
-            valStudents.push({'label': cDoc.data()['fullName']});
+            // console.log(cDoc.data())
+            if (cDoc.data() && cDoc.data().fullName) {
+              valStudents.push({'label': cDoc.data()['fullName']});
+            }
           }))
 
         
-        // console.log(students.length)
         if (students.length > 0) {
           for (const stuRef of students) {
             const stuDoc = await getDoc(stuRef);
-            const classes = stuDoc.data()['classes'];
-            classes.forEach((c) => {
-              if (c['class'].id === id) {
-                gradeSum = gradeSum + c['grade'];
-              }
-            })
+            const stuData = stuDoc.data();
+            if (stuData && stuData['classes']) {
+              const classes = stuData['classes'];
+                classes.forEach((c) => {
+                  if (c['class'].id === id) {
+                    gradeSum += c['grade'];
+                  }
+                });
+            }
           }
           avg = gradeSum / students.length;
           avg = avg.toFixed(2);
@@ -52,15 +57,28 @@ const Classes = () => {
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
 
-        temp.push({
-          'teacher': teacherDoc.data()['fullName'], 
-          'grade': doc.data()['grade'], 
-          'subject': doc.data()['subject'],
-          'id': doc.id, 
-          'className': doc.data()['name'], 
-          'averageGrade': avg, 
-          'fullName': teacherDoc.data()['fullName'],
-          'students': valStudents});
+        if (teacherDoc && teacherDoc.data() && teacherDoc.data()['fullName']) {
+          temp.push({
+            'teacher': teacherDoc.data()['fullName'], 
+            'grade': doc.data()['grade'], 
+            'subject': doc.data()['subject'],
+            'id': doc.id, 
+            'className': doc.data()['name'], 
+            'averageGrade': avg, 
+            'fullName': teacherDoc.data()['fullName'],
+            'students': valStudents});
+        } else {
+          temp.push({
+            'teacher': 'NO TEACHER', 
+            'grade': doc.data()['grade'], 
+            'subject': doc.data()['subject'],
+            'id': doc.id, 
+            'className': doc.data()['name'], 
+            'averageGrade': avg, 
+            'fullName': 'NO TEACHER',
+            'students': valStudents});
+        }
+        
       } catch (error) {
         console.log("Error fetching class data: ", error, doc.id);
       }
@@ -81,6 +99,7 @@ const Classes = () => {
         classNames={true} 
         averageGrades={true} 
         personNames={true} 
+        students={true}
         data={classesArray} 
         dataType={'Class'}/>}>
       </Dir>

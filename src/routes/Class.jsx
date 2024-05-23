@@ -61,6 +61,9 @@ const Class = () => {
       }
       console.log(classes);
       await updateDoc(stuDocRef, {'classes': classes});
+      location.reload();
+    } else {
+      alert("Invalid Grade");
     }
 }
   

@@ -9,7 +9,7 @@ const DashboardComponent = ({ data, which }) => {
   switch (which) {
     case 'teacher':
       content = (
-        <div className='dashboard-left-right'>
+        <div className='dashboard'>
           <h3 className='h3'>Teachers</h3>
           <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} dataType="Teacher" />
         </div>
@@ -17,7 +17,7 @@ const DashboardComponent = ({ data, which }) => {
       break;
     case 'student':
       content = (
-        <div className='dashboard-left-right'>
+        <div className='dashboard'>
           <h3 className='h3'>Students</h3>
           <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} dataType="Student" />
         </div>
@@ -25,7 +25,7 @@ const DashboardComponent = ({ data, which }) => {
       break;
     case 'class':
       content = (
-        <div className='dashboard-left-right'>
+        <div className='dashboard'>
           <h3 className='h3'>Classes</h3>
           <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} dataType="Class" />
         </div>
@@ -33,12 +33,12 @@ const DashboardComponent = ({ data, which }) => {
       break;
     default:
       content = (
-        <div className='dashboard-left-right'>
-          <h3 className='h3'>Upcoming Events</h3>
+        <div className='dashboard'>
+          <h3>Upcoming Events</h3>
           <Box className="card-container">
             {data.map(event => (
               <Card key={event.id} className="event-card">
-                <Box className="event-date">
+                <Box>
                   <Typography variant="body1">{event.startDate.toDateString()}</Typography>
                   <Typography variant="body2" color="text.secondary">{event.startHour}</Typography>
                 </Box>

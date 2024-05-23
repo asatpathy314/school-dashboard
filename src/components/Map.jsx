@@ -2,15 +2,18 @@ import { DataGrid } from '@mui/x-data-grid';
 import { React, useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import Button from '@mui/material/Button'
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
+import { removeTeacher } from '../lib/teacher.js';
+import { removeClass } from '../lib/class.js';
 import { Link } from 'react-router-dom';
-
+import '../styles/Map.css'
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard, handleSaveGrade } = props;
+    const { data, ids, personNames, students, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard, handleSaveGrade } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -175,12 +178,18 @@ const Map = (props) => {
         const selectedRowIds = new Set(newSelection);
         const newlySelectedRows = filteredData.filter((row) => selectedRowIds.has(row.id));
         setSelectedRows(newlySelectedRows);
-        setRowSelected(true);
+        setRowSelected(newlySelectedRows.length > 0);
     }
 
+    // useEffect(() => {
+    //     console.log(selectedRows)
+    // })
+
     const handleDelete = () => {
+        let toDelete = {};
+        let updatedData = [];
         if (dataType == 'Student') {
-            let toDelete = {
+            toDelete = {
                 'students': []
             }
             selectedRows.forEach((row) => {
@@ -188,8 +197,10 @@ const Map = (props) => {
                     'label': row.fullName
                 })
             })
-        // console.log(toDelete);
             removeStudent(toDelete);
+            updatedData = filteredData.filter((row) => {
+                return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
+            })
         } else if (dataType == 'Teacher') {
             let toDelete = {
                 'teachers': []
@@ -199,25 +210,43 @@ const Map = (props) => {
                     'label': row.fullName
                 })
             })
-
+            const teachersToDelete = toDelete.teachers;
+            removeTeacher(teachersToDelete);
+            updatedData = filteredData.filter((row) => {
+                return !toDelete.teachers.some((deleteRow) => deleteRow.label == row.fullName);
+            })
+        } else if (dataType == 'Class') {
+            let toDelete = {
+                'classes': []
+            }
+            selectedRows.forEach((row) => {
+                toDelete.classes.push({
+                    'label': row.className
+                })
+            })
+            // console.log(toDelete)
+            removeClass(toDelete);
+            updatedData = filteredData.filter((row) => {
+                return !toDelete.classes.some((deleteRow) => deleteRow.label == row.fullName);
+            })
         }
-        
-        const updatedData = filteredData.filter((row) => {
-            return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
-        })
+
         setFilteredData(updatedData);
+        setSelectedRows([]);
+        setRowSelected(false);
     }
 
     if (forDashboard) {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                 <TextField
+                    size='small'
                     label="Search"
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyPress}
                     variant="outlined"
                     fullWidth
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '0.5rem' }}
                 />
                 <DataGrid
                     rows={filteredData}
@@ -229,7 +258,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 25]}
+                    pageSizeOptions={[10, 25]}
                     disableRowSelectionOnClick = {true}
                 />
                 <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
@@ -239,12 +268,13 @@ const Map = (props) => {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                 <TextField
+                    size='small'
                     label="Search"
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyPress}
                     variant="outlined"
                     fullWidth
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '0.5rem' }}
                 />
                 <DataGrid
                     rows={filteredData}
@@ -256,7 +286,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 25]}
+                    pageSizeOptions={[10, 25]}
                     checkboxSelection
                     keepNonExistentRowsSelected
                     disableRowSelectionOnClick = {true}

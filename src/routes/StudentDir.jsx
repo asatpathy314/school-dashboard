@@ -10,7 +10,6 @@ const StudentDir = () => {
     async function getStudents() {
       const collRef = collection(db, "students");
       const studentSnapshot = await getDocs(query(collRef));
-      // console.log(studentSnapshot)
       let temp = [];
       
       await Promise.all(studentSnapshot.docs.map(async (doc) => {
