@@ -166,12 +166,17 @@ const Map = (props) => {
         const selectedRowIds = new Set(newSelection);
         const newlySelectedRows = filteredData.filter((row) => selectedRowIds.has(row.id));
         setSelectedRows(newlySelectedRows);
-        setRowSelected(true);
+        setRowSelected(newlySelectedRows.length > 0);
     }
 
+    // useEffect(() => {
+    //     console.log(selectedRows)
+    // })
+
     const handleDelete = () => {
+        let toDelete = {};
         if (dataType == 'Student') {
-            let toDelete = {
+            toDelete = {
                 'students': []
             }
             selectedRows.forEach((row) => {
@@ -179,7 +184,6 @@ const Map = (props) => {
                     'label': row.fullName
                 })
             })
-        // console.log(toDelete);
             removeStudent(toDelete);
         } else if (dataType == 'Teacher') {
             let toDelete = {
@@ -197,6 +201,8 @@ const Map = (props) => {
             return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
         })
         setFilteredData(updatedData);
+        setSelectedRows([]);
+        setRowSelected(false);
     }
 
     // useEffect(() => {

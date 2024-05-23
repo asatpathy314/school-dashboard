@@ -20,6 +20,7 @@ const StudentDir = () => {
 
           let grades = 0;
           let count = 0;
+          // console.log(classes)
           const gradeSum = classes.forEach(classItem => {
             grades = classItem.grade + grades;
             count = count + 1;
