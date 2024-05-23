@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Box, Button } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import AddEvent from '../components/modals/AddEvent';
+import FormModal from './FormModal';
 
 const DashboardUpcomingEvents = () => {
   const [events, setEvents] = useState([]);
@@ -57,7 +57,7 @@ const DashboardUpcomingEvents = () => {
           </CardContent>
         </Card>
       ))}
-      <AddEvent open={open} handleClose={handleClose} />
+      <FormModal modalType="addEvent" open={open} handleClose={handleClose} handleClickOpen={handleOpen} />
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Add Event
       </Button>
