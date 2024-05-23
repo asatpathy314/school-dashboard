@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from "react";
 import TextInput from "./input/TextInput.jsx";
 import Button from "@mui/material/Button";
@@ -6,6 +5,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
 
 /**
  * Renders a modal for adding or editing an event.
@@ -30,10 +33,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 const AddEvent = ({ open, handleClose, values = {} }) => {
     //TODO: Finish
-
+    const { description = "", name = "", startDate = "", endDate = "" } = values;
 
     const handleSubmit = async (event) => {
-        //TODO: Finish
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        console.log(formJson); 
+        handleClose();
       };
 
 
@@ -53,25 +60,23 @@ const AddEvent = ({ open, handleClose, values = {} }) => {
           <TextInput
             label="Event Name"
             field="name"
-            value={eventDetails.name}
-            onChange={(e) => handleChange("name", e.target.value)}
+            defaultValue={name}
           />
           <TextInput
             label="Event Description"
             field="description"
-            value={eventDetails.description}
-            onChange={(e) => handleChange("description", e.target.value)}
+            defaultValue={description}
           />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
               label="Start Date & Time"
-              value={eventDetails.startDate}
+              value={startDate}
               onChange={(date) => handleChange("startDate", date)}
               renderInput={(params) => <TextInput {...params} />}
             />
             <DateTimePicker
               label="End Date & Time"
-              value={eventDetails.endDate}
+              value={endDate}
               onChange={(date) => handleChange("endDate", date)}
               renderInput={(params) => <TextInput {...params} />}
             />
