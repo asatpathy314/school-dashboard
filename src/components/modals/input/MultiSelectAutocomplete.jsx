@@ -26,7 +26,6 @@ const MultiSelectAutocomplete = ({
       multiple
       onChange={(event, newValue) => {
         changeState(newValue);
-        console.log(newValue);
       }}
       options={options}
       defaultValue={defaultValue}

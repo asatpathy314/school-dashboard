@@ -5,8 +5,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { db } from "../../../firebase.js";
-import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
+import { removeClass } from "../../lib/class.js";
 
 const RemoveClass = ( { open, handleClose, classesAutocomplete}) => {
     const [selectedClasses, setSelectedClasses] = useState([]);
@@ -16,6 +15,7 @@ const RemoveClass = ( { open, handleClose, classesAutocomplete}) => {
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
         console.log(formJson)
+        removeClass(formJson);
         handleClose();
     };
     return (

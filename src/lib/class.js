@@ -10,6 +10,7 @@ import {
   arrayUnion,
   getDoc,
   deleteDoc,
+  arrayRemove,
 } from "firebase/firestore";
 
 /*
@@ -49,6 +50,9 @@ Example teacher object. (This will be the format of the document in the database
     email: "gmail@gmail.com" (string)
     title: "Mr." (string)
 }
+
+
+
 */
 
 /**
@@ -65,6 +69,7 @@ Example teacher object. (This will be the format of the document in the database
 
 const getByFullName = async (fullName, collectionName) => {
     // Create a query to find the document by fullName
+    console.log(collectionName, fullName)
     const q = query(
       collection(db, collectionName),
       where("fullName", "==", fullName)
@@ -86,6 +91,7 @@ const getByFullName = async (fullName, collectionName) => {
   
   export const addClass = async (classData) => {
     // Retrieve teacher data from the database.
+    console.log(classData)
     const teacherDoc = await getByFullName(classData.teacher, "teachers");
     if (teacherDoc === null) {
       console.error("Teacher not found.");
@@ -163,3 +169,49 @@ const getByFullName = async (fullName, collectionName) => {
       }
     }
   };
+
+export const removeClass = async (classData) => {
+  for (const classItem of classData.classes) {
+    // Retrieve the class document based on classItem.label
+    const classQuery = query(
+      collection(db, "classes"),
+      where("name", "==", classItem.label)
+    );
+    const classQuerySnapshot = await getDocs(classQuery);
+
+    if (classQuerySnapshot.empty) {
+      console.error(`Class not found: ${classItem.label}`);
+      continue;
+    }
+
+    const classRef = classQuerySnapshot.docs[0].ref;
+    const classId = classQuerySnapshot.docs[0].id;
+
+    // Retrieve students from the class
+    const students = classQuerySnapshot.docs[0].data().students;
+
+    // Iterate through the students and remove the class from their classes array
+    for (const studentRef of students) {
+      const studentDoc = await getDoc(studentRef);
+      if (!studentDoc.exists()) {
+        console.error(`Student document not found: ${studentRef.id}`);
+        continue;
+      }
+
+      // Filter out the class based on classRef.id, ignoring the grade
+      const updatedClasses = studentDoc.data().classes.filter(
+        (classItem) => classItem.class.id !== classRef.id
+      );
+
+      // Update the student's document with the new classes array
+      await updateDoc(studentRef, {
+        classes: updatedClasses,
+      });
+    }
+
+    // Delete the class document
+    await deleteDoc(doc(db, "classes", classId));
+    console.log(`Class ${classId} removed successfully.`);
+  }
+};
+  
