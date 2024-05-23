@@ -13,6 +13,7 @@ const Map = (props) => {
     const [openAdd, setOpenAdd] = useState(false);
     const [rowSelectionModel, setRowSelectionModel] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
+    const [rowSelected, setRowSelected] = useState(false);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -136,17 +137,23 @@ const Map = (props) => {
         const selectedRowIds = new Set(newSelection);
         const newlySelectedRows = filteredData.filter((row) => selectedRowIds.has(row.id));
         setSelectedRows(newlySelectedRows);
+        setRowSelected(true);
     }
 
     const handleDelete = () => {
-        if (dataType == 'student') {
-            
-        }
+        // if (dataType == 'student') {
+        let toDelete = []
+        selectedRows.forEach((row) => {
+            toDelete.push({
+                'label': row.fullName
+            })
+        })
+        console.log(toDelete);
     }
 
-    useEffect(() => {
-        console.log(selectedRows);
-    }, [selectedRows]);
+    // useEffect(() => {
+    //     console.log(selectedRows);
+    // }, [selectedRows]);
 
     if (forDashboard) {
         return (
@@ -204,6 +211,7 @@ const Map = (props) => {
                     onRowSelectionModelChange={handleRowSelection}
                 />
                 <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+                <div>{rowSelected ? <button onClick={handleDelete}>Test</button> : ''}</div>
             </div>
         );
     }

@@ -10,7 +10,7 @@ const StudentDir = () => {
     async function getStudents() {
       const collRef = collection(db, "students");
       const studentSnapshot = await getDocs(query(collRef));
-      console.log(studentSnapshot)
+      // console.log(studentSnapshot)
       let temp = [];
       
       await Promise.all(studentSnapshot.docs.map(async (doc) => {
@@ -37,7 +37,15 @@ const StudentDir = () => {
 
   return (
     <div>
-      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} averageGrades={true} data={studentsArray}/>}></Dir>
+      <Dir type="Student" 
+        comp={<Map ids={true} 
+        personNames={true} 
+        studentGrades={true} 
+        averageGrades={true} 
+        data={studentsArray}
+        dataType={'student'}
+        />}>
+      </Dir>
     </div>
   )
 }
