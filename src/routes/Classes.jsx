@@ -7,39 +7,43 @@ import { addDoc, collection, getDocs, query, doc, getDoc, updateDoc, orderBy, av
 const Classes = () => {
   const [classesArray, setClassesArray] = useState([]);
 
-  async function getTeachers() {
+  async function getClasses() {
     const collRef = collection(db, "classes");
     const classSnapshot = await getDocs(query(collRef));
-    console.log(classSnapshot);
     let temp = [];
 
     await Promise.all(classSnapshot.docs.map(async (doc) =>  {
       try {
-        console.log("hi")
+        // console.log("hi")
         const id = doc.id;
         const students = doc.data()['students'];
-        let grade = 0;
+        let gradeSum = 0;
+        let avg = 0;
         
-        for (const stuRef of students) {
-          const stuDoc = await getDoc(stuRef);
-          const classes = stuDoc.data()['classes'];
-          classes.forEach((c) => {
-            if (c['class'].id === id) {
-              grade = grade + c['grade'];
-            }
-          })
+        console.log(students.length)
+        if (students.length > 0) {
+          for (const stuRef of students) {
+            const stuDoc = await getDoc(stuRef);
+            const classes = stuDoc.data()['classes'];
+            classes.forEach((c) => {
+              gradeSum = gradeSum + c['grade'];
+            })
+          }
+          avg = gradeSum / students.length;
+        } else {
+          avg = 'N/A';
         }
 
-        const avg = grade / students.length;
-        console.log(avg)
+        // console.log(gradeSum)
+        
+        console.log(avg);
 
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
 
-        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg + '%', 'fullName': teacherDoc.data()['fullName']});
-        console.log('hiiiiiii', temp)
-      } catch {
-        console.log("a");
+        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
+      } catch (error) {
+        console.log("Error fetching class data: ", error);
       }
     }));
 
@@ -47,13 +51,20 @@ const Classes = () => {
 }
 
   useEffect(() => {
-    getTeachers();
+    getClasses();
   }, [])
 
   return (
     <div>
       {/* Replace div with component */}
-      <Dir type="Class" comp={<Map classNames={true} averageGrades={true} personNames={true} data={classesArray}/>}></Dir>
+      <Dir type="Class" comp={<Map 
+        ids={true} 
+        classNames={true} 
+        averageGrades={true} 
+        personNames={true} 
+        data={classesArray} 
+        dataType={'Class'}/>}>
+      </Dir>
     </div>
   )
 }
