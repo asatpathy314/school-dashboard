@@ -1,5 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
@@ -11,6 +11,8 @@ const Map = (props) => {
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
+    const [rowSelectionModel, setRowSelectionModel] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -128,34 +130,83 @@ const Map = (props) => {
             setHasSearched(true);
         }
     };
-    
-    return (
-        <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
-            <TextField
-                label="Search"
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyPress}
-                variant="outlined"
-                fullWidth
-                style={{ marginBottom: '1rem' }}
-            />
-            <DataGrid
-                rows={filteredData}
-                columns={columns}
-                autoHeight={true}
-                initialState={{
-                    ...data.initialState,
-                    pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
-                    },
-                }}
-                // If I add page size options, it will morph the CSS and make the div bigger than it should be
-                pageSizeOptions={[5, 10, 25]}
-                disableRowSelectionOnClick = {true}
-            />
-            <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
-        </div>
-    );
+
+    const handleRowSelection = (newSelection) => {
+        setRowSelectionModel(newSelection);
+        const selectedRowIds = new Set(newSelection);
+        const newlySelectedRows = filteredData.filter((row) => selectedRowIds.has(row.id));
+        setSelectedRows(newlySelectedRows);
+    }
+
+    const handleDelete = () => {
+        if (dataType == 'student') {
+            
+        }
+    }
+
+    useEffect(() => {
+        console.log(selectedRows);
+    }, [selectedRows]);
+
+    if (forDashboard) {
+        return (
+            <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                <TextField
+                    label="Search"
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    variant="outlined"
+                    fullWidth
+                    style={{ marginBottom: '1rem' }}
+                />
+                <DataGrid
+                    rows={filteredData}
+                    columns={columns}
+                    autoHeight={true}
+                    initialState={{
+                        ...data.initialState,
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10, 25]}
+                    disableRowSelectionOnClick = {true}
+                />
+                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+            </div>
+        );
+    } else {
+        return (
+            <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                <TextField
+                    label="Search"
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    variant="outlined"
+                    fullWidth
+                    style={{ marginBottom: '1rem' }}
+                />
+                <DataGrid
+                    rows={filteredData}
+                    columns={columns}
+                    autoHeight={true}
+                    initialState={{
+                        ...data.initialState,
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10, 25]}
+                    checkboxSelection
+                    keepNonExistentRowsSelected
+                    disableRowSelectionOnClick = {true}
+                    rowSelectionModel={rowSelectionModel}
+                    onRowSelectionModelChange={handleRowSelection}
+                />
+                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+            </div>
+        );
+    }
 }
 
 export default Map;
