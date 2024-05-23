@@ -1,10 +1,39 @@
-import React, { useState } from 'react'
-import { Box } from '@mui/system'
+import React, { useState, useEffect } from 'react'
 import DashboardComponent from '../components/DashboardComponent'
-import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents'
 import '../styles/dashboard/Dashboard.css'
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { Box } from '@mui/material'
 
 const Dashboard = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const eventsCollection = collection(db, 'events');
+        const eventsSnapshot = await getDocs(eventsCollection);
+        const eventsData = eventsSnapshot.docs.map(doc => {
+          const data = doc.data();
+          const startDate = data['start-date'].toDate();
+          return {
+            id: doc.id,
+            name: data.name,
+            description: data.description,
+            startDate: startDate,
+            startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            endDate: data['end-date'].toDate(),
+          };
+        });
+        const sortedEvents = eventsData.sort((a, b) => a.startDate - b.startDate);
+        setEvents(sortedEvents);
+      } catch (error) {
+        console.error('Error fetching events: ', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const [data] = useState([
     { fullName: 'John Doe', id: '100001' },
@@ -56,7 +85,7 @@ const Dashboard = () => {
             <DashboardComponent data={data} which={'student'} />
           </Box>
           <Box sx={{ gridArea: 'upcoming-events' }}>
-            <DashboardUpcomingEvents/>
+            <DashboardComponent data={events} which={'upcoming-events'}/>
           </Box>
         </Box>
       </div>

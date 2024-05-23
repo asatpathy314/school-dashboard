@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/dashboard/Dashboard.css';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import Map from './Map';
 
 const DashboardComponent = ({ data, which }) => {
@@ -8,7 +9,7 @@ const DashboardComponent = ({ data, which }) => {
   switch (which) {
     case 'teacher':
       content = (
-        <div className='dashboard-teachers'>
+        <div className='dashboard-left-right'>
           <h3 className='h3'>Teachers</h3>
           <Map ids={true} personNames={true} data={data} />
         </div>
@@ -16,7 +17,7 @@ const DashboardComponent = ({ data, which }) => {
       break;
     case 'student':
       content = (
-        <div className='dashboard-students'>
+        <div className='dashboard-left-right'>
           <h3 className='h3'>Students</h3>
         </div>
       );
@@ -31,7 +32,35 @@ const DashboardComponent = ({ data, which }) => {
     default:
       content = (
         <div className='dashboard-upcoming-events'>
-          <h3 className='h3'>Upcoming Events</h3>
+          <h3>Upcoming Events</h3>
+          <Box sx={{ maxHeight: '20vh', 
+            overflowY: 'auto',
+          }}>
+              {data.map(event => (
+                <Card key={event.id} sx={{ 
+                  display: 'flex', 
+                  mr: 4, 
+                  ml: 4,
+                  mb: 3,
+                  boxShadow: 8,
+                  width: '40vw',
+                }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    padding: 1,
+                  }}>
+                    <Typography variant="body1">{event.startDate.toDateString()}</Typography>
+                    <Typography variant="body2" color="text.secondary" >{event.startHour}</Typography>
+                  </Box>
+                  <CardContent>
+                    <Typography variant="h6">{event.name}</Typography>
+                  </CardContent>
+                </Card>
+              ))}  
+          </Box> 
         </div>
       );
   }
