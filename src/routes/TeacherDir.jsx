@@ -19,7 +19,7 @@ const TeacherDir = () => {
           temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email']})
       }));
   
-      console.log(temp);
+      // console.log(temp);
       setTeachersArray(temp);
   }
   
