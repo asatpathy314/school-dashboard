@@ -24,12 +24,15 @@ const Classes = () => {
         if (students.length > 0) {
           for (const stuRef of students) {
             const stuDoc = await getDoc(stuRef);
-            const classes = stuDoc.data()['classes'];
-            classes.forEach((c) => {
-              if (c['class'].id === id) {
-                gradeSum = gradeSum + c['grade'];
-              }
-            })
+            const stuData = stuDoc.data();
+            if (stuData && stuData['classes']) {
+              const classes = stuData['classes'];
+                classes.forEach((c) => {
+                  if (c['class'].id === id) {
+                    gradeSum += c['grade'];
+                  }
+                });
+            }
           }
           avg = gradeSum / students.length;
           avg = avg.toFixed(2);
