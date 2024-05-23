@@ -210,12 +210,13 @@ const Map = (props) => {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                 <TextField
+                    size='small'
                     label="Search"
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyPress}
                     variant="outlined"
                     fullWidth
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '0.5rem' }}
                 />
                 <DataGrid
                     rows={filteredData}
@@ -227,7 +228,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 25]}
+                    pageSizeOptions={[10, 25]}
                     disableRowSelectionOnClick = {true}
                 />
                 <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
@@ -237,12 +238,13 @@ const Map = (props) => {
         return (
             <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
                 <TextField
+                    size='small'
                     label="Search"
                     onChange={handleSearchChange}
                     onKeyDown={handleKeyPress}
                     variant="outlined"
                     fullWidth
-                    style={{ marginBottom: '1rem' }}
+                    style={{ marginBottom: '0.5rem' }}
                 />
                 <DataGrid
                     rows={filteredData}
@@ -254,7 +256,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[5, 10, 25]}
+                    pageSizeOptions={[10, 25]}
                     checkboxSelection
                     keepNonExistentRowsSelected
                     disableRowSelectionOnClick = {true}
