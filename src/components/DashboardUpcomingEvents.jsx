@@ -6,7 +6,8 @@ import FormModal from './FormModal';
 
 const DashboardUpcomingEvents = () => {
   const [events, setEvents] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openRemove, setOpenRemove] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -35,12 +36,20 @@ const DashboardUpcomingEvents = () => {
     fetchEvents();
   }, []);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleOpenRemove = () => {
+    setOpenRemove(true);
+  };
+
+  const handleCloseAdd = () => {
+    setOpenAdd(false);
+  };
+
+  const handleCloseRemove = () => {
+    setOpenRemove(false);
   };
 
   return (
@@ -57,10 +66,21 @@ const DashboardUpcomingEvents = () => {
           </CardContent>
         </Card>
       ))}
-      <FormModal modalType="addEvent" open={open} handleClose={handleClose} handleClickOpen={handleOpen} />
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        Add Event
-      </Button>
+      
+      
+      
+      
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+      <FormModal modalType="addEvent" open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleOpenAdd} />
+        <Button variant="contained" color="primary" onClick={handleOpenAdd}>
+          Add Event
+        </Button>
+        
+        <FormModal modalType="removeEvent" open={openRemove} handleClose={handleCloseRemove} handleClickOpen={handleOpenRemove} />
+        <Button variant="contained" color="primary" onClick={handleOpenRemove}>
+          Remove Event
+        </Button>
+      </Box>
     </div>
   );
 };
