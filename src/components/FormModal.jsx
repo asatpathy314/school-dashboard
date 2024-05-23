@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { retrieveListByLabel, retrieveObjects } from "../lib/modal/firebase_retrieval.js";
+import {
+  retrieveListByLabel,
+  retrieveObjects,
+} from "../lib/modal/firebase_retrieval.js";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,13 +12,21 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Autocomplete, createFilterOptions } from "@mui/material";
 import { db } from "../../firebase.js";
-import { doc, setDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
-import AddClass from './modals/AddClass.jsx'
+import {
+  doc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  query,
+  collection,
+  where,
+} from "firebase/firestore";
+import AddClass from "./modals/AddClass.jsx";
 import AddStudent from "./modals/AddStudent.jsx";
 import AddTeacher from "./modals/AddTeacher.jsx";
-import RemoveClass from './modals/RemoveClass.jsx'
-import RemoveStudent from './modals/RemoveStudent.jsx'
-import RemoveTeacher from './modals/RemoveTeacher.jsx'
+import RemoveClass from "./modals/RemoveClass.jsx";
+import RemoveStudent from "./modals/RemoveStudent.jsx";
+import RemoveTeacher from "./modals/RemoveTeacher.jsx";
 
 /* Can be used to limit the number of options displayed in the autocomplete dropdown.
 const filterOptions = createFilterOptions({
@@ -35,98 +46,88 @@ const FormModal = ({
   open,
   handleClickOpen,
   handleClose,
-  studentNameEdit,
-  studentDBIDEdit,
-  studentGradeEdit,
 }) => {
-  const [teachersAutocomplete, setTeachersAutocomplete] = useState([])
-  const [studentsAutocomplete, setStudentsAutocomplete] = useState([])
-  const [classesAutocomplete, setClassesAutocomplete] = useState([])
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [teachersAutocomplete, setTeachersAutocomplete] = useState([]);
+  const [studentsAutocomplete, setStudentsAutocomplete] = useState([]);
+  const [classesAutocomplete, setClassesAutocomplete] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [selectedTeachers, setSelectedTeachers] = useState([]);
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  const [selectedClasses, setSelectedClasses] = useState([]);
-  const [selectedGrade, setSelectedGrade] = useState(null);
 
   useEffect(() => {
-    console.log("haha")
+    console.log("haha");
     retrieveObjects("teachers")
-        .then((res) => {
-            const teachers = res;
-            setTeachersAutocomplete(retrieveListByLabel("name", teachers))
-        })
-        .catch((error) => {
-            console.error("Failed to retrieve teachers:", error);
-        });
+      .then((res) => {
+        const teachers = res;
+        setTeachersAutocomplete(retrieveListByLabel("fullName", teachers));
+      })
+      .catch((error) => {
+        console.error("Failed to retrieve teachers:", error);
+      });
     retrieveObjects("classes")
-        .then((res) => {
-            const classes = res;
-            setClassesAutocomplete(retrieveListByLabel("name", classes))
-        })
-        .catch((error) => {
-            console.error("Failed to retrieve teachers:", error);
-        });
+      .then((res) => {
+        const classes = res;
+        setClassesAutocomplete(retrieveListByLabel("name", classes));
+      })
+      .catch((error) => {
+        console.error("Failed to retrieve teachers:", error);
+      });
     retrieveObjects("students")
-        .then((res) => {
-            const students= res;
-            setStudentsAutocomplete(retrieveListByLabel("name", students))
-        })
-        .catch((error) => {
-            console.error("Failed to retrieve teachers:", error);
-        });
-      }, []);
+      .then((res) => {
+        const students = res;
+        setStudentsAutocomplete(retrieveListByLabel("fullName", students));
+      })
+      .catch((error) => {
+        console.error("Failed to retrieve teachers:", error);
+      });
+  }, []);
 
   switch (modalType) {
     case "addClass": {
       return (
-        <AddClass 
-        open={open} 
-        handleClose={handleClose}
-        teachersAutocomplete={teachersAutocomplete}
-        studentsAutocomplete={studentsAutocomplete}/>
+        <AddClass
+          open={open}
+          handleClose={handleClose}
+          teachersAutocomplete={teachersAutocomplete}
+          studentsAutocomplete={studentsAutocomplete}
+        />
       );
     }
     case "removeClass": {
-     return (
-      <RemoveClass open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
-     )
+      return (
+        <RemoveClass
+          open={open}
+          handleClose={handleClose}
+          classesAutocomplete={classesAutocomplete}
+        />
+      );
     }
     case "addStudent": {
-      const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        let classList = [];
-        console.log(selectedClasses)
-        for (let i = 0; i < selectedClasses.length; i++) { 
-          const q = query(collection(db, "classes"), where("name", "==", selectedClasses[i].label));
-          const querySnapshot = await getDocs(q);
-          const classDocument = querySnapshot.docs[0];
-          console.log(classDocument.id + " => " + classDocument.data());
-          classList.push({class: doc(db, '/classes/'+classDocument.id), grade: 100.0});
-        }
-        formJson.classes = classList;
-        console.log(formJson); // TODO: Finish
-        handleClose();
-      };
       return (
-        <AddStudent open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
+        <AddStudent
+          open={open}
+          handleClose={handleClose}
+          classesAutocomplete={classesAutocomplete}
+        />
       );
     }
     case "removeStudent": {
       return (
-        <RemoveStudent open={open} handleClose={handleClose} studentsAutocomplete={studentsAutocomplete}/>
+        <RemoveStudent
+          open={open}
+          handleClose={handleClose}
+          studentsAutocomplete={studentsAutocomplete}
+        />
       );
     }
     case "addTeacher": {
-      return (
-        <AddTeacher open={open} handleClose={handleClose} classesAutocomplete={classesAutocomplete}/>
-      );
+      return <AddTeacher open={open} handleClose={handleClose} />;
     }
     case "removeTeacher": {
       return (
-          <RemoveTeacher open={open} handleClose={handleClose} teachersAutocomplete={teachersAutocomplete} />
+        <RemoveTeacher
+          open={open}
+          handleClose={handleClose}
+          teachersAutocomplete={teachersAutocomplete}
+        />
       );
     }
     case "editGrade": {
@@ -194,37 +195,7 @@ const FormModal = ({
     }
     default: {
       // Format for any other modal type. Change in prod to an error message.
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        formJson.classes = selectedClasses;
-        console.log(formJson);
-        handleClose();
-      };
-      return (
-        <>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            TestingButton
-          </Button>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              component: "form",
-              onSubmit: handleSubmit,
-              style: { minWidth: "400px" },
-            }}
-          >
-            <DialogTitle>Remove Classes</DialogTitle>
-            <DialogContent></DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit">Placeholder</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      );
+      return <p>Invalid modal type, check your data prop.</p>;
     }
   }
 };
@@ -242,7 +213,7 @@ const grades = [
 ];
 
 const exampleAutocomplete = [
-  { label: "Mr. Moore's Math Class"},
+  { label: "Mr. Moore's Math Class" },
   { label: "John Smith" },
   { label: "Jane Doe" },
   { label: "Alice Johnson" },

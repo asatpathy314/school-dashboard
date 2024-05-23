@@ -13,7 +13,6 @@ import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } fro
 
 const AddClass = ( { open, handleClose, teachersAutocomplete, studentsAutocomplete }) => {
     const [selectedStudents, setSelectedStudents] = useState([]);
-    const [selectedTeachers, setSelectedTeachers] = useState([]);
 
     const handleSubmit = (event) => {
         // TODO change Json so that we create a className with the teacher's initials in a predefined format.

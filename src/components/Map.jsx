@@ -7,7 +7,7 @@ import FormModal from './FormModal';
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades} = props;
+    const { data, ids, personNames, classNames, studentGrades, averageGrades, email, dataType, forDashboard } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -22,44 +22,64 @@ const Map = (props) => {
 
     useEffect(() => {
         const newColumns = [];
-        console.log(data);
 
         // Conditionally add columns based on the props received
-        if (ids) {
+        if (!forDashboard && ids) {
             newColumns.push({
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
-                width: 250,
+                flex: 0.7,
             });
-        }
+        } 
 
         if (personNames) {
-            newColumns.push({
-                field: 'fullName',
-                headerName: 'Name',
-                flex: 1,
-            });
+            if (forDashboard) {
+                newColumns.push({
+                    field: 'fullName',
+                    headerName: 'Name',
+                    width: 150,
+                })
+            } else {
+                newColumns.push({
+                    field: 'fullName',
+                    headerName: 'Name',
+                    flex: 1.4,
+                });
+            }
         }
 
         if (classNames) {
-            newColumns.push({ field: 'className', headerName: 'Class Name', width: 400});
+            newColumns.push({ 
+                field: 'className', 
+                headerName: 'Class Name', 
+                width: 500 });
         }
         if (studentGrades) {
-            newColumns.push({ field: 'grade', headerName: 'Grade', width: 150 });
+            newColumns.push({ field: 'grade', 
+            headerName: 'Grade', 
+            flex: 1.4, });
         }
-        if (averageGrades) {
-            newColumns.push({ field: 'averageGrade', headerName: 'Average Grade', width: 90 });
+        if (!forDashboard && averageGrades) {
+            newColumns.push({ field: 'averageGrade', 
+            headerName: 'Average Grade', 
+            flex: 2, 
+            valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+        }
+        if (email) {
+            newColumns.push({ field: 'email', headerName: 'Email', width: 320 });
         }
         newColumns.push({
             field: 'edit',
             headerName: 'Edit',
-            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd}/>,
-            width: 70,
+            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
+            flex: 2,
+            headerAlign: 'right',
+            align: 'right',
         });
 
         setColumns(newColumns);
-    }, [ids, personNames, classNames, studentGrades, averageGrades]);
+    }, [ids, personNames, classNames, studentGrades, averageGrades, email]);
 
     useEffect(() => { 
         if (hasSearched) {
@@ -103,14 +123,14 @@ const Map = (props) => {
                 initialState={{
                     ...data.initialState,
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 10 },
+                        paginationModel: { page: 0, pageSize: 5 },
                     },
                 }}
                 // If I add page size options, it will morph the CSS and make the div bigger than it should be
-                pageSizeOptions={[10]}
+                pageSizeOptions={[5, 10, 25]}
                 disableRowSelectionOnClick = {true}
             />
-            <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+            <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
         </div>
     );
 }

@@ -8,71 +8,72 @@
     margin-bottom: 10px;
 }
 
-.dashboard-teachers {
+.h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    margin-left: -4px; 
+    margin-right: -4px; 
+} */
+
+.dashboard-left-right, .dashboard-classes, .dashboard-upcoming-events {
     background-color: #fffffe;
     padding: 10px;
     color: #2B2C34;
-    border-radius: 20px;
+    border-radius: 4px;
     text-align: center;
+    margin: 10px 20px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.dashboard-left-right {
     max-width: 350px;
-    overflow-y: 'auto';
-    max-height: '100vh';
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    border: 2px solid black;
+    max-height: 100vh;
 }
 
 .dashboard-classes {
-    background-color: #fffffe;
-    padding: 10px;
-    color: #2B2C34;
-    border-radius: 20px;
-    text-align: center;
     min-width: 400px;
     min-height: 90%;
     max-height: 100%;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    margin-left: 10px;
-    margin-right: 20px;
-    border: 2px solid black;
-}
-
-.dashboard-students {
-    background-color: #fffffe;
-    padding: 10px;
-    color: #2B2C34;
-    border-radius: 20px;
-    text-align: center;
-    min-width: 300px;
-    min-height: 80%;
-    max-height: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    border: 2px solid black;
 }
 
 .dashboard-upcoming-events {
-    background-color: #fffffe;
-    padding: 10px;
-    color: #2B2C34;
-    border-radius: 20px;
-    text-align: center;
-    min-width: 400px;
-    min-height: 100%;
-    max-height: '100vh';
-    margin-top: 0;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 20px;
-    border: 2px solid black;
+    max-height: 40vh;
 }
-
+  
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+  
+.event-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 10px;
+    box-shadow: 8;
+    /* padding-top: 10px; */
+    width: calc(50% - 20px); /* Adjust width to fit two cards per row */
+    /* width: 100%; */
+    min-width: 300px;
+    box-sizing: border-box;
+}
+  
+.event-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2;
+}
+  
 .h3 {
-    margin-top: 0px;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
 }
