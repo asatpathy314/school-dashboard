@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
  * @param {string} props.value - The value of the text input.
  * @returns {JSX.Element} The rendered TextInput component.
  */
-const TextInput = ({ label, field, value }) => {
+const TextInput = ({ label, field, defaultValue }) => {
   return (
     <>
       <TextField
@@ -22,7 +22,7 @@ const TextInput = ({ label, field, value }) => {
         label={label}
         type="text"
         variant="standard"
-        value={value}
+        defaultValue={defaultValue}
       />
       <br />
     </>

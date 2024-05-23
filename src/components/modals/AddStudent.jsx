@@ -31,10 +31,10 @@ import { addStudent } from "../../lib/student.js";
  *          "label": "Mrs. Wilson's 3rd Grade Mathematics Class"
  *      }
  *  ],
- *  "grade": "3rd Grade
+ *  "grade": "3rd Grade"
  * }
+ * // Note: https://stackoverflow.com/questions/42600267/autocomplete-how-can-i-set-a-default-value
  */
-
 const AddStudent = ({
   open,
   handleClose,
@@ -42,6 +42,7 @@ const AddStudent = ({
   values = {},
 }) => {
   // Providing default values for destructured properties of `values`
+  console.log(classesAutocomplete);
   const {
     firstName = "",
     lastName = "",
@@ -57,7 +58,7 @@ const AddStudent = ({
     const formJson = Object.fromEntries(formData.entries());
     formJson.classes = selectedClasses;
     console.log(formJson); // TODO: Finish
-    await addStudent(formJson);
+    //await addStudent(formJson);
     handleClose();
   };
 
@@ -77,12 +78,12 @@ const AddStudent = ({
           <TextInput
             label="Student First Name"
             field="firstName"
-            value={firstName}
+            defaultValue={firstName}
           />
           <TextInput
             label="Student Last Name"
             field="lastName"
-            value={lastName}
+            defaultValue={lastName}
           />
           <TextInput label="Student ID" field="id" value={id} />
           <MultiSelectAutocomplete
@@ -90,13 +91,13 @@ const AddStudent = ({
             name="classes"
             label="Classes"
             changeState={setSelectedClasses}
-            value={selectedClasses}
+            defaultValue={classes}
           />
           <SingleSelectAutocomplete
             options={grades}
             name="grade"
             label="Grade"
-            value={grade}
+            defaultValue={grade}
           />
         </DialogContent>
         <DialogActions>

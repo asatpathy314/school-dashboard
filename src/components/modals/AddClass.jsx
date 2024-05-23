@@ -95,26 +95,26 @@ const AddClass = ({
             options={teachersAutocomplete}
             name="teacher"
             label="Teacher"
-            value={teacher}
+            defaultValue={teacher}
           />
           <SingleSelectAutocomplete
             options={grades}
             name="grade"
             label="Grade"
-            value={grade}
+            defaultValue={grade}
           />
           <SingleSelectAutocomplete
             options={subjects}
             name="subject"
             label="Subject"
-            value={subject}
+            defaultValue={subject}
           />
           <MultiSelectAutocomplete
             options={studentsAutocomplete}
             name="students"
             label="Students"
             changeState={setSelectedStudents}
-            value={students}
+            defaultValue={students}
           />
         </DialogContent>
         <DialogActions>

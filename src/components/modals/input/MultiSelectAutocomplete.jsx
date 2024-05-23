@@ -18,13 +18,18 @@ const MultiSelectAutocomplete = ({
   name,
   label,
   changeState,
-  value,
+  defaultValue,
 }) => {
+  console.log(defaultValue);
   return (
     <Autocomplete
       multiple
-      onChange={(event, newValue) => changeState(newValue)}
+      onChange={(event, newValue) => {
+        changeState(newValue);
+        console.log(newValue);
+      }}
       options={options}
+      defaultValue={defaultValue}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -34,7 +39,6 @@ const MultiSelectAutocomplete = ({
           label={label}
           type="text"
           variant="standard"
-          value={value}
         />
       )}
     />

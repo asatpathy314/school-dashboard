@@ -11,24 +11,24 @@ import { Autocomplete } from "@mui/material";
  * @param {string} value - The current value of the input field.
  * @returns {JSX.Element} The rendered SingleSelectAutocomplete component.
  */
-const SingleSelectAutocomplete = ( { options, name, label, value } ) => {
-    return (
-        <Autocomplete
-        options={options}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            margin="dense"
-            id="multiSelectAutocomplete"
-            name={name}
-            label={label}
-            type="text"
-            variant="standard"
-            value={value}
-          />
-        )}
-      />
-    )
-}
+const SingleSelectAutocomplete = ({ options, name, label, defaultValue }) => {
+  return (
+    <Autocomplete
+      options={options}
+      defaultValue={defaultValue}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          margin="dense"
+          id="multiSelectAutocomplete"
+          name={name}
+          label={label}
+          type="text"
+          variant="standard"
+        />
+      )}
+    />
+  );
+};
 
-export default SingleSelectAutocomplete
+export default SingleSelectAutocomplete;

@@ -63,20 +63,20 @@ const AddTeacher = ({ open, handleClose, values = {} }) => {
           <TextInput
             label="Teacher First Name"
             field="firstName"
-            value={values.firstName}
+            defaultValue={firstName}
           />
           <TextInput
             label="Teacher Last Name"
             field="lastName"
-            value={values.lastName}
+            defaultValue={lastName}
           />
-          <TextInput label="Teacher ID" field="id" value={values.id} />
-          <TextInput label="Teacher Email" field="email" value={values.email} />
+          <TextInput label="Teacher ID" field="id" defaultValue={id} />
+          <TextInput label="Teacher Email" field="email" defaultValue={email} />
           <SingleSelectAutocomplete
             options={pronouns}
             name="title"
             label="Title"
-            value={values.title}
+            defaultValue={title}
           />
         </DialogContent>
         <DialogActions>
