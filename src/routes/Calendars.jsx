@@ -4,7 +4,6 @@ import { db } from '../../firebase';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
 import './../styles/Calendars.css';
-import DashboardComponent from '../components/DashboardComponent';
 import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents';
 
 const Calendars = () => {
@@ -13,11 +12,17 @@ const Calendars = () => {
       transitionMode: 'zoom',
       startWeekOn: 'Sun',
       defaultMode: 'month',
+      color: '#8a2be2',
       minWidth: 540,
       maxWidth: 540,
       minHeight: 540,
       maxHeight: 540,
     },
+    toolbarProps: {
+      showSearchBar: false,
+      showSwitchModeButtons: true,
+      showDatePicker: true,
+    }
   });
 
   const [events, setEvents] = useState([]);
@@ -36,11 +41,11 @@ const Calendars = () => {
             id: doc.id,
             label: data.name,
             description: data.description,
-            color: '#f28f6a', // Use a default color or fetch it from your data if available
-            groupLabel: 'Event Group', // Provide a default group label or fetch from your data if available
+            color: '#f28f6a',
+            groupLabel: 'School Wide Event',
             startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
             endHour: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-            date: startDate.toISOString().split('T')[0], // Ensure the date is in YYYY-MM-DD format
+            date: startDate.toISOString().split('T')[0],
           };
         });
         setEvents(eventsData);
@@ -70,7 +75,7 @@ const Calendars = () => {
 
   return (
     <div>
-      <div style={{ paddingTop: '20px', paddingBottom: '20px', paddingRight: '30px', paddingLeft: '30px'}}> 
+      <div style={{ paddingTop: '20px', paddingBottom: '20px', paddingRight: '30px', paddingLeft: '30px' }}> 
         <DashboardUpcomingEvents />
       </div>
       <div className="calendar-container">
@@ -79,13 +84,14 @@ const Calendars = () => {
           events={events}
           legacyStyle={false}
           options={state?.options}
+          toolbarProps={state?.toolbarProps}
           onCellClick={handleCellClick}
           renderDay={(day, row, column, selectedDate, isToday, locale) => {
             const dayEvents = events.filter(event => event.date === day.toISOString().split('T')[0]);
             return (
               <div className="date-cell" onClick={() => setSelectedEvent(dayEvents[0])}>
                 {day.getDate()}
-                <div className="tooltip">
+                <div className="tooltip always-visible">
                   {dayEvents.map(event => (
                     <div key={event.id} style={{ color: event.color }}>
                       {event.label}
