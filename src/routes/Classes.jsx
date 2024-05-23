@@ -43,7 +43,7 @@ const Classes = () => {
 
         temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
       } catch (error) {
-        console.log("Error fetching class data: ", error);
+        console.log("Error fetching class data: ", error, doc.id);
       }
     }));
 

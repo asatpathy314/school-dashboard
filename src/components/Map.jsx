@@ -4,12 +4,12 @@ import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
-// import { removeStudent } from "../lib/student.js";
+import { Link } from 'react-router-dom';
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades, email, dataType, forDashboard } = props;
+    const { data, ids, personNames, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -29,14 +29,24 @@ const Map = (props) => {
         const newColumns = [];
 
         // Conditionally add columns based on the props received
-        if (!forDashboard && ids) {
+        if (!forDashboard && ids && dataType !== "Class") {
             newColumns.push({
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
                 flex: 0.7,
             });
-        } 
+        }
+
+        if (dataType === "Class" && ids) {
+            newColumns.push({
+                field: 'id',
+                headerName: 'ID',
+                type: 'number',
+                flex: 2.3,
+                renderCell: (params) => <Link to={"/class/" + params['id']}>{params['id']}</Link>
+            });
+        }
 
         if (personNames) {
             if (forDashboard) {
@@ -49,7 +59,7 @@ const Map = (props) => {
                 newColumns.push({
                     field: 'fullName',
                     headerName: 'Name',
-                    flex: 1.4,
+                    flex: 2,
                 });
             }
         }
@@ -71,6 +81,18 @@ const Map = (props) => {
                 flex: 1.4, });
             }
         }
+        if (classGrade) {
+            newColumns.push({ field: 'classGrade', 
+            headerName: 'Class Grade', 
+            flex: 1.4, editable: true});
+        }
+        if (!forDashboard && averageGrades) {
+            newColumns.push({ field: 'averageGrade', 
+            headerName: 'Average Grade', 
+            flex: 2, 
+            valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+        }
+        
         if (averageGrades) {
             if (forDashboard) {
                 newColumns.push({ field: 'averageGrade', 
@@ -97,14 +119,17 @@ const Map = (props) => {
                 });
             }
         }
-        newColumns.push({
-            field: 'edit',
-            headerName: 'Edit',
-            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
-            flex: 2,
-            headerAlign: 'right',
-            align: 'right',
-        });
+        if (dataType) {
+            newColumns.push({
+                field: 'edit',
+                headerName: 'Edit',
+                renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
+                flex: 2,
+                headerAlign: 'right',
+                align: 'right',
+            });
+        }
+        
 
         setColumns(newColumns);
     }, [ids, personNames, classNames, studentGrades, averageGrades, email]);
