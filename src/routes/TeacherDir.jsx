@@ -15,8 +15,9 @@ const TeacherDir = () => {
       await Promise.all(teacherSnapshot.docs.map(async (doc) => {
           const docData = doc.data();
           const id = doc.id;
-          const classes = docData['classes'];
-          temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email']})
+          const name = docData['fullName'];
+          const splitName = name.split(' ');
+          temp.push({'firstName' : splitName[0], 'lastName' : splitName[1], 'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email'], 'title': 'teacher'})
       }));
   
       // console.log(temp);
