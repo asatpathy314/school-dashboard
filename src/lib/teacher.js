@@ -1,5 +1,5 @@
 import { db } from "../../../firebase.js";
-import { doc, collection, getDocs } from "firebase/firestore"; 
+import { doc, collection, getDocs, setDoc } from "firebase/firestore"; 
 
 export const addTeacher = (data) => {
     setDoc(collection(db, "teachers"), {
