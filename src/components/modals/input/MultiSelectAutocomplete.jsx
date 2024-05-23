@@ -32,7 +32,6 @@ const MultiSelectAutocomplete = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          margin="dense"
           id="multiSelectAutocomplete"
           name={name}
           label={label}

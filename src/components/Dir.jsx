@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import FormModal from './FormModal';
+import AddEvent from './modals/AddEvent';
 import './../styles/dir.css'
 
 const Dir = (data) => {
