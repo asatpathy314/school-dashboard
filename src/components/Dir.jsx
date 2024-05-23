@@ -35,7 +35,7 @@ const Dir = (data) => {
                             <Button style={{float: "left"}} variant="contained" onClick={handleClickOpenAdd}>Add {data['type']}</Button>
                             <FormModal modalType={"add" + data['type']} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
                             <Button style={{float: "right"}} className="but" variant="contained" onClick={handleClickOpenRemove}>Remove {data['type']}</Button>
-                            <FormModal modalType="addEvent" open={openRemove} handleClose={handleCloseRemove} handleClickOpen={handleClickOpenRemove}/>
+                            <FormModal modalType={"remove" + data['type']} open={openRemove} handleClose={handleCloseRemove} handleClickOpen={handleClickOpenRemove}/>
                         </div>
                     }
                 </div>
@@ -45,5 +45,3 @@ const Dir = (data) => {
 }
 
 export default Dir
-
-// Line 38 modalType={"remove" + data['type']}
