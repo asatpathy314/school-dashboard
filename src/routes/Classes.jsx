@@ -30,6 +30,7 @@ const Classes = () => {
             })
           }
           avg = gradeSum / students.length;
+          avg = avg.toFixed(2);
         } else {
           avg = 'N/A';
         }
