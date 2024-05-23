@@ -78,7 +78,7 @@ export const addStudent = async (student) => {
 export const removeStudent = async (studentsToRemove) => {
   // Assuming 'students' collection stores the students with a 'name' field
   const studentsCollectionRef = collection(db, "students");
-
+  console.log(studentsToRemove);
   for (const student of studentsToRemove.students) {
     // Create a query to find the student document by their name
     const q = query(studentsCollectionRef, where("fullName", "==", student.label));

@@ -3,6 +3,7 @@ import { React, useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
+import { removeStudent } from "../lib/student.js";
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
@@ -141,14 +142,25 @@ const Map = (props) => {
     }
 
     const handleDelete = () => {
-        // if (dataType == 'student') {
-        let toDelete = []
-        selectedRows.forEach((row) => {
-            toDelete.push({
-                'label': row.fullName
+        if (dataType == 'student') {
+            let toDelete = {
+                'students': []
+            }
+            selectedRows.forEach((row) => {
+                toDelete.students.push({
+                    'label': row.fullName
+                })
             })
+        // console.log(toDelete);
+            removeStudent(toDelete);
+        } else if (dataType == 'teacher') {
+            
+        }
+        
+        const updatedData = filteredData.filter((row) => {
+            return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
         })
-        console.log(toDelete);
+        setFilteredData(updatedData);
     }
 
     // useEffect(() => {

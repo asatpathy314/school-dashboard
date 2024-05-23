@@ -20,7 +20,7 @@ const Classes = () => {
         let gradeSum = 0;
         let avg = 0;
         
-        console.log(students.length)
+        // console.log(students.length)
         if (students.length > 0) {
           for (const stuRef of students) {
             const stuDoc = await getDoc(stuRef);
@@ -36,8 +36,7 @@ const Classes = () => {
         }
 
         // console.log(gradeSum)
-        
-        console.log(avg);
+        // console.log(avg);
 
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
@@ -49,7 +48,7 @@ const Classes = () => {
     }));
 
     setClassesArray(temp);
-}
+  }
 
   useEffect(() => {
     getClasses();
