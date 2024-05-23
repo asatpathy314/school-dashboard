@@ -1,88 +1,97 @@
 import { db } from "../../firebase.js";
-import { doc, collection, getDocs, query, where, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
+import {
+  doc,
+  collection,
+  getDocs,
+  query,
+  where,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
-/*
-const exampleStudentOutputFromForm = {
-    firstName: "John",
-    lastName: "Snow",
-    id: "skdxjcj9423m2",
-    classes: [
-        {
-            label: "Mrs. Johnson's 4th Grade Mathematics Class"
-        }
-    ],
-    grade: "4th Grade"
-}
-
-exampleStudentDocumentInDatabase = {
-    classes: {
-        0: {
-            class: _DocumentReference,
-            grade: number
-        }
-    },
-    firstName: string,
-    lastName: string,
-    fullName: string,
-    id: string,
-    grade: string,
-}
-
-exampleClassObjectInDatabase = {
-    name: string
-    grade: string
-    subject: string
-    teacher: _DocumentReference
-    students: {
-        0: {
-            student: _DocumentReference,
-        }
-        1: {
-            student: _DocumentReference,
-        }
-    }
-}
-
-
-*/
-function generateUUID() {
-    return crypto.randomUUID();
-}
-
-
+/**
+ * Adds a student to the database if it doesn't exist. Otherwise, updates the student's information.
+ * @param {Object} student - The student object to be added.
+ * @param {string} student.id - The ID of the student.
+ * @param {string} student.firstName - The first name of the student.
+ * @param {string} student.lastName - The last name of the student.
+ * @param {string} student.grade - The grade of the student.
+ * @param {Array} student.classes - An array of classes the student is enrolled in.
+ */
 export const addStudent = async (student) => {
-    const classesToUpdate = [];
-    const uuid = generateUUID();
+  const studentRef = doc(db, "students", student.id);
+  const studentDoc = await getDoc(studentRef);
 
-    for (let index = 0; index < student.classes.length; index++) {
-        const q = query(collection(db, "classes"), where("name", "==", student.classes[index].label));
-        const querySnapshot = await getDocs(q);
+  const classesToUpdate = [];
 
-        if (!querySnapshot.empty) {
-            const classDocument = querySnapshot.docs[0];
-            classesToUpdate.push(doc(db, '/classes/'+classDocument.id));
-        }
+  for (let index = 0; index < student.classes.length; index++) {
+    const q = query(
+      collection(db, "classes"),
+      where("name", "==", student.classes[index].label)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const classDocument = querySnapshot.docs[0];
+      classesToUpdate.push(doc(db, "/classes/" + classDocument.id));
     }
+  }
 
-    const studentData = {
-        firstName: student.firstName,
-        lastName: student.lastName,
-        fullName: `${student.firstName} ${student.lastName}`,
-        id: student.id,
-        grade: student.grade,
-        classes: classesToUpdate.map((classRef, index) => ({
-            class: classRef,
-            grade: 100.00
-        }))
-    };
+  const studentData = {
+    firstName: student.firstName,
+    lastName: student.lastName,
+    fullName: `${student.firstName} ${student.lastName}`,
+    id: student.id,
+    grade: student.grade,
+    classes: classesToUpdate.map((classRef, index) => ({
+      class: classRef,
+      grade: 100.0,
+    })),
+  };
 
-    // Create a new document for the student in the 'students' collection
-    await setDoc(doc(db, "students"), studentData);
+  // If the student exists, update their information
+  if (studentDoc.exists()) {
+    await updateDoc(studentRef, studentData);
+  } else {
+    // If the student does not exist, create a new document
+    await setDoc(studentRef, studentData);
+  }
 
-    // Update each class document to include the new student in its 'students' array
-    for (const classRef of classesToUpdate) {
-        await updateDoc(classRef, {
-            students: arrayUnion(doc(db, "students", uuid))
-        });
+  // Update each class document to include the new or updated student in its 'students' array
+  for (const classRef of classesToUpdate) {
+    await updateDoc(classRef, {
+      students: arrayUnion(studentRef),
+    });
+  }
+};
+
+/**
+ * Removes students from the 'students' collection based on their names.
+ * @param {Object} studentsToRemove - An object containing an array of students to remove.
+ * @param {Array} studentsToRemove.students - An array of students to remove.
+ * @param {string} studentsToRemove.students[].label - The name of the student to remove.
+ * @returns {Promise<void>} - A promise that resolves when all students have been removed.
+ */
+export const removeStudent = async (studentsToRemove) => {
+  // Assuming 'students' collection stores the students with a 'name' field
+  const studentsCollectionRef = collection(db, "students");
+
+  for (const student of studentsToRemove.students) {
+    // Create a query to find the student document by their name
+    const q = query(studentsCollectionRef, where("fullName", "==", student.label));
+    const querySnapshot = await getDocs(q);
+
+    // Assuming each name is unique and only returns one document
+    if (!querySnapshot.empty) {
+      const studentDocument = querySnapshot.docs[0];
+      // Delete the found student document
+      await deleteDoc(doc(db, "students", studentDocument.id));
+      console.log(`Deleted student: ${student.label}`);
+    } else {
+      console.log(`Student not found: ${student.label}`);
     }
-}
+  }
+};

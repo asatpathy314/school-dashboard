@@ -5,8 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import MultiSelectAutocomplete from "./input/MultiSelectAutocomplete.jsx";
-import { db } from "../../../firebase.js";
-import { doc, setDoc, getDoc, deleteDoc, getDocs, query, collection, where } from "firebase/firestore"; 
+import { removeStudent } from "../../lib/student.js";
 
 
 const RemoveStudent = ( { open, handleClose, studentsAutocomplete}) => {
@@ -17,6 +16,7 @@ const RemoveStudent = ( { open, handleClose, studentsAutocomplete}) => {
         const formJson = Object.fromEntries(formData.entries());
         formJson.students = selectedStudents;
         console.log(formJson)
+        removeStudent(formJson);
         handleClose();
     };
     return (

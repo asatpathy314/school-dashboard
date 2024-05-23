@@ -18,9 +18,7 @@ const AddStudent = ( { open, handleClose, classesAutocomplete }) => {
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
         console.log(formJson); // TODO: Finish
-        await addStudent(formJson)
-          .then((res) => console.log(res))
-          .catch(console.error('Error adding student'));
+        await addStudent(formJson);
         handleClose();
       };
 
