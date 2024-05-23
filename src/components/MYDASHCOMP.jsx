@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/dashboard/Dashboard.css';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import Map from './Map';
@@ -11,7 +10,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Teachers</h3>
-          <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} dataType="Teacher" />
+          <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} />
         </div>
       );
       break;
@@ -19,7 +18,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Students</h3>
-          <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} dataType="Student" />
+          <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} />
         </div>
       );
       break;
@@ -27,7 +26,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Classes</h3>
-          <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} dataType="Class" />
+          <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} />
         </div>
       );
       break;

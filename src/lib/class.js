@@ -13,48 +13,6 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 
-/*
-Example form output object. (This will be the format of the input to addClass)
-{
-    teacher: "Noah White",
-    grade: "Kindergarten",
-    subject: "Homeroom",
-    students: [
-        {
-            "label": "Joshua Moore"
-        },
-        {
-            "label": "Daniel Martinez"
-        },
-        {
-            "label": "Mia Anderson"
-        }
-    ]
-}
-
-Example class database object. (This will be the format of the document in the database)
-{
-    name: string, // The name of the class is generated as such. teacher.title +  teacher.lastName + "'s " + grade + " " + subject + " class"
-    subject: string
-    teacher: _DocumentReference
-    students: _DocumentReference[]
-}
-
-Example teacher object. (This will be the format of the document in the database)
-
-{
-    firstName: "Noah" (string)
-    lastName: "White" (string)
-    fullName: "Noah White" (string)
-    id: "012346" (string)
-    email: "gmail@gmail.com" (string)
-    title: "Mr." (string)
-}
-
-
-
-*/
-
 /**
  * Adds a class to the database.
  * @param {Object} classData - The data of the class to be added.
@@ -64,112 +22,156 @@ Example teacher object. (This will be the format of the document in the database
  * @param {string} classData.grade - The grade of the class.
  * @param {string} classData.subject - The subject of the class.
  * @param {Array} classData.students - The students in the class.
- * @returns {Promise<void>} - A promise that resolves when the class is added.
+ * @example
+ * // Example form output object:
+ * // {
+ * //     teacher: "Noah White",
+ * //     grade: "Kindergarten",
+ * //     subject: "Homeroom",
+ * //     students: [
+ * //         {
+ * //             "label": "Joshua Moore"
+ * //         },
+ * //         {
+ * //             "label": "Daniel Martinez"
+ * //         },
+ * //         {
+ * //             "label": "Mia Anderson"
+ * //         }
+ * //     ]
+ * // }
  */
 
-const getByFullName = async (fullName, collectionName) => {
-    // Create a query to find the document by fullName
-    console.log(collectionName, fullName)
-    const q = query(
-      collection(db, collectionName),
-      where("fullName", "==", fullName)
-    );
-  
-    // Execute the query
-    const querySnapshot = await getDocs(q);
-  
-    // Check if the query returned any documents
-    if (!querySnapshot.empty) {
-      // Assuming there is only one document with the given fullName
-      const retrievedDoc = querySnapshot.docs[0];
-      return retrievedDoc;
-    } else {
-      console.log(`No document found with fullName: ${fullName}`);
-      return null;
-    }
-  };
-  
-  export const addClass = async (classData) => {
-    // Retrieve teacher data from the database.
-    console.log(classData)
-    const teacherDoc = await getByFullName(classData.teacher, "teachers");
-    if (teacherDoc === null) {
-      console.error("Teacher not found.");
-      return;
-    }
-    const teacher = teacherDoc.data();
-  
-    // Generate the class name
-    const className = `${teacher.title} ${teacher.lastName}'s ${classData.grade} ${classData.subject} class`;
-  
-    // Create a query to find the class document by its name
-    const classQuery = query(
-      collection(db, "classes"),
-      where("name", "==", className)
-    );
-    const classQuerySnapshot = await getDocs(classQuery);
-  
-    let classRef;
-    if (!classQuerySnapshot.empty) {
-      // If the class exists, get the document reference
-      classRef = classQuerySnapshot.docs[0].ref;
-      // Update the class document
-      await updateDoc(classRef, {
-        name: className,
-        grade: classData.grade,
-        subject: classData.subject,
-        teacher: doc(db, "teachers", teacherDoc.id),
-        students: await Promise.all(classData.students.map(async (student) => {
-          const studentDoc = await getByFullName(student.label, "students");
-          if (studentDoc === null) {
-            console.error(`Student not found: ${student.label}`);
-            return null;
-          }
-          return doc(db, "students", studentDoc.id);
-        }).filter(ref => ref !== null)),
-      });
-    } else {
-      // If the class does not exist, create a new document
-      classRef = doc(collection(db, "classes"));
-      await setDoc(classRef, {
-        name: className,
-        grade: classData.grade,
-        subject: classData.subject,
-        teacher: doc(db, "teachers", teacherDoc.id),
-        students: await Promise.all(classData.students.map(async (student) => {
-          const studentDoc = await getByFullName(student.label, "students");
-          if (studentDoc === null) {
-            console.error(`Student not found: ${student.label}`);
-            return null;
-          }
-          return doc(db, "students", studentDoc.id);
-        }).filter(ref => ref !== null)),
-      });
-    }
-  
-    // Iterate through the students and update their classes array
-    for (const student of classData.students) {
-      const studentDoc = await getByFullName(student.label, "students");
-  
-      if (studentDoc === null) {
-        console.error(`Student not found: ${student.label}`);
-        continue; // Skip to the next student
-      }
-  
-      const studentData = studentDoc.data();
-      const classExists = studentData.classes.some(
-        (classItem) => classItem.class.id === classRef.id
-      );
-      const studentRef = doc(db, "students", studentDoc.id);
-  
-      if (!classExists) {
-        await updateDoc(studentRef, {
-          classes: arrayUnion({ class: classRef, grade: 100.0 }),
-        });
-      }
-    }
-  };
+export const addClass = async (classData) => {
+  // Retrieve teacher data from the database.
+  console.log(classData);
+  const teacherDoc = await getByFullName(classData.teacher, "teachers");
+  if (teacherDoc === null) {
+    console.error("Teacher not found.");
+    return;
+  }
+  const teacher = teacherDoc.data();
 
+  // Generate the class name
+  const className = `${teacher.title} ${teacher.lastName}'s ${classData.grade} ${classData.subject} class`;
+
+  // Create a query to find the class document by its name
+  const classQuery = query(
+    collection(db, "classes"),
+    where("name", "==", className)
+  );
+  const classQuerySnapshot = await getDocs(classQuery);
+
+  let classRef;
+  if (!classQuerySnapshot.empty) {
+    // If the class exists, get the document reference
+    classRef = classQuerySnapshot.docs[0].ref;
+    // Update the class document
+    await updateDoc(classRef, {
+      name: className,
+      grade: classData.grade,
+      subject: classData.subject,
+      teacher: doc(db, "teachers", teacherDoc.id),
+      students: await Promise.all(
+        classData.students
+          .map(async (student) => {
+            const studentDoc = await getByFullName(student.label, "students");
+            if (studentDoc === null) {
+              console.error(`Student not found: ${student.label}`);
+              return null;
+            }
+            return doc(db, "students", studentDoc.id);
+          })
+          .filter((ref) => ref !== null)
+      ),
+    });
+  } else {
+    // If the class does not exist, create a new document
+    classRef = doc(collection(db, "classes"));
+    await setDoc(classRef, {
+      name: className,
+      grade: classData.grade,
+      subject: classData.subject,
+      teacher: doc(db, "teachers", teacherDoc.id),
+      students: await Promise.all(
+        classData.students
+          .map(async (student) => {
+            const studentDoc = await getByFullName(student.label, "students");
+            if (studentDoc === null) {
+              console.error(`Student not found: ${student.label}`);
+              return null;
+            }
+            return doc(db, "students", studentDoc.id);
+          })
+          .filter((ref) => ref !== null)
+      ),
+    });
+  }
+
+  // Iterate through the students and update their classes array
+  for (const student of classData.students) {
+    const studentDoc = await getByFullName(student.label, "students");
+
+    if (studentDoc === null) {
+      console.error(`Student not found: ${student.label}`);
+      continue; // Skip to the next student
+    }
+
+    const studentData = studentDoc.data();
+    const classExists = studentData.classes.some(
+      (classItem) => classItem.class.id === classRef.id
+    );
+    const studentRef = doc(db, "students", studentDoc.id);
+
+    if (!classExists) {
+      await updateDoc(studentRef, {
+        classes: arrayUnion({ class: classRef, grade: 100.0 }),
+      });
+    }
+  }
+};
+
+const getByFullName = async (fullName, collectionName) => {
+  // Create a query to find the document by fullName
+  console.log(collectionName, fullName);
+  const q = query(
+    collection(db, collectionName),
+    where("fullName", "==", fullName)
+  );
+
+  // Execute the query
+  const querySnapshot = await getDocs(q);
+
+  // Check if the query returned any documents
+  if (!querySnapshot.empty) {
+    // Assuming there is only one document with the given fullName
+    const retrievedDoc = querySnapshot.docs[0];
+    return retrievedDoc;
+  } else {
+    console.log(`No document found with fullName: ${fullName}`);
+    return null;
+  }
+};
+
+/**
+ * Removes a class and updates the associated student documents.
+ * @param {Object} classData - The class data containing the classes to be removed.
+ * @param {Array} classData.classes - The classes to be removed.
+ * @param {string} classData.classes.label - The label of the class to be removed.
+ * @example
+ * // Example input object:
+ * // {
+ * //     classes: [
+ * //         {
+ * //             "label": "Noah White's Kindergarten Homeroom class"
+ * //         },
+ * //         {
+ * //             "label": "John Smith's 1st Grade Math class"
+ * //         }
+ * //     ]
+ * // }
+ * @returns {Promise<void>} - A promise that resolves when the class is removed and student documents are updated.
+ */
 export const removeClass = async (classData) => {
   for (const classItem of classData.classes) {
     // Retrieve the class document based on classItem.label
@@ -199,9 +201,9 @@ export const removeClass = async (classData) => {
       }
 
       // Filter out the class based on classRef.id, ignoring the grade
-      const updatedClasses = studentDoc.data().classes.filter(
-        (classItem) => classItem.class.id !== classRef.id
-      );
+      const updatedClasses = studentDoc
+        .data()
+        .classes.filter((classItem) => classItem.class.id !== classRef.id);
 
       // Update the student's document with the new classes array
       await updateDoc(studentRef, {
@@ -210,8 +212,7 @@ export const removeClass = async (classData) => {
     }
 
     // Delete the class document
-    await deleteDoc(doc(db, "classes", classId));
+    await deleteDoc(collection(db, "classes", classId));
     console.log(`Class ${classId} removed successfully.`);
   }
 };
-  
