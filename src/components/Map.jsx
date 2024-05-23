@@ -6,13 +6,14 @@ import Button from '@mui/material/Button'
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
 import { removeTeacher } from '../lib/teacher.js';
+import { removeClass } from '../lib/class.js';
 import { Link } from 'react-router-dom';
 import '../styles/Map.css'
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard } = props;
+    const { data, ids, personNames, students, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
@@ -203,6 +204,20 @@ const Map = (props) => {
             removeTeacher(teachersToDelete);
             updatedData = filteredData.filter((row) => {
                 return !toDelete.teachers.some((deleteRow) => deleteRow.label == row.fullName);
+            })
+        } else if (dataType == 'Class') {
+            let toDelete = {
+                'classes': []
+            }
+            selectedRows.forEach((row) => {
+                toDelete.classes.push({
+                    'label': row.className
+                })
+            })
+            // console.log(toDelete)
+            removeClass(toDelete);
+            updatedData = filteredData.filter((row) => {
+                return !toDelete.classes.some((deleteRow) => deleteRow.label == row.fullName);
             })
         }
 

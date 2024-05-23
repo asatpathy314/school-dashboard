@@ -20,7 +20,6 @@ const Classes = () => {
         let gradeSum = 0;
         let avg = 0;
         
-        // console.log(students.length)
         if (students.length > 0) {
           for (const stuRef of students) {
             const stuDoc = await getDoc(stuRef);
@@ -45,8 +44,13 @@ const Classes = () => {
 
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
-
-        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
+        if (teacherDoc && teacherDoc.data() && teacherDoc.data().fullName) {
+          const teacherFullName = teacherDoc.data().fullName;
+          temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherFullName});
+        } else {
+          temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': 'NO TEACHER'});
+        }
+        
       } catch (error) {
         console.log("Error fetching class data: ", error, doc.id);
       }
@@ -67,6 +71,7 @@ const Classes = () => {
         classNames={true} 
         averageGrades={true} 
         personNames={true} 
+        students={true}
         data={classesArray} 
         dataType={'Class'}/>}>
       </Dir>
