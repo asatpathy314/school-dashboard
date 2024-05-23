@@ -106,7 +106,7 @@ setStudentsArray(temp);
       <h2 className='header'>Admin Dashboard</h2>
       <div className='dashboard'>
         <Box sx={{ 
-          mt: -1,
+          mt: 1,
           display: 'grid', 
           gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 1,
@@ -116,13 +116,13 @@ setStudentsArray(temp);
             "teachers classes classes students"
             "teachers upcoming-events upcoming-events students"` }}
         >
-          <Box sx={{ gridArea: 'teachers' }}>
+          <Box sx={{ gridArea: 'teachers', ml: 5 }}>
             <DashboardComponent data={teachersArray} which={'teacher'}/>
           </Box>
           <Box sx={{ gridArea: 'classes' }}>
             <DashboardComponent data={data} which={'class'} />
           </Box>
-          <Box sx={{ gridArea: 'students' }}>
+          <Box sx={{ gridArea: 'students', mr: 5 }}>
             <DashboardComponent data={studentsArray} which={'student'} />
           </Box>
           <Box sx={{ gridArea: 'upcoming-events' }}>
