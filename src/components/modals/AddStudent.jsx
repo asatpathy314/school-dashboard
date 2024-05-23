@@ -58,7 +58,7 @@ const AddStudent = ({
     const formJson = Object.fromEntries(formData.entries());
     formJson.classes = selectedClasses;
     console.log(formJson); // TODO: Finish
-    //await addStudent(formJson);
+    await addStudent(formJson);
     handleClose();
   };
 
