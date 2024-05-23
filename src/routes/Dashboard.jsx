@@ -8,6 +8,7 @@ import { Box } from '@mui/material'
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
   const [teachersArray, setTeachersArray] = useState([]);
+  const [studentsArray, setStudentsArray] = useState([]);
 
   const fetchEvents = async () => {
     try {
@@ -46,9 +47,33 @@ const Dashboard = () => {
     setTeachersArray(temp);
 }
 
+async function getStudents() {
+  const collRef = collection(db, "students");
+  const studentSnapshot = await getDocs(query(collRef));
+  let temp = [];
+  
+  await Promise.all(studentSnapshot.docs.map(async (doc) => {
+      const docData = doc.data();
+      const classes = doc.data()['classes'];
+      const id = doc.id;
+
+      let grades = 0;
+      let count = 0;
+      const gradeSum = classes.forEach(classItem => {
+        grades = classItem.grade + grades;
+        count = count + 1;
+      })
+      const avgGrade = grades / count;
+
+      temp.push({'fullName': docData['fullName'], 'id': docData['id'], 'grade': docData['grade'], 'averageGrade': avgGrade})
+  }));
+setStudentsArray(temp);
+}
+
   useEffect(() => {
     fetchEvents();
     getTeachers();
+    getStudents();
   }, []);
 
   const [data] = useState([
@@ -98,7 +123,7 @@ const Dashboard = () => {
             <DashboardComponent data={data} which={'class'} />
           </Box>
           <Box sx={{ gridArea: 'students' }}>
-            <DashboardComponent data={data} which={'student'} />
+            <DashboardComponent data={studentsArray} which={'student'} />
           </Box>
           <Box sx={{ gridArea: 'upcoming-events' }}>
             <DashboardComponent data={events} which={'upcoming-events'}/>

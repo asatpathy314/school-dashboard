@@ -19,6 +19,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className='dashboard-left-right'>
           <h3 className='h3'>Students</h3>
+          <Map ids={true} personNames={true} studentGrades={true} data={data} averageGrades={true} forDashboard={true} />
         </div>
       );
       break;

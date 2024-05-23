@@ -60,7 +60,7 @@ const Map = (props) => {
             headerName: 'Grade', 
             flex: 1.4, });
         }
-        if (averageGrades) {
+        if (!forDashboard && averageGrades) {
             newColumns.push({ field: 'averageGrade', 
             headerName: 'Average Grade', 
             flex: 2, 
