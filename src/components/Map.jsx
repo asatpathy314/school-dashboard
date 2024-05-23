@@ -1,16 +1,21 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
+import { removeStudent } from "../lib/student.js";
+import { Link } from 'react-router-dom';
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { data, ids, personNames, classNames, studentGrades, averageGrades, email, dataType, forDashboard } = props;
+    const { data, ids, personNames, classNames, studentGrades, classGrade, averageGrades, email, dataType, forDashboard } = props;
     const [hasSearched, setHasSearched] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [openAdd, setOpenAdd] = useState(false);
+    const [rowSelectionModel, setRowSelectionModel] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [rowSelected, setRowSelected] = useState(false);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -24,14 +29,24 @@ const Map = (props) => {
         const newColumns = [];
 
         // Conditionally add columns based on the props received
-        if (!forDashboard && ids) {
+        if (!forDashboard && ids && dataType !== "Class") {
             newColumns.push({
                 field: 'id',
                 headerName: 'ID',
                 type: 'number',
                 flex: 0.7,
             });
-        } 
+        }
+
+        if (dataType === "Class" && ids) {
+            newColumns.push({
+                field: 'id',
+                headerName: 'ID',
+                type: 'number',
+                flex: 2.3,
+                renderCell: (params) => <Link to={"/class/" + params['id']}>{params['id']}</Link>
+            });
+        }
 
         if (personNames) {
             if (forDashboard) {
@@ -44,7 +59,7 @@ const Map = (props) => {
                 newColumns.push({
                     field: 'fullName',
                     headerName: 'Name',
-                    flex: 1.4,
+                    flex: 2,
                 });
             }
         }
@@ -66,6 +81,18 @@ const Map = (props) => {
                 flex: 1.4, });
             }
         }
+        if (classGrade) {
+            newColumns.push({ field: 'classGrade', 
+            headerName: 'Class Grade', 
+            flex: 1.4, editable: true});
+        }
+        if (!forDashboard && averageGrades) {
+            newColumns.push({ field: 'averageGrade', 
+            headerName: 'Average Grade', 
+            flex: 2, 
+            valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+        }
+        
         if (averageGrades) {
             if (forDashboard) {
                 newColumns.push({ field: 'averageGrade', 
@@ -92,14 +119,17 @@ const Map = (props) => {
                 });
             }
         }
-        newColumns.push({
-            field: 'edit',
-            headerName: 'Edit',
-            renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
-            flex: 2,
-            headerAlign: 'right',
-            align: 'right',
-        });
+        if (dataType) {
+            newColumns.push({
+                field: 'edit',
+                headerName: 'Edit',
+                renderCell: () => <EditRoundedIcon onClick={handleClickOpenAdd} />,
+                flex: 2,
+                headerAlign: 'right',
+                align: 'right',
+            });
+        }
+        
 
         setColumns(newColumns);
     }, [ids, personNames, classNames, studentGrades, averageGrades, email]);
@@ -128,34 +158,109 @@ const Map = (props) => {
             setHasSearched(true);
         }
     };
-    
-    return (
-        <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
-            <TextField
-                label="Search"
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyPress}
-                variant="outlined"
-                fullWidth
-                style={{ marginBottom: '1rem' }}
-            />
-            <DataGrid
-                rows={filteredData}
-                columns={columns}
-                autoHeight={true}
-                initialState={{
-                    ...data.initialState,
-                    pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
-                    },
-                }}
-                // If I add page size options, it will morph the CSS and make the div bigger than it should be
-                pageSizeOptions={[5, 10, 25]}
-                disableRowSelectionOnClick = {true}
-            />
-            <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
-        </div>
-    );
+
+    const handleRowSelection = (newSelection) => {
+        setRowSelectionModel(newSelection);
+        const selectedRowIds = new Set(newSelection);
+        const newlySelectedRows = filteredData.filter((row) => selectedRowIds.has(row.id));
+        setSelectedRows(newlySelectedRows);
+        setRowSelected(true);
+    }
+
+    const handleDelete = () => {
+        if (dataType == 'Student') {
+            let toDelete = {
+                'students': []
+            }
+            selectedRows.forEach((row) => {
+                toDelete.students.push({
+                    'label': row.fullName
+                })
+            })
+        // console.log(toDelete);
+            removeStudent(toDelete);
+        } else if (dataType == 'Teacher') {
+            let toDelete = {
+                'teachers': []
+            }
+            selectedRows.forEach((row) => {
+                toDelete.teachers.push({
+                    'label': row.fullName
+                })
+            })
+
+        }
+        
+        const updatedData = filteredData.filter((row) => {
+            return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
+        })
+        setFilteredData(updatedData);
+    }
+
+    // useEffect(() => {
+    //     console.log(selectedRows);
+    // }, [selectedRows]);
+
+    if (forDashboard) {
+        return (
+            <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                <TextField
+                    label="Search"
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    variant="outlined"
+                    fullWidth
+                    style={{ marginBottom: '1rem' }}
+                />
+                <DataGrid
+                    rows={filteredData}
+                    columns={columns}
+                    autoHeight={true}
+                    initialState={{
+                        ...data.initialState,
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10, 25]}
+                    disableRowSelectionOnClick = {true}
+                />
+                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+            </div>
+        );
+    } else {
+        return (
+            <div style={{ height: '100%', width: '100%', overflowY: 'auto' }}>
+                <TextField
+                    label="Search"
+                    onChange={handleSearchChange}
+                    onKeyDown={handleKeyPress}
+                    variant="outlined"
+                    fullWidth
+                    style={{ marginBottom: '1rem' }}
+                />
+                <DataGrid
+                    rows={filteredData}
+                    columns={columns}
+                    autoHeight={true}
+                    initialState={{
+                        ...data.initialState,
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10, 25]}
+                    checkboxSelection
+                    keepNonExistentRowsSelected
+                    disableRowSelectionOnClick = {true}
+                    rowSelectionModel={rowSelectionModel}
+                    onRowSelectionModelChange={handleRowSelection}
+                />
+                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>
+                <div>{rowSelected ? <button onClick={handleDelete}>Test</button> : ''}</div>
+            </div>
+        );
+    }
 }
 
 export default Map;

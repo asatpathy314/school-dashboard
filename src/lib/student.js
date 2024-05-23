@@ -70,7 +70,7 @@ export const addStudent = async (student) => {
 
 /**
  * Removes students from the 'students' collection based on their names.
- * @param {Object} studentsToRemove - An object containing an array of students to remove.
+ * @param {Object} studentsToRemove - An object containing an array of student objects to remove. Key label, data fullName.
  * @param {Array} studentsToRemove.students - An array of students to remove.
  * @param {string} studentsToRemove.students[].label - The name of the student to remove.
  * @returns {Promise<void>} - A promise that resolves when all students have been removed.
@@ -78,7 +78,7 @@ export const addStudent = async (student) => {
 export const removeStudent = async (studentsToRemove) => {
   // Assuming 'students' collection stores the students with a 'name' field
   const studentsCollectionRef = collection(db, "students");
-
+  console.log(studentsToRemove);
   for (const student of studentsToRemove.students) {
     // Create a query to find the student document by their name
     const q = query(studentsCollectionRef, where("fullName", "==", student.label));
