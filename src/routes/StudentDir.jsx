@@ -37,7 +37,7 @@ const StudentDir = () => {
 
   return (
     <div>
-      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} averageGrades={true} data={studentsArray}/>}></Dir>
+      <Dir type="Student" comp={<Map ids={true} personNames={true} studentGrades={true} averageGrades={true} data={studentsArray} dataType={'Student'}/>}></Dir>
     </div>
   )
 }

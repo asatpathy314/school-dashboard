@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
 import './styles/index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -11,22 +11,16 @@ import Calendars from './routes/Calendars.jsx'
 import Dev from './routes/Dev.jsx'
 import Navbar from './components/Navbar.jsx'
 
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Dashboard/>
   },
-  // {
-  //   path: "/class",
-  //   // when firebase is set up loop through all possible classes and add route to that class using children (I added an example id)
-  //   children: [
-  //     {
-  //       path: "wejifhwejh",
-  //       elem: <p>class.jsx</p>
-  //     }
-  //   ],
-  // },
+  {
+    path: "/class/:id",
+    element: <Class/>
+    // when firebase is set up loop through all possible classes and add route to that class using children (I added an example id)
+  },
   {
     path: "/class-directory",
     element: <Classes/>,
