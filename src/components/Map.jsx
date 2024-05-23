@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
+// import { removeStudent } from "../lib/student.js";
 
 const Map = (props) => {
     const [columns, setColumns] = useState([]);
@@ -142,7 +143,7 @@ const Map = (props) => {
     }
 
     const handleDelete = () => {
-        if (dataType == 'student') {
+        if (dataType == 'Student') {
             let toDelete = {
                 'students': []
             }
@@ -153,8 +154,16 @@ const Map = (props) => {
             })
         // console.log(toDelete);
             removeStudent(toDelete);
-        } else if (dataType == 'teacher') {
-            
+        } else if (dataType == 'Teacher') {
+            let toDelete = {
+                'teachers': []
+            }
+            selectedRows.forEach((row) => {
+                toDelete.teachers.push({
+                    'label': row.fullName
+                })
+            })
+
         }
         
         const updatedData = filteredData.filter((row) => {

@@ -43,7 +43,7 @@ const StudentDir = () => {
         studentGrades={true} 
         averageGrades={true} 
         data={studentsArray}
-        dataType={'student'}
+        dataType={'Student'}
         />}>
       </Dir>
     </div>
