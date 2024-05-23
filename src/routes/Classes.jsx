@@ -12,13 +12,22 @@ const Classes = () => {
     const classSnapshot = await getDocs(query(collRef));
     let temp = [];
 
+
     await Promise.all(classSnapshot.docs.map(async (doc) =>  {
       try {
-        // console.log("hi")
+        console.log(doc.data());
         const id = doc.id;
         const students = doc.data()['students'];
         let gradeSum = 0;
         let avg = 0;
+
+        const valStudents = []
+          
+          await Promise.all(students.map(async (s) => {
+            const cDoc = await getDoc(s);
+            valStudents.push({'label': cDoc.data()['fullName']});
+          }))
+
         
         // console.log(students.length)
         if (students.length > 0) {
@@ -43,7 +52,15 @@ const Classes = () => {
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
 
-        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
+        temp.push({
+          'teacher': teacherDoc.data()['fullName'], 
+          'grade': doc.data()['grade'], 
+          'subject': doc.data()['subject'],
+          'id': doc.id, 
+          'className': doc.data()['name'], 
+          'averageGrade': avg, 
+          'fullName': teacherDoc.data()['fullName'],
+          'students': valStudents});
       } catch (error) {
         console.log("Error fetching class data: ", error, doc.id);
       }

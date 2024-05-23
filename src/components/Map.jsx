@@ -261,14 +261,7 @@ const Map = (props) => {
                     rowSelectionModel={rowSelectionModel}
                     onRowSelectionModelChange={handleRowSelection}
                 />
-                {
-                    {
-                    'Teacher': <AddTeacher handleClose={handleCloseAdd} open={openAdd} values={values['row']}/>,
-                    'Class': <AddStudent handleClose={handleCloseAdd} open={openAdd} values={values['row']}/>,
-                    'Student': <AddClass handleClose={handleCloseAdd} open={openAdd} values={values['row']}/>
-                    }[dataType]
-                }
-                {/* <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/> */}
+                <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd} values={values['row']}/>
                 <div>{rowSelected ? <button onClick={handleDelete}>Test</button> : ''}</div>
             </div>
         );
