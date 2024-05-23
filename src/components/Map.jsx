@@ -5,6 +5,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import Button from '@mui/material/Button'
 import FormModal from './FormModal';
 import { removeStudent } from "../lib/student.js";
+import { removeTeacher } from '../lib/teacher.js';
 import { Link } from 'react-router-dom';
 import '../styles/Map.css'
 
@@ -175,6 +176,7 @@ const Map = (props) => {
 
     const handleDelete = () => {
         let toDelete = {};
+        let updatedData = [];
         if (dataType == 'Student') {
             toDelete = {
                 'students': []
@@ -185,6 +187,9 @@ const Map = (props) => {
                 })
             })
             removeStudent(toDelete);
+            updatedData = filteredData.filter((row) => {
+                return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
+            })
         } else if (dataType == 'Teacher') {
             let toDelete = {
                 'teachers': []
@@ -194,12 +199,13 @@ const Map = (props) => {
                     'label': row.fullName
                 })
             })
-
+            const teachersToDelete = toDelete.teachers;
+            removeTeacher(teachersToDelete);
+            updatedData = filteredData.filter((row) => {
+                return !toDelete.teachers.some((deleteRow) => deleteRow.label == row.fullName);
+            })
         }
-        
-        const updatedData = filteredData.filter((row) => {
-            return !toDelete.students.some((deleteRow) => deleteRow.label == row.fullName);
-        })
+
         setFilteredData(updatedData);
         setSelectedRows([]);
         setRowSelected(false);
