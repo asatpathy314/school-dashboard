@@ -65,7 +65,7 @@ const AddClass = ({
     formJson.id = values.id;
     console.log(formJson);
     await addClass(formJson);
-    //window.location.reload(); 
+    window.location.reload(); 
     handleClose();
   };
 

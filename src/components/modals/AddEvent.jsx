@@ -77,8 +77,8 @@ const AddEvent = ({ open, handleClose, values = {} }) => {
             changeState={setStartDate}
           />
           <DateTimeInput
-            label="Start Date"
-            field="startDate"
+            label="End Date"
+            field="endDate"
             changeState={setEndDate}
           />
         </DialogContent>
