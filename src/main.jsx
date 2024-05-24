@@ -10,10 +10,15 @@ import Dashboard from './routes/Dashboard.jsx'
 import Calendars from './routes/Calendars.jsx'
 import Dev from './routes/Dev.jsx'
 import Navbar from './components/Navbar.jsx'
+import LandingPage from './routes/LandingPage'
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <LandingPage/>
+  },
+  {
+    path: "/dashboard",
     element: <Dashboard/>
   },
   {
