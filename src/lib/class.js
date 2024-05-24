@@ -174,6 +174,7 @@ export const getByFullName = async (fullName, collectionName) => {
  */
 export const removeClass = async (classData) => {
   for (const classItem of classData.classes) {
+    console.log(classItem)
     // Retrieve the class document based on classItem.label
     const classQuery = query(
       collection(db, "classes"),
@@ -212,7 +213,7 @@ export const removeClass = async (classData) => {
     }
 
     // Delete the class document
-    await deleteDoc(collection(db, "classes", classId));
+    await deleteDoc(doc(db, "classes", classId));
     console.log(`Class ${classId} removed successfully.`);
   }
 };
