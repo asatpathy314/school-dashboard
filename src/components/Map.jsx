@@ -168,10 +168,7 @@ const Map = (props) => {
         setRowSelected(newlySelectedRows.length > 0);
     }
 
-    // useEffect(() => {
-    //     console.log(selectedRows)
-    // })
-
+    
     const handleDelete = () => {
         let toDelete = {};
         let updatedData = [];
