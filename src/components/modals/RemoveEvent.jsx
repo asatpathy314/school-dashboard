@@ -10,13 +10,14 @@ import { removeEvent } from "../../lib/event.js";
 
 const RemoveEvent = ( { open, handleClose, eventsAutocomplete} ) => {
     const [selectedEvents, setSelectedEvents] = useState([]);
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.eventData = selectedEvents;
         console.log(formJson);
-        removeEvent(selectedEvents); 
+        await removeEvent(selectedEvents); 
+        window.location.reload(); 
         handleClose();
     };
     return (

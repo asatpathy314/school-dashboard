@@ -59,6 +59,7 @@ const AddStudent = ({
     formJson.classes = selectedClasses;
     console.log(formJson); // TODO: Finish
     await addStudent(formJson);
+    window.location.reload(); 
     handleClose();
   };
 

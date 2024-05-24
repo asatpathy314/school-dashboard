@@ -47,7 +47,8 @@ const AddTeacher = ({ open, handleClose, values = {} }) => {
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
     console.log(formJson); // TODO: Finish
-    addTeacher(formJson)
+    addTeacher(formJson);
+    window.location.reload(); 
     handleClose();
   };
 

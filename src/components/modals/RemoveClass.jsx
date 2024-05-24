@@ -9,13 +9,14 @@ import { removeClass } from "../../lib/class.js";
 
 const RemoveClass = ( { open, handleClose, classesAutocomplete}) => {
     const [selectedClasses, setSelectedClasses] = useState([]);
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.classes = selectedClasses;
         console.log(formJson)
-        removeClass(formJson);
+        await removeClass(formJson);
+        window.location.reload(); ''
         handleClose();
     };
     return (
