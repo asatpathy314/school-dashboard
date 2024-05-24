@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react'
 import DashboardComponent from '../components/DashboardComponent'
+import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents';
 import '../styles/dashboard/Dashboard.css'
 import { collection, getDocs, query, getDoc } from "firebase/firestore";
 import { db } from '../../firebase';
 import { Box, Grid } from '@mui/material'
 import dayjs from 'dayjs';
+import DashButton from '../components/DashButton'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
   const [teachersArray, setTeachersArray] = useState([]);
   const [studentsArray, setStudentsArray] = useState([]);
   const [classesArray, setClassesArray] = useState([]);
+  const navigate = useNavigate();
 
   const fetchEvents = async () => {
     try {
@@ -180,7 +184,12 @@ const Dashboard = () => {
               <DashboardComponent data={classesArray} which={'class'} />
             </Grid>
             <Grid item xs={12}>
-              <DashboardComponent data={events} which={'upcoming-events'}/>
+              <div className='dashboard'>
+                <DashboardUpcomingEvents forDashboard={true}/>
+                <div className='see-more'>
+                  <DashButton onClickMethod={() => navigate('/calendar')} buttonText={'See More'}/>
+                </div>
+              </div>
             </Grid>
           </Grid>
           <Grid item xs = {12} sm={3}>

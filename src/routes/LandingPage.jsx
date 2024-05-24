@@ -1,4 +1,4 @@
-import React from 'react';
+import DashButton from '../components/DashButton';
 import { Stack, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LandingPage.css';
@@ -23,19 +23,7 @@ const LandingPage = () => {
                 <Typography variant="body1">
                     Discover a place where students are empowered to learn, grow, and succeed.
                 </Typography>
-                <Button
-                    variant="contained"
-                    sx={{
-                        backgroundColor: '#6246ea', // Change the button color
-                        width: '300px', // Make the button less wide
-                        '&:hover': {
-                            backgroundColor: '#5138d9', // Darken the button on hover for better UX
-                        },
-                    }}
-                    onClick={handleClick}
-                >
-                    Go to Dashboard
-                </Button>
+                <DashButton onClickMethod={() => handleClick()} buttonText={'Go to Dashboard'}/>
             </Stack>
         </div>
     );

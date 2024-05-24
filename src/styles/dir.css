@@ -1,5 +1,5 @@
 
-.h2 {
+h2 {
     text-align: center;
     margin-top: 15px;
     margin-bottom: 10px;
@@ -27,7 +27,7 @@
 .button-container-top {
     position: absolute;
     right: 0px;
-    top: -44px;;
+    top: -50px;;
     display: flex;
 }
 .button-container-bottom {

@@ -1,3 +1,21 @@
+.grid {
+  margin-bottom: 20px;
+  margin:15px;
+  position: relative;
+}
+.home-button-container {
+  position: absolute;
+  right: 0px;
+  top: -35px;;
+  display: flex;
+}
+.add-remove-button-container{
+  position: absolute;
+  right: 0px;
+  bottom:-50px;
+  display: flex;
+
+}
 .date-cell {
   position: relative;
   cursor: pointer;
@@ -24,7 +42,6 @@
 .calendar-container {
   background-color: #fffffe;
   padding: 15px;
-  margin: 15px;
   color: #2B2C34;
   border-radius: 4px;
   text-align: center;

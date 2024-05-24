@@ -125,7 +125,7 @@ const Map = (props) => {
                 });
             }
         }
-        if (dataType != 'indClass') {
+        if (!forDashboard && dataType != 'indClass') {
             newColumns.push({
                 field: 'edit',
                 headerName: 'Edit',

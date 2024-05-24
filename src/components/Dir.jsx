@@ -31,28 +31,28 @@ const Dir = (data) => {
 
     return (
         <>
-            <h2 className='h2'>{data['type'] === 'indClass' ? data['name'] : data['type'] + ' Directory'}</h2>
+            <h2>{data['type'] === 'indClass' ? data['name'] : data['type'] + ' Directory'}</h2>
             <div className='overall'>
-            <div className='button-container-top'>
-                                <Button
-                                    sx={{
-                                        background: '#6246EA',
-                                        border: '1px solid rgb(89, 89, 89)',
-                                        textTransform: 'none',
-                                        boxShadow: 'none',
-                                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
-                                        fontWeight:400,
-                                        '&:hover': {
-                                        boxShadow: 'none',
-                                        backgroundColor: '#fffffe',
-                                        color: '#2b2c34'
-                                        },
-                                    }}
-                                    style={{float: "right"}}
-                                    variant="contained"
-                                    onClick={handleBack}
-                                >Home</Button> 
-                            </div>
+                <div className='button-container-top'>
+                    <Button
+                        sx={{
+                            background: '#6246EA',
+                            border: '1px solid rgb(89, 89, 89)',
+                            textTransform: 'none',
+                            boxShadow: 'none',
+                            fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
+                            fontWeight:400,
+                            '&:hover': {
+                            boxShadow: 'none',
+                            backgroundColor: '#fffffe',
+                            color: '#2b2c34'
+                            },
+                        }}
+                        style={{float: "right"}}
+                        variant="contained"
+                        onClick={handleBack}
+                    >Home</Button> 
+                </div>
                 <div className='list'>
                     <div>{data['comp']}</div>
                 </div>
