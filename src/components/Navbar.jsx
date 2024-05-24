@@ -23,7 +23,7 @@ const Navbar = () => {
       </div>
       <div className='bar'>
         <ul>
-            <li><a href="/">Dashboard</a></li>
+            <li><a href="../dashboard">Dashboard</a></li>
             <li><a href="../class-directory">Class Directory</a></li>
             <li><a href="../student-directory">Student Directory</a></li>
             <li><a href="../teacher-directory">Teacher Directory</a></li>

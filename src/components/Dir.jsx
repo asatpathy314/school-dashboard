@@ -26,7 +26,7 @@ const Dir = (data) => {
     };    
 
     const handleBack = () => {
-        navigate('/');
+        navigate('/dashboard');
     }
 
     return (
