@@ -39,6 +39,7 @@ import {
  * //             "label": "Mia Anderson"
  * //         }
  * //     ]
+ * //     id: "docid"
  * // }
  */
 
@@ -54,20 +55,14 @@ export const addClass = async (classData) => {
 
   // Generate the class name
   const className = `${teacher.title} ${teacher.lastName}'s ${classData.grade} ${classData.subject} class`;
-
+  console.log(className)
   // Create a query to find the class document by its name
-  const classQuery = query(
-    collection(db, "classes"),
-    where("name", "==", className)
-  );
-  const classQuerySnapshot = await getDocs(classQuery);
 
-  let classRef;
-  if (!classQuerySnapshot.empty) {
+  let classRef = await getDoc(doc(db, "classes", classData.id))
+  if (classRef.exists()) {
     // If the class exists, get the document reference
-    classRef = classQuerySnapshot.docs[0].ref;
     // Update the class document
-    await updateDoc(classRef, {
+    await updateDoc(doc(db, "classes", classRef.id), {
       name: className,
       grade: classData.grade,
       subject: classData.subject,
@@ -129,7 +124,7 @@ export const addClass = async (classData) => {
       });
     }
   }
-};
+}
 
 export const getByFullName = async (fullName, collectionName) => {
   // Create a query to find the document by fullName

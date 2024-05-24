@@ -1,4 +1,5 @@
 import { db } from "../../firebase.js";
+import { getByFullName } from "./class.js";
 import {
   doc,
   collection,
@@ -23,7 +24,7 @@ import {
  */
 export const addStudent = async (student) => {
   const studentRef = doc(collection(db, "students"));
-  const studentDoc = await getDoc(studentRef);
+  const studentDoc = await getByFullName(student.firstName + " " + student.lastName, "students")
 
   const classesToUpdate = [];
 
@@ -53,8 +54,8 @@ export const addStudent = async (student) => {
   };
 
   // If the student exists, update their information
-  if (studentDoc.exists()) {
-    await updateDoc(doc(db, "students", studentDoc().id), studentData);
+  if (studentDoc !== null) {
+    await updateDoc(doc(db, "students", studentDoc.id), studentData);
   } else {
     // If the student does not exist, create a new document
     await setDoc(studentRef, studentData);
