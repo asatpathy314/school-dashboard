@@ -216,10 +216,10 @@ const Map = (props) => {
                     'label': row.className
                 })
             })
-            console.log(toDelete)
+            // console.log(toDelete)
             removeClass(toDelete);
             updatedData = filteredData.filter((row) => {
-                return !toDelete.classes.some((deleteRow) => deleteRow.label == row.fullName);
+                return !toDelete.classes.some((deleteRow) => deleteRow.label == row.className);
             })
         }
 
