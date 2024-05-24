@@ -13,9 +13,9 @@ const DashButton = ({ onClickMethod, buttonText }) => {
               fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
               fontWeight:400,
               '&:hover': {
-              boxShadow: 'none',
-              backgroundColor: '#fffffe',
-              color: '#2b2c34'
+                boxShadow: 'none',
+                backgroundColor: '#fffffe',
+                color: '#2b2c34'
               },
             }}
             style={{float: "right"}}
