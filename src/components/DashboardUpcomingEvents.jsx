@@ -72,14 +72,46 @@ const DashboardUpcomingEvents = () => {
       
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
       <FormModal modalType="addEvent" open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleOpenAdd} />
-        <Button variant="contained" color="primary" onClick={handleOpenAdd}>
-          Add Event
-        </Button>
+        <Button
+          sx={{
+            background: '#6246EA',
+            border: '1px solid rgb(89, 89, 89)',
+            textTransform: 'none',
+            boxShadow: 'none',
+            fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
+            fontWeight:400,
+            '&:hover': {
+              boxShadow: 'none',
+              backgroundColor: '#fffffe',
+              color: '#2b2c34'
+            },
+          }}
+          style={{float: "right"}}
+          className="but"
+          variant="contained"
+          onClick={handleOpenAdd}
+        >Add Event</Button>          
         
         <FormModal modalType="removeEvent" open={openRemove} handleClose={handleCloseRemove} handleClickOpen={handleOpenRemove} />
-        <Button variant="contained" color="primary" onClick={handleOpenRemove}>
-          Remove Event
-        </Button>
+        <Button
+          sx={{
+            background: '#6246EA',
+            border: '1px solid rgb(89, 89, 89)',
+            textTransform: 'none',
+            boxShadow: 'none',
+            fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
+            fontWeight:400,
+            '&:hover': {
+              boxShadow: 'none',
+              backgroundColor: '#fffffe',
+              color: '#2b2c34'
+            },
+          }}
+          style={{float: "right"}}
+          className="but"
+          variant="contained"
+          onClick={handleOpenRemove}
+        >Remove Event</Button>
       </Box>
     </div>
   );
