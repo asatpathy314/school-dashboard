@@ -21,6 +21,7 @@ const Map = (props) => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowSelected, setRowSelected] = useState(false);
     const [values, setValues] = useState({});
+    const [pageSize, setPageSize] = useState(dataType === 'Class' ? 5 : 10);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -246,7 +247,7 @@ const Map = (props) => {
                     initialState={{
                         ...data.initialState,
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 10 },
+                            paginationModel: { page: 0, pageSize: pageSize },
                         },
                     }}
                     // pageSizeOptions={[10]}
