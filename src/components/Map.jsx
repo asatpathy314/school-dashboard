@@ -92,10 +92,17 @@ const Map = (props) => {
             flex: 1.4, editable: true});
         }
         if (!forDashboard && averageGrades) {
-            newColumns.push({ field: 'averageGrade', 
-            headerName: 'Average Grade', 
-            flex: 2, 
-            valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+            if (dataType == 'Student') {
+                newColumns.push({ field: 'averageGrade', 
+                headerName: 'Average Grade', 
+                flex: 2, 
+                valueFormatter: (value) => value !== 'NOT IN A CLASS' ? `${value}%` : value })
+            } else {
+                newColumns.push({ field: 'averageGrade', 
+                headerName: 'Average Grade', 
+                flex: 2, 
+                valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
+            }
         }
 
         if (Object.hasOwn(data, 'docId')) {
@@ -208,7 +215,7 @@ const Map = (props) => {
                     'label': row.className
                 })
             })
-            // console.log(toDelete)
+            console.log(toDelete)
             removeClass(toDelete);
             updatedData = filteredData.filter((row) => {
                 return !toDelete.classes.some((deleteRow) => deleteRow.label == row.fullName);
