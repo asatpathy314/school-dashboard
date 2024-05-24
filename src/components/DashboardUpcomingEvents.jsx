@@ -53,8 +53,9 @@ const DashboardUpcomingEvents = () => {
   const handleCloseRemove = () => {
     setOpenRemove(false);
   };
+
   return (
-    <div className='dashboard-upcoming-events'>
+    <div className='dashboard'>
       <h3>Upcoming Events</h3>
       {events.map(event => (
         <Card key={event.id} sx={{ display: 'flex', marginBottom: 2, boxShadow: 8 }}>

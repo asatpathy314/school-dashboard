@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
     "@mui/styles": "^5.15.18",
@@ -20,6 +21,7 @@
     "@mui/x-date-pickers": "^7.5.1",
     "AdapterDayjs": "link:@mui/x-date-pickers/AdapterDayjs",
     "dayjs": "^1.11.11",
+    "feather-icons": "^4.29.2",
     "firebase": "^10.12.1",
     "hamburger-react": "^2.5.1",
     "react": "^18.2.0",

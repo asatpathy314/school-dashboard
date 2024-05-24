@@ -35,7 +35,9 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Teachers</h3>
           <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} dataType="Teacher" />
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
       );
       break;
@@ -44,7 +46,9 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Students</h3>
           <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} dataType="Student" />
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
       );
       break;
@@ -53,7 +57,9 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Classes</h3>
           <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} dataType="Class" />
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
       );
       break;
@@ -76,7 +82,9 @@ const DashboardComponent = ({ data, which }) => {
               </Card>
             ))}
           </Box>
-          <DashButton onClickMethod={() => handleMove(which)} buttonText="See More" />
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
         // <div className='dashboard-upcoming-events'>
         //   <h3 className='h3'>Upcoming Events</h3>
