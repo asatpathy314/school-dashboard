@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Box, Button } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
+import dayjs from 'dayjs';
 import FormModal from './FormModal';
 
 const DashboardUpcomingEvents = () => {
@@ -16,14 +17,15 @@ const DashboardUpcomingEvents = () => {
         const eventsSnapshot = await getDocs(eventsCollection);
         const eventsData = eventsSnapshot.docs.map(doc => {
           const data = doc.data();
-          const startDate = data['start-date'].toDate();
+          const startDate = data.startDate ? dayjs(data.startDate) : null;
+          const endDate = data.endDate ? dayjs(data.endDate) : null;
           return {
             id: doc.id,
             name: data.name,
             description: data.description,
             startDate: startDate,
-            startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            endDate: data['end-date'].toDate(),
+            startHour: startDate ? startDate.format('hh:mm A') : 'N/A',
+            endDate: endDate ? endDate.format('YYYY-MM-DD') : 'N/A'
           };
         });
         const sortedEvents = eventsData.sort((a, b) => a.startDate - b.startDate);
@@ -58,7 +60,7 @@ const DashboardUpcomingEvents = () => {
       {events.map(event => (
         <Card key={event.id} sx={{ display: 'flex', marginBottom: 2, boxShadow: 8 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 1 , paddingLeft:'70px', paddingRight:'90px' }}>
-            <Typography variant="body1">{event.startDate.toDateString()}</Typography>
+            <Typography variant="body1">{event.startDate ? event.startDate.format('dddd, MMMM D, YYYY') : 'Date not available'}</Typography>
             <Typography variant="body2" color="text.secondary">{event.startHour}</Typography>
           </Box>
           <CardContent>
@@ -66,12 +68,8 @@ const DashboardUpcomingEvents = () => {
           </CardContent>
         </Card>
       ))}
-      
-      
-      
-      
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-      <FormModal modalType="addEvent" open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleOpenAdd} />
+        <FormModal modalType="addEvent" open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleOpenAdd} />
         <Button
           sx={{
             background: '#6246EA',
@@ -79,19 +77,18 @@ const DashboardUpcomingEvents = () => {
             textTransform: 'none',
             boxShadow: 'none',
             fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
-            fontWeight:400,
+            fontWeight: 400,
             '&:hover': {
               boxShadow: 'none',
               backgroundColor: '#fffffe',
               color: '#2b2c34'
             },
           }}
-          style={{float: "right"}}
+          style={{ float: "right" }}
           className="but"
           variant="contained"
           onClick={handleOpenAdd}
         >Add Event</Button>          
-        
         <FormModal modalType="removeEvent" open={openRemove} handleClose={handleCloseRemove} handleClickOpen={handleOpenRemove} />
         <Button
           sx={{
@@ -100,14 +97,14 @@ const DashboardUpcomingEvents = () => {
             textTransform: 'none',
             boxShadow: 'none',
             fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
-            fontWeight:400,
+            fontWeight: 400,
             '&:hover': {
               boxShadow: 'none',
               backgroundColor: '#fffffe',
               color: '#2b2c34'
             },
           }}
-          style={{float: "right"}}
+          style={{ float: "right" }}
           className="but"
           variant="contained"
           onClick={handleOpenRemove}
