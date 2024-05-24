@@ -61,7 +61,8 @@ const AddClass = ({
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
-    formJson.students = selectedStudents
+    formJson.students = selectedStudents;
+    formJson.id = values.id;
     console.log(formJson);
     await addClass(formJson);
     //window.location.reload(); 

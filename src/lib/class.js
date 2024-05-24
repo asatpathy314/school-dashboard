@@ -57,9 +57,10 @@ export const addClass = async (classData) => {
   const className = `${teacher.title} ${teacher.lastName}'s ${classData.grade} ${classData.subject} class`;
   console.log(className)
   // Create a query to find the class document by its name
-
-  let classRef = await getDoc(doc(db, "classes", classData.id))
-  if (classRef.exists()) {
+  console.log(classData)
+  let classRef;
+  if (classData.id) {
+    classRef = await getDoc(doc(db, "classes", classData.id))
     // If the class exists, get the document reference
     // Update the class document
     await updateDoc(doc(db, "classes", classRef.id), {
@@ -120,7 +121,7 @@ export const addClass = async (classData) => {
 
     if (!classExists) {
       await updateDoc(studentRef, {
-        classes: arrayUnion({ class: classRef, grade: 100.0 }),
+        classes: arrayUnion({ class: doc(db, "classes", classRef.id), grade: 100.0 }),
       });
     }
   }
