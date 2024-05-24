@@ -4,29 +4,40 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f4f8;
     padding: 20px;
-}
-
-.landing-page img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
+    background-image: url('/tjelementary.jpg'); /* Set the background image */
+    background-size: cover; /* Ensure the image covers the whole div */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-color: rgba(0, 0, 0, 0.5); /* Add a black overlay */
+    background-blend-mode: darken; /* Blend the image with the overlay to dim it */
 }
 
 .landing-page .MuiTypography-h2 {
-    color: #2b2c34;
+    color: #ffffff;
     font-size: 3rem;
     margin-bottom: 20px;
 }
 
 .landing-page .MuiTypography-body1 {
-    color: #2b2c34;
+    color: #ffffff;
     font-size: 1.5rem;
     margin-bottom: 40px;
 }
 
 .landing-page .but {
+    color: #ffffff;
     font-size: 1rem;
     padding: 10px 20px;
+}
+
+.landing-page, .landing-page * {
+    text-align: center;
+}
+
+.button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

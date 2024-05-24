@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Button } from '@mui/material';
+import { Stack, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LandingPage.css';
 
@@ -12,22 +12,31 @@ const LandingPage = () => {
 
     return (
         <div className="landing-page">
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                    <img src='/tjelementary.jpg' alt="School" />
-                </Grid>
-                <Grid item xs={12} md={6} container direction="column" justifyContent="center">
-                    <Typography variant="h2" gutterBottom>
-                        Welcome to the TJ Elementary School Administrative Dashboard
-                    </Typography>
-                    <Typography variant="body1">
-                        Discover a place where students are empowered to learn, grow, and succeed.
-                    </Typography>
-                    <Button variant="contained" color="primary" onClick={handleClick}>
-                        Go to Dashboard
-                    </Button>
-                </Grid>
-            </Grid>
+            <Stack
+                sx={{
+                    alignItems: 'center', // Align items to center
+                }}
+            >
+                <Typography variant="h2" gutterBottom>
+                    Welcome to the TJ Elementary School Administrative Dashboard
+                </Typography>
+                <Typography variant="body1">
+                    Discover a place where students are empowered to learn, grow, and succeed.
+                </Typography>
+                <Button
+                    variant="contained"
+                    sx={{
+                        backgroundColor: '#6246ea', // Change the button color
+                        width: '300px', // Make the button less wide
+                        '&:hover': {
+                            backgroundColor: '#5138d9', // Darken the button on hover for better UX
+                        },
+                    }}
+                    onClick={handleClick}
+                >
+                    Go to Dashboard
+                </Button>
+            </Stack>
         </div>
     );
 };
