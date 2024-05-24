@@ -155,6 +155,7 @@ const FormModal = ({
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
         handleClose();
+        location.reload();
       };
 
       return (

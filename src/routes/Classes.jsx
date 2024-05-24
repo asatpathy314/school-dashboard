@@ -66,7 +66,8 @@ const Classes = () => {
             'className': doc.data()['name'], 
             'averageGrade': avg, 
             'fullName': teacherDoc.data()['fullName'],
-            'students': valStudents});
+            'students': valStudents,
+            'id': doc.id});
         } else {
           temp.push({
             'teacher': 'NO TEACHER', 
@@ -76,7 +77,8 @@ const Classes = () => {
             'className': doc.data()['name'], 
             'averageGrade': avg, 
             'fullName': 'NO TEACHER',
-            'students': valStudents});
+            'students': valStudents,
+            'id': doc.id});
         }
         
       } catch (error) {

@@ -21,6 +21,7 @@ const Map = (props) => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowSelected, setRowSelected] = useState(false);
     const [values, setValues] = useState({});
+    const [pageSize, setPageSize] = useState(dataType === 'Class' ? 3 : 10);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
@@ -215,10 +216,10 @@ const Map = (props) => {
                     'label': row.className
                 })
             })
-            console.log(toDelete)
+            // console.log(toDelete)
             removeClass(toDelete);
             updatedData = filteredData.filter((row) => {
-                return !toDelete.classes.some((deleteRow) => deleteRow.label == row.fullName);
+                return !toDelete.classes.some((deleteRow) => deleteRow.label == row.className);
             })
         }
 
@@ -246,7 +247,7 @@ const Map = (props) => {
                     initialState={{
                         ...data.initialState,
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 10 },
+                            paginationModel: { page: 0, pageSize: pageSize },
                         },
                     }}
                     // pageSizeOptions={[10]}
