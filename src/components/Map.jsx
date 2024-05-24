@@ -245,7 +245,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[10, 25]}
+                    pageSizeOptions={[5, 10, 25]}
                     disableRowSelectionOnClick = {true}
                 />
                 <FormModal modalType={"add" + dataType} open={openAdd} handleClose={handleCloseAdd} handleClickOpen={handleClickOpenAdd}/>

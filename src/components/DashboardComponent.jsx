@@ -2,9 +2,22 @@ import React from 'react';
 import '../styles/dashboard/Dashboard.css';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import Map from './Map';
+// import Button from '@mui/material/Button'
+import DashButton from './DashButton'
+import { useNavigate } from 'react-router-dom'
 
 const DashboardComponent = ({ data, which }) => {
+  const navigate = useNavigate();
+
   let content;
+
+  const handleMove = (which) => {
+    switch (which) {
+      case 'teacher':
+        navigate('/teacher-directory');
+        break;
+    }
+  }
 
   switch (which) {
     case 'teacher':
@@ -12,6 +25,7 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Teachers</h3>
           <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} dataType="Teacher" />
+          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
         </div>
       );
       break;
