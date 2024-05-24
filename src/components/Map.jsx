@@ -104,19 +104,6 @@ const Map = (props) => {
             flex: 0 })
         }
         
-        // if (averageGrades) {
-        //     if (forDashboard) {
-        //         newColumns.push({ field: 'averageGrade', 
-        //         headerName: 'Avg Grade', 
-        //         width: 80, 
-        //         valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
-        //     } else {
-        //         newColumns.push({ field: 'averageGrade', 
-        //         headerName: 'Average Grade', 
-        //         flex: 2, 
-        //         valueFormatter: (value) => value !== 'N/A' ? `${value}%` : value })
-        //     }
-        // }
         if (email) {
             if (forDashboard) {
                 newColumns.push({ field: 'email', 
@@ -309,7 +296,27 @@ const Map = (props) => {
                         values={values['row']}
                     />
                 }
-                <div>{rowSelected ? <button onClick={handleDelete}>Test</button> : ''}</div>
+                <div className='button'>{ rowSelected ? 
+                    <Button
+                        sx={{
+                            background: '#6246EA',
+                            border: '1px solid rgb(89, 89, 89)',
+                            textTransform: 'none',
+                            boxShadow: 'none',
+                            fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
+                            fontWeight:400,
+                            '&:hover': {
+                            boxShadow: 'none',
+                            backgroundColor: '#fffffe',
+                            color: '#2b2c34'
+                        },
+                        }}
+                        style={{float: "right"}}
+                        className="but"
+                        variant="contained"
+                        onClick={handleDelete}
+                    >Delete Selected</Button> : ''}  
+                </div>
             </div>
         );
     }
