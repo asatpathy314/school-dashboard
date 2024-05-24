@@ -67,7 +67,7 @@ const DashboardComponent = ({ data, which }) => {
       content = (
         <div className="dashboard">
           <h3>Upcoming Events</h3>
-          <Box className="card-container">
+          <Box className="card-container" sx={{ overflowY: 'auto', maxHeight: '238px'}}>
             {data.map(event => (
               <Card key={event.id} className="event-card">
                 <Box>

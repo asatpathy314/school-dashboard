@@ -21,7 +21,7 @@ const Map = (props) => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowSelected, setRowSelected] = useState(false);
     const [values, setValues] = useState({});
-    const [pageSize, setPageSize] = useState(dataType === 'Class' ? 5 : 10);
+    const [pageSize, setPageSize] = useState(dataType === 'Class' ? 3 : 10);
 
     const handleClickOpenAdd = () => {
         setOpenAdd(true);
