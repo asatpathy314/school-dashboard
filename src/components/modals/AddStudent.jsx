@@ -85,7 +85,7 @@ const AddStudent = ({
             field="lastName"
             defaultValue={lastName}
           />
-          <TextInput label="Student ID" field="id" value={id} />
+          <TextInput label="Student ID" field="id" defaultValue={id} />
           <MultiSelectAutocomplete
             options={classesAutocomplete}
             name="classes"

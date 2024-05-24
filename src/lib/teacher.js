@@ -33,7 +33,8 @@ export const addTeacher = async (teacher) => {
     const docSnap = await getByFullName(`${teacher.firstName} ${teacher.lastName}`, "teachers");
 
     if (docSnap!==null) {
-      const teacherRef = doc(db, "collection", docSnap.id)
+      const teacherRef = doc(db, "teachers", docSnap.id)
+      console.log(teacherRef)
       // Document exists, update the existing document with new data
       await updateDoc(teacherRef, {
         firstName: teacher.firstName,
