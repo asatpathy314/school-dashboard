@@ -22,7 +22,7 @@ import {
  * @param {Array} student.classes - An array of classes the student is enrolled in.
  */
 export const addStudent = async (student) => {
-  const studentRef = doc(db, "students", student.id);
+  const studentRef = doc(collection(db, "students"));
   const studentDoc = await getDoc(studentRef);
 
   const classesToUpdate = [];
@@ -54,7 +54,7 @@ export const addStudent = async (student) => {
 
   // If the student exists, update their information
   if (studentDoc.exists()) {
-    await updateDoc(studentRef, studentData);
+    await updateDoc(doc(db, "students", studentDoc().id), studentData);
   } else {
     // If the student does not exist, create a new document
     await setDoc(studentRef, studentData);

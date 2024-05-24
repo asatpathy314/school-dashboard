@@ -43,6 +43,7 @@ const AddStudent = ({
 }) => {
   // Providing default values for destructured properties of `values`
   // console.log(classesAutocomplete);
+  const update = JSON.stringify(values) === '{}'
   const {
     firstName = "",
     lastName = "",
@@ -103,7 +104,7 @@ const AddStudent = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button type="submit">{update ? "Create" : "Update"}</Button>
         </DialogActions>
       </Dialog>
     </>

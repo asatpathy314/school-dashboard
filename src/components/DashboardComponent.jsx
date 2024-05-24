@@ -5,6 +5,7 @@ import Map from './Map';
 // import Button from '@mui/material/Button'
 import DashButton from './DashButton'
 import { useNavigate } from 'react-router-dom'
+import dayjs from 'dayjs';
 
 const DashboardComponent = ({ data, which }) => {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Teachers</h3>
           <Map ids={true} personNames={true} email={true} data={data} forDashboard={true} dataType="Teacher" />
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
       );
       break;
@@ -43,7 +46,9 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Students</h3>
           <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} dataType="Student" />
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
       );
       break;
@@ -52,28 +57,34 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Classes</h3>
           <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} dataType="Class" />
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
       );
       break;
     default:
       content = (
-        <div className='dashboard'>
+        <div className="dashboard">
           <h3>Upcoming Events</h3>
           <Box className="card-container">
             {data.map(event => (
               <Card key={event.id} className="event-card">
                 <Box>
-                  <Typography variant="body1">{event.startDate.toDateString()}</Typography>
+                  <Typography variant="body1">
+                    {event.startDate ? dayjs(event.startDate).format('dddd, MMMM D, YYYY') : 'Date not available'}
+                  </Typography>
                   <Typography variant="body2" color="text.secondary">{event.startHour}</Typography>
                 </Box>
                 <CardContent>
                   <Typography variant="h6">{event.name}</Typography>
                 </CardContent>
               </Card>
-            ))}  
+            ))}
           </Box>
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <div className='see-more'>
+            <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          </div>
         </div>
         // <div className='dashboard-upcoming-events'>
         //   <h3 className='h3'>Upcoming Events</h3>

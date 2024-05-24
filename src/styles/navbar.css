@@ -1,10 +1,10 @@
 .bar {
-  width: 100%;
   background-color: #6246EA;
   padding: 15px;
 }
 
 .bar ul {
+  width: 100%;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -45,7 +45,6 @@
 .dropdown-menu li {
   padding:6px;
   display: flex;
-  
 }
 .dropdown-menu li a{
   text-decoration: none;

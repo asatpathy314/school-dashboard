@@ -1,6 +1,3 @@
-.container {
-    height: 90vh;
-}
 
 .h2 {
     text-align: center;
@@ -18,8 +15,6 @@
     position: relative;
 }
 
-
-
 .list {
     background-color: #fffffe;
     padding: 15px;
@@ -29,12 +24,13 @@
     border: 1px solid rgb(89, 89, 89);
 }
 
-.comp {
-    padding: 0px !important;
-    margin-bottom: 0;
+.button-container-top {
+    position: absolute;
+    right: 0px;
+    top: -44px;;
+    display: flex;
 }
-
-.button-container {
+.button-container-bottom {
     position: absolute;
     bottom: 15px;
     right: 0px;

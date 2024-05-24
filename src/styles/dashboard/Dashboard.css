@@ -3,11 +3,14 @@
 }
 .dashboard{
     background-color: #fffffe;
-    padding: 15px;
+    padding: 15px 15px 50px 15px;
     color: #2B2C34;
     border-radius: 4px;
     text-align: center;
     border: 1px solid rgb(89, 89, 89);
+}
+.see-more{
+    margin-top:10px;
 }
 
 h3 {
@@ -16,8 +19,6 @@ h3 {
     font-weight: 400;
 }
 
-
-  
 .card-container {
     display: flex;
     flex-wrap: wrap;

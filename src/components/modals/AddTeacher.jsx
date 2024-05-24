@@ -32,6 +32,7 @@ import { addTeacher } from "../../lib/teacher.js";
  */
 
 const AddTeacher = ({ open, handleClose, values = {} }) => {
+  const update = JSON.stringify(values) === '{}'
   const {
     firstName = "",
     lastName = "",
@@ -40,14 +41,12 @@ const AddTeacher = ({ open, handleClose, values = {} }) => {
     title = "",
   } = values;
 
-  // console.log('in add teacher', values)
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
     console.log(formJson); // TODO: Finish
-    addTeacher(formJson);
+    await addTeacher(formJson);
     window.location.reload(); 
     handleClose();
   };
@@ -86,7 +85,7 @@ const AddTeacher = ({ open, handleClose, values = {} }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button type="submit">{update ? "Create" : "Update"}</Button>
         </DialogActions>
       </Dialog>
     </>

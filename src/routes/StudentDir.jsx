@@ -30,10 +30,14 @@ const StudentDir = () => {
             grades = classItem.grade + grades;
             count = count + 1;
           })
-          const avgGrade = grades / count;
+          let avgGrade = grades / count;
+          if (isNaN(avgGrade)) {
+            avgGrade = 'NOT IN A CLASS';
+          }
 
           const name = docData['fullName'];
           const splitName = name.split(' ');
+
 
           temp.push({
             'firstName' : splitName[0], 
