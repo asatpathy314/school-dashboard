@@ -38,13 +38,14 @@ import {
  * //         {
  * //             "label": "Mia Anderson"
  * //         }
- * //     ]
+ * //     ],
+ *        id: 'liwehfefj'
  * // }
  */
 
 export const addClass = async (classData) => {
   // Retrieve teacher data from the database.
-  console.log(classData);
+  
   const teacherDoc = await getByFullName(classData.teacher, "teachers");
   if (teacherDoc === null) {
     console.error("Teacher not found.");
