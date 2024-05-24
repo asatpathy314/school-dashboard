@@ -4,6 +4,7 @@ import '../styles/dashboard/Dashboard.css'
 import { collection, getDocs, query, getDoc } from "firebase/firestore";
 import { db } from '../../firebase';
 import { Box, Grid } from '@mui/material'
+import dayjs from 'dayjs';
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
@@ -17,14 +18,15 @@ const Dashboard = () => {
       const eventsSnapshot = await getDocs(eventsCollection);
       const eventsData = eventsSnapshot.docs.map(doc => {
         const data = doc.data();
-        const startDate = data['start-date'].toDate();
+        const startDate = data.startDate ? dayjs(data.startDate) : null;
+        const endDate = data.endDate ? dayjs(data.endDate) : null;
         return {
           id: doc.id,
           name: data.name,
           description: data.description,
           startDate: startDate,
-          startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          endDate: data['end-date'].toDate(),
+          startHour: startDate ? startDate.format('hh:mm A') : 'N/A',
+          endDate: endDate ? endDate.format('YYYY-MM-DD') : 'N/A'
         };
       });
       const sortedEvents = eventsData.sort((a, b) => a.startDate - b.startDate);
