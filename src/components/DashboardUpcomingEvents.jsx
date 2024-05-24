@@ -53,7 +53,6 @@ const DashboardUpcomingEvents = () => {
   const handleCloseRemove = () => {
     setOpenRemove(false);
   };
-
   return (
     <div className='dashboard-upcoming-events'>
       <h3>Upcoming Events</h3>

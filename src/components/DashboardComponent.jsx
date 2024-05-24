@@ -5,6 +5,7 @@ import Map from './Map';
 // import Button from '@mui/material/Button'
 import DashButton from './DashButton'
 import { useNavigate } from 'react-router-dom'
+import dayjs from 'dayjs';
 
 const DashboardComponent = ({ data, which }) => {
   const navigate = useNavigate();
@@ -58,22 +59,24 @@ const DashboardComponent = ({ data, which }) => {
       break;
     default:
       content = (
-        <div className='dashboard'>
+        <div className="dashboard">
           <h3>Upcoming Events</h3>
           <Box className="card-container">
             {data.map(event => (
               <Card key={event.id} className="event-card">
                 <Box>
-                  <Typography variant="body1">{event.startDate.toDateString()}</Typography>
+                  <Typography variant="body1">
+                    {event.startDate ? dayjs(event.startDate).format('dddd, MMMM D, YYYY') : 'Date not available'}
+                  </Typography>
                   <Typography variant="body2" color="text.secondary">{event.startHour}</Typography>
                 </Box>
                 <CardContent>
                   <Typography variant="h6">{event.name}</Typography>
                 </CardContent>
               </Card>
-            ))}  
+            ))}
           </Box>
-          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
+          <DashButton onClickMethod={() => handleMove(which)} buttonText="See More" />
         </div>
         // <div className='dashboard-upcoming-events'>
         //   <h3 className='h3'>Upcoming Events</h3>

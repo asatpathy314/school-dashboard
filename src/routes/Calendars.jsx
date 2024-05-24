@@ -59,13 +59,10 @@ const Calendars = () => {
   }, []);
 
   const handleCellClick = (event, row, day) => {
+    const clickedDay = dayjs(day.format('YYYY-MM-DD'));
     const selectedDateEvents = events.filter(event => {
       const eventDate = dayjs(event.date);
-      return (
-        eventDate.date() === day.date() &&
-        eventDate.month() === day.month() &&
-        eventDate.year() === day.year()
-      );
+      return eventDate.isSame(clickedDay, 'day');
     });
     setSelectedEvent(selectedDateEvents.length > 0 ? selectedDateEvents[0] : null);
   };
@@ -81,7 +78,9 @@ const Calendars = () => {
       </div>
       <div className="calendar-container">
         <Scheduler
+          
           locale="en"
+          key = {events.length}
           events={events}
           legacyStyle={false}
           options={state?.options}
