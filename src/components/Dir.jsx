@@ -41,9 +41,9 @@ const Dir = (data) => {
                         fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
                         fontWeight:400,
                         '&:hover': {
-                        boxShadow: 'none',
-                        backgroundColor: '#fffffe',
-                        color: '#2b2c34'
+                            boxShadow: 'none',
+                            backgroundColor: '#fffffe',
+                            color: '#2b2c34'
                         },
                     }}
                     style={{float: "right"}}
@@ -91,7 +91,7 @@ const Dir = (data) => {
                                       boxShadow: 'none',
                                       backgroundColor: '#fffffe',
                                       color: '#2b2c34'
-                                  },
+                                    },
                                    }}
                                 style={{float: "right"}}
                                 className="but"

@@ -1,0 +1,14 @@
+.landing-page {
+    max-height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: row;
+}
+.mascott {
+    height: 700px;
+    width: 500px;
+    padding: 0;
+    margin-top: 20px;
+    margin-left: 50px;
+}
