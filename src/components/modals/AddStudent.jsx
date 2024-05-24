@@ -59,6 +59,7 @@ const AddStudent = ({
     formJson.classes = selectedClasses;
     console.log(formJson); // TODO: Finish
     await addStudent(formJson);
+    window.location.reload(); 
     handleClose();
   };
 
@@ -85,7 +86,7 @@ const AddStudent = ({
             field="lastName"
             defaultValue={lastName}
           />
-          <TextInput label="Student ID" field="id" value={id} />
+          <TextInput label="Student ID" field="id" defaultValue={id} />
           <MultiSelectAutocomplete
             options={classesAutocomplete}
             name="classes"

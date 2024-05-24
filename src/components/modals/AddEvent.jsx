@@ -43,6 +43,7 @@ const AddEvent = ({ open, handleClose, values = {} }) => {
         formJson.endDate = endDate.toISOString();
         console.log(formJson);
         await addEvent(formJson);
+        window.location.reload(); 
         handleClose();
       };
 

@@ -13,6 +13,7 @@ const RemoveTeacher = ( { open, handleClose, teachersAutocomplete}) => {
         event.preventDefault();
         console.log(selectedTeachers);
         removeTeacher(selectedTeachers);
+        window.location.reload(); 
         handleClose();
       };
     return (

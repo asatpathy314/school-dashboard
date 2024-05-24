@@ -14,7 +14,6 @@ const TextInput = ({ label, field, defaultValue }) => {
   return (
     <>
       <TextField
-        autoFocus
         required
         margin="dense"
         id="name"

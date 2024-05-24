@@ -17,7 +17,8 @@ const TeacherDir = () => {
           const id = doc.id;
           const name = docData['fullName'];
           const splitName = name.split(' ');
-          temp.push({'firstName' : splitName[0], 'lastName' : splitName[1], 'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email'], 'title': 'teacher'})
+          console.log(docData);
+          temp.push({'firstName' : splitName[0], 'lastName' : splitName[1], 'fullName': docData['fullName'], 'id': docData['id'], 'email': docData['email'], 'title': docData['title']})
       }));
   
       // console.log(temp);

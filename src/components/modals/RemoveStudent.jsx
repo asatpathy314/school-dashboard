@@ -10,13 +10,13 @@ import { removeStudent } from "../../lib/student.js";
 
 const RemoveStudent = ( { open, handleClose, studentsAutocomplete}) => {
     const [selectedStudents, setSelectedStudents] = useState([]);
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         formJson.students = selectedStudents;
         console.log(formJson)
-        removeStudent(formJson);
+        await removeStudent(formJson);
         handleClose();
     };
     return (
