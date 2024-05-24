@@ -273,7 +273,7 @@ const Map = (props) => {
                             paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
-                    pageSizeOptions={[10, 25]}
+                    pageSizeOptions={[5, 10, 25]}
                     checkboxSelection
                     keepNonExistentRowsSelected
                     disableRowSelectionOnClick = {true}

@@ -76,27 +76,37 @@ const Dashboard = () => {
     const classSnapshot = await getDocs(query(collRef));
     let temp = [];
 
+
     await Promise.all(classSnapshot.docs.map(async (doc) =>  {
       try {
-        // console.log("hi")
+        // console.log(doc.data());
         const id = doc.id;
         const students = doc.data()['students'];
         let gradeSum = 0;
-        let avg = 0;    
+        let avg = 0;
 
-        // console.log(students.length)
+        const valStudents = []
+          
+          await Promise.all(students.map(async (s) => {
+            const cDoc = await getDoc(s);
+            // console.log(cDoc.data())
+            if (cDoc.data() && cDoc.data().fullName) {
+              valStudents.push({'label': cDoc.data()['fullName']});
+            }
+          }))
+
+        
         if (students.length > 0) {
           for (const stuRef of students) {
-            if (stuRef) {
-              const stuDoc = await getDoc(stuRef);
-              if (stuDoc.data() != undefined) {
-                const classes = stuDoc.data()['classes'];
+            const stuDoc = await getDoc(stuRef);
+            const stuData = stuDoc.data();
+            if (stuData && stuData['classes']) {
+              const classes = stuData['classes'];
                 classes.forEach((c) => {
-                  gradeSum = gradeSum + c['grade'];
-                })
-              } else {
-                continue;
-              } 
+                  if (c['class'].id === id) {
+                    gradeSum += c['grade'];
+                  }
+                });
             }
           }
           avg = gradeSum / students.length;
@@ -111,9 +121,30 @@ const Dashboard = () => {
         const teacherRef = doc.data()['teacher']
         const teacherDoc = await getDoc(teacherRef);
 
-        temp.push({'id': doc.id, 'className': doc.data()['name'], 'averageGrade': avg, 'fullName': teacherDoc.data()['fullName']});
+        if (teacherDoc && teacherDoc.data() && teacherDoc.data()['fullName']) {
+          temp.push({
+            'teacher': teacherDoc.data()['fullName'], 
+            'grade': doc.data()['grade'], 
+            'subject': doc.data()['subject'],
+            'id': doc.id, 
+            'className': doc.data()['name'], 
+            'averageGrade': avg, 
+            'fullName': teacherDoc.data()['fullName'],
+            'students': valStudents});
+        } else {
+          temp.push({
+            'teacher': 'NO TEACHER', 
+            'grade': doc.data()['grade'], 
+            'subject': doc.data()['subject'],
+            'id': doc.id, 
+            'className': doc.data()['name'], 
+            'averageGrade': avg, 
+            'fullName': 'NO TEACHER',
+            'students': valStudents});
+        }
+        
       } catch (error) {
-        console.log("Error fetching class data: ", error);
+        console.log("Error fetching class data: ", error, doc.id);
       }
     }));
 

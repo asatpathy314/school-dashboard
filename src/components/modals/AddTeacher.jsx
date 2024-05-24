@@ -40,7 +40,7 @@ const AddTeacher = ({ open, handleClose, values = {} }) => {
     title = "",
   } = values;
 
-  console.log('in add teacher', values)
+  // console.log('in add teacher', values)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
