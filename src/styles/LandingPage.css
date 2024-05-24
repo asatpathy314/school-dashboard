@@ -1,14 +1,32 @@
+/* LandingPage.css */
 .landing-page {
-    max-height: 20vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-wrap: row;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8;
+    padding: 20px;
 }
-.mascott {
-    height: 700px;
-    width: 500px;
-    padding: 0;
-    margin-top: 20px;
-    margin-left: 50px;
+
+.landing-page img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.landing-page .MuiTypography-h2 {
+    color: #2b2c34;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.landing-page .MuiTypography-body1 {
+    color: #2b2c34;
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+}
+
+.landing-page .but {
+    font-size: 1rem;
+    padding: 10px 20px;
 }

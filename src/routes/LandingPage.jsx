@@ -1,56 +1,43 @@
 import React from 'react';
 import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import tjImage from '../../public/tj mascott.webp'; // Import your tall rectangular PNG image
 import '../styles/LandingPage.css';
 
 const LandingPage = () => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/dashboard');
+        navigate('/dashboard'); // Update the path as needed
     };
 
     return (
-        <Grid container className='landing-page'>
-            <Grid item xs={12} sm={6}>
-                <img src={tjImage} alt="TJ Elementary Mascott" className="mascott" />
+        <div className="landing-page">
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <img src='/tjelementary.jpg' alt="School" />
+                </Grid>
+                <Grid item xs={12} md={6} container direction="column" justifyContent="center">
+                    <Typography variant="h2" gutterBottom>
+                        Welcome to the TJ Elementary School Administrative Dashboard
+                    </Typography>
+                    <Typography variant="body1">
+                        Discover a place where students are empowered to learn, grow, and succeed.
+                    </Typography>
+                    <Button variant="contained" color="primary" onClick={handleClick}>
+                        Go to Dashboard
+                    </Button>
+                </Grid>
             </Grid>
-            <Grid item xs={12} sm={6} container direction="column" alignItems="left" justifyContent="space-between">
-                <Typography variant="h2" gutterBottom>
-                    Hey, Patriot!
-                </Typography>
-                <Typography variant="body1" fontSize={25}>
-                    Welcome to your very own Adiministrative Dashboard.
-                </Typography>
-                <br></br>
-                <Button
-                    sx={{
-                        background: '#6246EA',
-                        border: '1px solid rgb(89, 89, 89)',
-                        textTransform: 'none',
-                        boxShadow: 'none',
-                        fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif',
-                        fontWeight:400,
-                        '&:hover': {
-                            boxShadow: 'none',
-                            backgroundColor: '#fffffe',
-                            color: '#2b2c34',
-                        },
-                        width: '175px',
-                    }}
-                    style={{float: "left"}}
-                    className="but"
-                    variant="contained"
-                    onClick={handleClick}
-                >Let's Get Started!</Button> 
-            </Grid>
-        </Grid>
+        </div>
     );
 };
 
 export default LandingPage;
-
+/*
+                <Grid item xs={12} md={6}>
+                    <img src={schoolImage} alt="School" />
+                </Grid>
+*/
 // import React from 'react'
 // import Button from '@mui/material/Button'
 // import { useNavigate } from 'react-router-dom'

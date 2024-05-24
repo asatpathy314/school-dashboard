@@ -82,6 +82,7 @@ const Calendars = () => {
       <div className="calendar-container">
         <Scheduler
           locale="en"
+          key={events.length}
           events={events}
           legacyStyle={false}
           options={state?.options}
