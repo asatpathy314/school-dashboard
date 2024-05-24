@@ -3,6 +3,7 @@ import Scheduler from 'react-mui-scheduler';
 import { db } from '../../firebase';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import { collection, getDocs } from 'firebase/firestore';
+import dayjs from 'dayjs';
 import './../styles/Calendars.css';
 import DashboardUpcomingEvents from '../components/DashboardUpcomingEvents';
 
@@ -35,17 +36,17 @@ const Calendars = () => {
         const eventsSnapshot = await getDocs(eventsCollection);
         const eventsData = eventsSnapshot.docs.map(doc => {
           const data = doc.data();
-          const startDate = data['start-date'].toDate();
-          const endDate = data['end-date'].toDate();
+          const startDate = data.startDate ? dayjs(data.startDate) : null;
+          const endDate = data.endDate ? dayjs(data.endDate) : null;
           return {
             id: doc.id,
             label: data.name,
             description: data.description,
             color: '#f28f6a',
             groupLabel: 'School Wide Event',
-            startHour: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-            endHour: endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
-            date: startDate.toISOString().split('T')[0],
+            startHour: startDate ? startDate.format('hh:mm A') : 'N/A',
+            endHour: endDate ? endDate.format('hh:mm A') : 'N/A',
+            date: startDate ? startDate.format('YYYY-MM-DD') : 'N/A',
           };
         });
         setEvents(eventsData);
@@ -59,11 +60,11 @@ const Calendars = () => {
 
   const handleCellClick = (event, row, day) => {
     const selectedDateEvents = events.filter(event => {
-      const eventDate = new Date(event.date);
+      const eventDate = dayjs(event.date);
       return (
-        eventDate.getDate() === day.getDate() &&
-        eventDate.getMonth() === day.getMonth() &&
-        eventDate.getFullYear() === day.getFullYear()
+        eventDate.date() === day.date() &&
+        eventDate.month() === day.month() &&
+        eventDate.year() === day.year()
       );
     });
     setSelectedEvent(selectedDateEvents.length > 0 ? selectedDateEvents[0] : null);
@@ -87,10 +88,10 @@ const Calendars = () => {
           toolbarProps={state?.toolbarProps}
           onCellClick={handleCellClick}
           renderDay={(day, row, column, selectedDate, isToday, locale) => {
-            const dayEvents = events.filter(event => event.date === day.toISOString().split('T')[0]);
+            const dayEvents = events.filter(event => event.date === day.format('YYYY-MM-DD'));
             return (
               <div className="date-cell" onClick={() => setSelectedEvent(dayEvents[0])}>
-                {day.getDate()}
+                {day.date()}
                 <div className="tooltip always-visible">
                   {dayEvents.map(event => (
                     <div key={event.id} style={{ color: event.color }}>
@@ -108,12 +109,12 @@ const Calendars = () => {
           )}
         />
       </div>
-      <Dialog open={selectedEvent !== null} onClose={handleDialogClose}>
-        <DialogTitle>{selectedEvent && selectedEvent.label}</DialogTitle>
+      <Dialog open={!!selectedEvent} onClose={handleDialogClose}>
+        <DialogTitle>{selectedEvent?.label}</DialogTitle>
         <DialogContent>
-          <Typography>{selectedEvent && selectedEvent.description}</Typography>
-          <Typography>{selectedEvent && `Start: ${selectedEvent.startHour}`}</Typography>
-          <Typography>{selectedEvent && `End: ${selectedEvent.endHour}`}</Typography>
+          <Typography>{selectedEvent?.description}</Typography>
+          <Typography>Start: {selectedEvent?.startHour}</Typography>
+          <Typography>End: {selectedEvent?.endHour}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Close</Button>
