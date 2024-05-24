@@ -16,6 +16,15 @@ const DashboardComponent = ({ data, which }) => {
       case 'teacher':
         navigate('/teacher-directory');
         break;
+      case 'student':
+        navigate('/student-directory');
+        break;
+      case 'class':
+        navigate('/class-directory');
+        break;
+      default:
+        navigate('/calendar')
+        break;
     }
   }
 
@@ -34,6 +43,7 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Students</h3>
           <Map ids={true} personNames={true} studentGrades={true} data={data} forDashboard={true} dataType="Student" />
+          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
         </div>
       );
       break;
@@ -42,6 +52,7 @@ const DashboardComponent = ({ data, which }) => {
         <div className='dashboard'>
           <h3 className='h3'>Classes</h3>
           <Map ids={true} classNames={true} data={data} averageGrades={true} forDashboard={true} dataType="Class" />
+          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
         </div>
       );
       break;
@@ -62,6 +73,7 @@ const DashboardComponent = ({ data, which }) => {
               </Card>
             ))}  
           </Box>
+          <DashButton onClickMethod={() => handleMove(which)} buttonText={'See More'}/>
         </div>
         // <div className='dashboard-upcoming-events'>
         //   <h3 className='h3'>Upcoming Events</h3>
