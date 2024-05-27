@@ -1,4 +1,4 @@
-# Project README
+# School Dashboard
 
 ## Overview
 
